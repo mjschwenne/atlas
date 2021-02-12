@@ -1,8 +1,15 @@
 class Polygon:
-    vertices = []  # List of the vertices of the Polygon
 
-    def __init__(self, vertices_init):
-        self.vertices = vertices_init
+    def __init__(self, vertices):
+        """
+        Represents a polygon in 2D space.
+
+        Parameters
+        ----------
+        vertices : List of Tuples
+            The vertices that define the boundaries of the Polygon.
+        """
+        self.vertices = vertices
 
     def get_perimeter(self):
         pass
@@ -16,5 +23,5 @@ class Polygon:
     def is_contained(self):
         pass
 
-    def is_boardering(self):
+    def is_bordering(self):
         pass
