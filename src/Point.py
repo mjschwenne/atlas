@@ -18,6 +18,10 @@ class Point:
         Sets the x value of the point
     set_y(y_new)
         Sets the y value of the point
+    get_x()
+        Gets the x value of the point
+    get_y()
+        Gets the y value of the point
     simple_distance(point)
         Finds the simple distance between this point and another point
     manhattan_distance(point)
@@ -67,6 +71,28 @@ class Point:
             The new y value of the point
         """
         self.y = y_new
+
+    def get_x(self):
+        """
+        Gets the x value of the point
+
+        Returns
+        -------
+        float
+            The x value of the point
+        """
+        return self.x
+
+    def get_y(self):
+        """
+        Gets the y value of the point
+
+        Returns
+        -------
+        float
+            The y value of the point
+        """
+        return self.y
 
     def simple_distance(self, point):
         """
