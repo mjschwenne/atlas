@@ -1,5 +1,5 @@
 import math
-from src import Point
+
 
 class Polygon:
 
@@ -30,7 +30,7 @@ class Polygon:
         for i in range(length):
             # Gets two connected points
             point1 = self.vertices[i]
-            point2 = self.vertices[i+1]
+            point2 = self.vertices[i + 1]
 
             # Finds a simple_distance between the two connected points
             perm += point1.simple_distance(point2)
@@ -64,6 +64,8 @@ class Polygon:
         # The direction from Pn to P1, where Pn is the last Point in vertices
         new_direction = math.atan2(new_y - old_y, new_x - old_x)
         angle_sum = 0.0  # Angle sum used for checking intersectionality
+
+        orientation = 0.0
 
         i = 0
 
