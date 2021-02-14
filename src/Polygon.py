@@ -112,7 +112,7 @@ class Polygon:
         # If the angle is a full rotation (in radians) it doesn't intersect
         return round(abs(angle_sum), 5) == round(math.pi * 2, 5)
 
-    def is_contained(self):
+    def is_contained(self, point):
         pass
 
     def is_bordering(self):
