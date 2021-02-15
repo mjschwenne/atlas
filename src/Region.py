@@ -39,8 +39,28 @@ class Region(Polygon):
         """
         self.district = new_district
 
-    def in_city(self):
-        pass
+    def in_city(self, city):
+        """
+        Determines if a Region is inside of the given City
+
+        Parameters
+        ----------
+        city : Polygon
+            The City to check if the Region is inside of
+
+        Returns
+        -------
+        bool
+            True if the Region is inside the City, false otherwise
+        """
+        in_city = True
+
+        # Loops over every vertex of the region and checks to see if it is in the given City
+        for point in self.vertices:
+            if not city.is_contained(city, point):
+                in_city = False
+                break
+        return in_city
 
     def in_city_walls(self, wall):
         """
@@ -49,7 +69,7 @@ class Region(Polygon):
         Parameters
         ----------
         wall : Wall
-            The to check if the Region is inside of
+            The wall to check if the Region is inside of
 
         Returns
         -------
@@ -57,6 +77,8 @@ class Region(Polygon):
             True if the Region is inside the wall, false otherwise
         """
         in_wall = True
+
+        # Loops over every vertex of the region and checks to see if it is in the given Wall
         for point in self.vertices:
             if not wall.is_contained(wall, point):
                 in_wall = False
