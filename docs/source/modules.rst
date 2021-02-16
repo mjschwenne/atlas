@@ -5,4 +5,5 @@ src
    :maxdepth: 4
 
    Point
+   Polygon
    main

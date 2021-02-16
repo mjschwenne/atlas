@@ -35,12 +35,26 @@ class Point:
         Parameters
         ----------
         x : float
-            The initial x value of this Point.
+            The initial `x` value of this Point.
         y : float
-            The initial x value of this Point.
+            The initial `y` value of this Point.
         """
         self.x = x
         self.y = y
+
+    def set(self, x_new, y_new):
+        """
+        Move the point by assigning a new `x` and `y` coordinates.
+
+        Parameters
+        ----------
+        x_new : float
+            The new `x` coordinate for this point
+        y_new : float
+            Thew new `y` coordinate for this point
+        """
+        self.x = x_new
+        self.y = y_new
 
     def set_x(self, x_new):
         """
@@ -63,6 +77,17 @@ class Point:
             The new `y` value of the point.
         """
         self.y = y_new
+
+    def get(self):
+        """
+        Return the point coordinates in tuple form.
+
+        Returns
+        -------
+        tuple
+            A tuple in the form (`x`, `y`)
+        """
+        return self.x, self.y
 
     def get_x(self):
         """
@@ -90,6 +115,8 @@ class Point:
         """
         Finds the distance between this point and another point.
 
+        Notes
+        -----
         .. math:: d = \sqrt{(x_2 - x_1) + (y_2 - y_1)}
 
         Parameters

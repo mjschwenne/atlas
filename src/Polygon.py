@@ -104,7 +104,9 @@ def _intersects(p1, q1, p2, q2):
 
 
 class Polygon:
-
+    """
+    This class represents a polygon as a list of vertex points ordered in clockwise order.
+    """
     def __init__(self, vertices):
         """
         Represents a polygon in 2D space.
@@ -143,7 +145,51 @@ class Polygon:
         return perm
 
     def get_center(self):
-        pass
+        """
+        Finds the centroid of the polygon.
+
+        Returns
+        -------
+        Point
+            Point representing the centroid of the polygon
+
+        Notes
+        -----
+        We are using the general formula for a centroid, expressed below.
+
+        .. math::
+
+            C_x = \\frac{1}{6A} \\sum_{i=0}^{n-1}\\left(\\left(x_i + x_{i+1}\\right) \\times
+            \\left(x_1 y_{i+1} - x_{i+1} y_i \\right) \\right) \\\\
+            C_y = \\frac{1}{6A} \\sum_{i=0}^{n-1}\\left(\\left(y_i + y_{i+1}\\right) \\times
+            \\left(x_1 y_{i+1} - x_{i+1} y_i \\right) \\right)
+
+        Where `A` is defined as the area using the shoelace method.
+
+        .. math::
+            A = \\frac{1}{2} \\sum_{i=0}^{n-1}\\left(x_i y_{i+1} - x_{i+1} y_i\\right)
+
+        More information can be found `here <https://en.wikipedia.org/wiki/Centroid#Of_a_polygon>`_.
+        """
+        # initialize the centroid and other variables
+        centroid = Point(0, 0)
+        signed_area = 0
+        # Loop in a counterclockwise direction to produce a positive area calculation
+        # Iterate over [n - 1, n - 2, n - 3,..., 0]
+        for v in range(len(self.vertices) - 1, -1, -1):
+            x0, y0 = self.vertices[v].get()
+            x1, y1 = self.vertices[(v + 1) % len(self.vertices)].get()
+            # Calculate the signed area of this triangle as a 2x2 matrix determinant
+            a = x0 * y1 - x1 * y0
+            signed_area += a
+            # Update the centroid to include the next triangle
+            cx, cy = centroid.get()
+            centroid.set(cx + a * (x0 + x1), cy + a * (y0 + y1))
+        # Calculate the finial position of the centroid
+        signed_area *= 3  # This is 0.5 * 6, see formula for more details
+        centroid.set_x(centroid.get_x() / signed_area)
+        centroid.set_y(centroid.get_y() / signed_area)
+        return centroid
 
     def is_convex(self):
         """
@@ -246,5 +292,18 @@ class Polygon:
 
         return (count % 2) == 1
 
-    def is_bordering(self):
+    def is_bordering(self, poly):
+        """
+        Checks to see if a given polygon borders this polygon.
+
+        Parameters
+        ----------
+        poly : Polygon
+            The polygon we need to check for a border
+
+        Returns
+        -------
+        bool
+            True if the two share and edge, false otherwise.
+        """
         pass

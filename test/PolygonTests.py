@@ -6,43 +6,32 @@ from src.Point import Point
 class TestPolygon(unittest.TestCase):
     # Square 1
     # ========
-    s1p1 = Point(0.0, 0.0)
-    s1p2 = Point(0.0, 1.0)
-    s1p3 = Point(1.0, 1.0)
-    s1p4 = Point(1.0, 0.0)
-    s1ver = [s1p1, s1p2, s1p3, s1p4]
+    s1ver = [Point(0.0, 0.0), Point(0.0, 1.0), Point(1.0, 1.0), Point(1.0, 0.0)]
 
     # Square 2
     # ========
-    s2p1 = Point(0.0, 0.0)
-    s2p2 = Point(0.0, 10.0)
-    s2p3 = Point(10.0, 10.0)
-    s2p4 = Point(10.0, 0.0)
-    s2ver = [s2p1, s2p2, s2p3, s2p4]
+    s2ver = [Point(0.0, 0.0), Point(0.0, 10.0), Point(10.0, 10.0), Point(10.0, 0.0)]
+
+    # Irregular 1
+    # ===========
+    i1ver = [Point(3, 19), Point(6, 18), Point(8, 18), Point(19, 12), Point(15, 7), Point(15, 2)]
+
+    # Irregular 2
+    # ===========
+    i2ver = [Point(-10, 10), Point(2, 8), Point(2, -2), Point(5, -7), Point(-5, -10),
+             Point(-7, -4), Point(-7, 3), Point(-8.5, 4.2)]
 
     # Less than 3 points
     # ==================
-    sh1p1 = Point(0.0, 0.0)
-    sh1p2 = Point(0.0, 0.1)
-    sh1ver = [sh1p1, sh1p2]
+    sh1ver = [Point(0.0, 0.0), Point(0.0, 0.1)]
 
     # Repeated point
     # ==============
-    sh2p1 = Point(0.0, 0.0)
-    sh2p2 = Point(0.0, 0.0)
-    sh2p3 = Point(0.0, 1.0)
-    sh2p4 = Point(1.0, 1.0)
-    sh2p5 = Point(1.0, 0.0)
-    sh2ver = [sh2p1, sh2p2, sh2p3, sh2p4, sh2p5]
+    sh2ver = [Point(0.0, 0.0), Point(0.0, 0.0), Point(0.0, 1.0), Point(1.0, 1.0), Point(1.0, 0.0)]
 
     # Pentagram (intersecting) Shape
     # ==============================
-    sh3p1 = Point(0.0, 5.0)
-    sh3p2 = Point(4.0, -5.0)
-    sh3p3 = Point(-5.0, 2.0)
-    sh3p4 = Point(5.0, 2.0)
-    sh3p5 = Point(-4.0, -5.0)
-    sh3ver = [sh3p1, sh3p2, sh3p3, sh3p4, sh3p5]
+    sh3ver = [Point(0.0, 5.0), Point(4.0, -5.0), Point(-5.0, 2.0), Point(5.0, 2.0), Point(-4.0, -5.0)]
 
     # Square 1 Tests
     def test_perimeter_s1(self):
@@ -66,6 +55,42 @@ class TestPolygon(unittest.TestCase):
         poly = Polygon(self.s2ver)
 
         self.assertEqual(40, poly.get_perimeter())
+
+    def test_get_center_s1(self):
+        """
+        Test of the Polygon.py get_center method for s1
+        """
+        poly = Polygon(self.s1ver)
+
+        self.assertEqual((0.5, 0.5), poly.get_center().get())
+
+    def test_get_center_s2(self):
+        """
+        Test of the Polygon.py get_center method for s2
+        """
+        poly = Polygon(self.s2ver)
+
+        self.assertEqual((5, 5), poly.get_center().get())
+
+    def test_get_center_i1(self):
+        """
+        Test of the Polygon.py get_center method for i1
+
+        Oracle, MATLAB: centroid(polyshape([3 6 8 19 15 15], [19 18 18 12 7 2]))
+        """
+        poly = Polygon(self.i1ver)
+        cx, cy = poly.get_center().get()
+        self.assertEqual((11.7333, 11.9009), (round(cx, 4), round(cy, 4)))
+
+    def test_get_center_i2(self):
+        """
+        Test of the Polygon.py get_center method for i1
+
+        Oracle, MATLAB: centroid(polyshape([-10 2 2 5 -5 -7 -7 -8.5 -10], [10 8 -2 -7 -10 -4 3 4.2 10]))
+        """
+        poly = Polygon(self.i2ver)
+        cx, cy = poly.get_center().get()
+        self.assertEqual((-2.6617, 0.3087), (round(cx, 4), round(cy, 4)))
 
     def test_is_convex_s2(self):
         """

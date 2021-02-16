@@ -5,7 +5,7 @@
 
 Welcome to Atlas's documentation!
 =================================
-Documentation is updated on Wednesdays and Fridays.
+Documentation is updated on Tuesdays and Fridays.
 
 .. toctree::
    :maxdepth: 2
@@ -13,6 +13,7 @@ Documentation is updated on Wednesdays and Fridays.
 
    main
    Point
+   Polygon
 
 Indices and tables
 ==================
