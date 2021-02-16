@@ -11,9 +11,11 @@ Documentation is updated on Tuesdays and Fridays.
    :maxdepth: 2
    :caption: Contents:
 
-   main
+   District
    Point
    Polygon
+   Region
+   Wall
 
 Indices and tables
 ==================
