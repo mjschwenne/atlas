@@ -49,8 +49,6 @@ exclude_patterns = []
 #
 html_theme = 'alabaster'
 numpy_show_class_members = False
-autosummary_generate = True
-autosummary_imported_members = True
 latex_elements = {'preamble': r'\usepackage{amsmath}'}
 
 # Add any paths that contain custom static files (such as style sheets) here,
