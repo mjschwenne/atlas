@@ -24,7 +24,7 @@ class TestRegion(unittest.TestCase):
 
     # Irregular 3
     # ===========
-    i3ver = [Point(9, 10.5), Point(15, 2), Point(4.4, -6), Point(2.6, -3), Point(6, 8)]
+    i3ver = [Point(-5, -5), Point(10, 15), Point(11, 15), Point(11, 14)]
     i3Poly = Polygon(i3ver)
 
     # Square 1
@@ -38,6 +38,55 @@ class TestRegion(unittest.TestCase):
         """
         reg = Region(self.district, self.s1ver)
         self.assertEqual(True, reg.in_city(self.i1Poly))
+
+    def test_in_city_i1_s1(self):
+        """
+        Test of the Region.py in_city method with i1 being the Region and s1 being the City
+        """
+        reg = Region(self.district, self.i1ver)
+        self.assertEqual(False, reg.in_city(self.s1Poly))
+
+    def test_in_city_s1_i2(self):
+        """
+        Test of the Region.py in_city method with s1 being the Region and i2 being the City
+        """
+        reg = Region(self.district, self.s1ver)
+        self.assertEqual(False, reg.in_city(self.i2Poly))
+
+    def test_in_city_i2_s1(self):
+        """
+        Test of the Region.py in_city method with i2 being the Region and s1 being the City
+        """
+        reg = Region(self.district, self.i2ver)
+        self.assertEqual(False, reg.in_city(self.s1Poly))
+
+    def test_in_city_s1_s1(self):
+        """
+        Test of the Region.py in_city method with s1 being the Region and s1 being the City
+        """
+        reg = Region(self.district, self.s1ver)
+        self.assertEqual(False, reg.in_city(self.s1Poly))
+
+    def test_in_city_i3_i2(self):
+        """
+        Test of the Region.py in_city method with i3 being the Region and i2 being the City
+        """
+        reg = Region(self.district, self.i3ver)
+        self.assertEqual(False, reg.in_city(self.i2Poly))
+
+    def test_in_city_i3_i1(self):
+        """
+        Test of the Region.py in_city method with i3 being the Region and i1 being the City
+        """
+        reg = Region(self.district, self.i3ver)
+        self.assertEqual(False, reg.in_city(self.i1Poly))
+
+    def test_in_city_s1_i3(self):
+        """
+        Test of the Region.py in_city method with s1 being the Region and i3 being the City
+        """
+        reg = Region(self.district, self.s1ver)
+        self.assertEqual(True, reg.in_city(self.i3Poly))
 
 
 if __name__ == '__main__':
