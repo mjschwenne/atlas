@@ -22,14 +22,14 @@ def _three_point_orientation(p1, p2, p3):
         clockwise = 1
         counter-clockwise = 2
     """
-    slope_p1_p2 = (p2.get_y() - p1.get_y()) / (p2.get_x() - p1.get_x())
-    slope_p2_p3 = (p3.get_y() - p2.get_y()) / (p3.get_x() - p2.get_x())
+    slope = (p2.get_y() - p1.get_y()) * (p3.get_x() - p2.get_x()) - \
+            (p2.get_x() - p1.get_x()) * (p3.get_y() - p2.get_y())
 
     # If slope_p1_p2 == slope_p2_p3 then the three points are collinear
-    if slope_p1_p2 == slope_p2_p3:
+    if slope == 0:
         return 0
     # If slope_p1_p2 > slope_p2_p3 then the three points are clockwise (right turn)
-    elif slope_p1_p2 > slope_p2_p3:
+    elif slope > 0:
         return 1
     # If slope_p1_p2 < slope_p2_p3 then the three points are counter-clockwise (left turn)
     else:
@@ -309,8 +309,12 @@ class Polygon:
         if n < 3:
             return False
 
-        max_x = max(self.vertices.get_x)
-        ext = Point(max_x, point.get_y())
+        max_x = self.vertices[0].get_x()
+        for p in self.vertices:
+            if p.get_x() > max_x:
+                max_x = p.get_x()
+        y = point.get_y()
+        ext = Point(float(max_x), y)
         count = 0
 
         for i in range(n - 1):

@@ -29,7 +29,7 @@ class TestRegion(unittest.TestCase):
 
     # Square 1
     # ========
-    s1ver = [Point(10, 15), Point(11, 15), Point(11, 14), (10, 14)]
+    s1ver = [Point(10, 15), Point(11, 15), Point(11, 14), Point(10, 14)]
     s1Poly = Polygon(s1ver)
 
     def test_in_city_s1_i1(self):
@@ -38,3 +38,7 @@ class TestRegion(unittest.TestCase):
         """
         reg = Region(self.district, self.s1ver)
         self.assertEqual(True, reg.in_city(self.i1Poly))
+
+
+if __name__ == '__main__':
+    unittest.main()
