@@ -21,6 +21,10 @@ class TestPolygon(unittest.TestCase):
     i2ver = [Point(-10, 10), Point(2, 8), Point(2, -2), Point(5, -7), Point(-5, -10),
              Point(-7, -4), Point(-7, 3), Point(-8.5, 4.2)]
 
+    # Irregular 3
+    # ===========
+    i3ver = [Point(9, 10.5), Point(15, 2), Point(4.4, -6), Point(2.6, -3), Point(6, 8)]
+
     # Less than 3 points
     # ==================
     sh1ver = [Point(0.0, 0.0), Point(0.0, 0.1)]
@@ -124,6 +128,51 @@ class TestPolygon(unittest.TestCase):
         poly = Polygon(self.sh3ver)
 
         self.assertEqual(False, poly.is_convex())
+
+    def test_is_bordering_squares(self):
+        """
+        Test of Polygon.py with two different sized squares with a corner at (0, 0)
+        """
+        s1 = Polygon(self.s1ver)
+        s2 = Polygon(self.s2ver)
+
+        self.assertEqual(True, s1.is_bordering(s2))
+
+    def test_is_bordering_irregulars1(self):
+        """
+        Test of Polygon.py to see if the two irregular polygons are bordering
+        """
+        i1 = Polygon(self.i1ver)
+        i2 = Polygon(self.i2ver)
+
+        self.assertEqual(False, i1.is_bordering(i2))
+
+    def test_is_bordering_irregulars2(self):
+        """
+        Test of Polygon with two bordering, irregular polygons with one matching vertex
+        """
+        i1 = Polygon(self.i1ver)
+        i3 = Polygon(self.i3ver)
+
+        self.assertEqual(True, i3.is_bordering(i1))
+
+    def test_is_bordering_irregulars3(self):
+        """
+        Test of Polygon with two bordering, irregular polygons with no matching vertices
+        """
+        i2 = Polygon(self.i2ver)
+        i3 = Polygon(self.i3ver)
+
+        self.assertEqual(True, i2.is_bordering(i3))
+
+    def test_is_bordering_intersecting(self):
+        """
+        Test of Polygon with two intersecting polygons, but no vertices along a shared edge
+        """
+        s2 = Polygon(self.s2ver)
+        i1 = Polygon(self.i1ver)
+
+        self.assertEqual(False, i1.is_bordering(s2))
 
 
 if __name__ == '__main__':

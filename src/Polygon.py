@@ -53,11 +53,36 @@ def _in_segment(p1, p2, p3):
     -------
     bool
         True if p3 is in the line segment from p1 to p2
+
+    Notes
+    -----
+    After checking for vertical and horizontal lines, we know that the `p3` is only on the line segment between
+    `p1` and `p2` if the distance from `p1` to `p2` thorough `p3` is the same as the distance from `p1` directly
+    to `p2`.
+
+    This method is only accurate to approximately eight decimal places, after which internal rounding can affect the
+    result.
+    >>> print(_in_segment(Point(0, 0), Point(5, 5), Point(1, 1.00000001)))
+    True
+
+    Example of an incorrect, but even close test.
     """
-    if (min(p1.get_x(), p2.get_x()) <= p3.get_x() <= max(p1.get_x(), p2.get_x()) and
-            min(p1.get_y(), p2.get_y()) <= p3.get_y() <= max(p1.get_y(), p2.get_y())):
+    # Case 1: Vertical Line.
+    # If p3's y-coordinate is within the y-range of this line segment, return if they have the same x-coordinate
+    if p1.get_x() == p2.get_x() and min(p1.get_y(), p2.get_y()) <= p3.get_y() <= max(p1.get_y(), p2.get_y()):
+        return p1.get_x() == p3.get_x()
+    # Case 2: Horizontal Line.
+    # If p3's x-coordinate is within the x-range of this line segment, return if they have the same y-coordinate
+    elif p1.get_y() == p2.get_y() and min(p1.get_x(), p2.get_x()) <= p3.get_x() <= max(p1.get_x(), p2.get_x()):
+        return p1.get_y() == p3.get_y()
+    # Case 3:
+    # If the distance from p1 -> p2 -> p3 == to the distance from p1 directly to p2 then they are on the same line
+    # as the optimal path from p1 to p2 is a straight line. Any deviation from this line will increase the distance
+    # required to go to p3 first.
+    elif p1.simple_distance(p3) + p3.simple_distance(p2) == p1.simple_distance(p2):
         return True
-    return False
+    else:
+        return False
 
 
 def _intersects(p1, q1, p2, q2):
@@ -103,10 +128,15 @@ def _intersects(p1, q1, p2, q2):
     return False
 
 
+if __name__ == '__main__':
+    print(_in_segment(Point(0, 0), Point(5, 5), Point(-1, -1)))
+
+
 class Polygon:
     """
     This class represents a polygon as a list of vertex points ordered in clockwise order.
     """
+
     def __init__(self, vertices):
         """
         Represents a polygon in 2D space.
@@ -292,18 +322,29 @@ class Polygon:
 
         return (count % 2) == 1
 
-    def is_bordering(self, poly):
+    def is_bordering(self, other):
         """
         Checks to see if a given polygon borders this polygon.
 
         Parameters
         ----------
-        poly : Polygon
+        other : Polygon
             The polygon we need to check for a border
 
         Returns
         -------
         bool
             True if the two share and edge, false otherwise.
+
+        Notes
+        -----
+        I have not been able to find a way to do this in less than :math:`O(n^2)` complexity, which is acceptable
+        so long as we do not compare every polygon to every other polygon in the city. That will tank performance.
+
+        This will not catch intersecting polygons unless one vertex sits on an edge of the other.
         """
-        pass
+        for v in range(len(self.vertices)):
+            for u in other.vertices:
+                if _in_segment(self.vertices[v], self.vertices[(v + 1) % len(self.vertices)], u):
+                    return True
+        return False
