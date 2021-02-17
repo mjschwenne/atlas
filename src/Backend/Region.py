@@ -1,4 +1,4 @@
-from src.Polygon import Polygon
+from src.Backend.Polygon import Polygon
 
 
 class Region(Polygon):
@@ -53,14 +53,12 @@ class Region(Polygon):
         bool
             True if the Region is inside the City, false otherwise
         """
-        in_city = True
 
         # Loops over every vertex of the region and checks to see if it is in the given City
         for point in self.vertices:
-            if not city.is_contained(city, point):
-                in_city = False
-                break
-        return in_city
+            if not city.is_contained(point):
+                return False
+        return True
 
     def in_city_walls(self, wall):
         """
@@ -76,11 +74,9 @@ class Region(Polygon):
         bool
             True if the Region is inside the wall, false otherwise
         """
-        in_wall = True
 
         # Loops over every vertex of the region and checks to see if it is in the given Wall
         for point in self.vertices:
             if not wall.is_contained(wall, point):
-                in_wall = False
-                break
-        return in_wall
+                return False
+        return True

@@ -1,5 +1,5 @@
 import unittest
-from src import Point
+from src.Backend import Point
 
 
 class TestPoint(unittest.TestCase):

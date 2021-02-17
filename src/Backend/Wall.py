@@ -1,4 +1,4 @@
-from src.Polygon import Polygon
+from src.Backend.Polygon import Polygon
 
 
 class Wall(Polygon):

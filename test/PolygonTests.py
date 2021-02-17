@@ -1,6 +1,6 @@
 import unittest
-from src.Polygon import Polygon
-from src.Point import Point
+from src.Backend.Polygon import Polygon
+from src.Backend.Point import Point
 
 
 class TestPolygon(unittest.TestCase):

@@ -1,5 +1,5 @@
 import math
-from src.Point import Point
+from src.Backend.Point import Point
 
 
 def _three_point_orientation(p1, p2, p3):
