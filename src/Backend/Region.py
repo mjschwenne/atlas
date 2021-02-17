@@ -2,6 +2,32 @@ from src.Backend.Polygon import Polygon
 
 
 class Region(Polygon):
+    """
+    Region storing a list of Vertices and a District with functions to determine what the Region is in
+
+    Attributes
+    ----------
+    district : District
+        The district of the Region
+    vertices : list of Points
+        The points that define the boarders of the Region
+
+    Methods
+    -------
+    get_district()
+        Gets the district value of the Region
+    set_district(new_district)
+        Sets the district value of the Region
+    get_vertices()
+        Gets the vertices value of the Region
+    set_vertices(new_vertices)
+        Sets the vertices value of the Region
+    in_city(city)
+        Determines if the Region is inside the provided City
+    in_wall(wall)
+        Determines if the Region is inside the provided wall
+
+    """
 
     def __init__(self, district, vertices):
         """
@@ -39,6 +65,28 @@ class Region(Polygon):
         """
         self.district = new_district
 
+    def set_vertices(self, new_vertices):
+        """
+        Sets the value of 'vertices' for a Region
+
+        Parameters
+        ----------
+        new_vertices : List of Points
+            The new value of 'vertices' for the Region
+        """
+        self.vertices = new_vertices
+
+    def get_vertices(self):
+        """
+        Gets the 'vertices' of a Region
+
+        Returns
+        -------
+        list of Points
+            Returns the 'vertices' of the Region
+        """
+        return self.vertices
+
     def in_city(self, city):
         """
         Determines if a Region is inside of the given City
@@ -60,7 +108,7 @@ class Region(Polygon):
                 return False
         return True
 
-    def in_city_walls(self, wall):
+    def in_walls(self, wall):
         """
         Determines if a Region is inside of the given Wall
 
