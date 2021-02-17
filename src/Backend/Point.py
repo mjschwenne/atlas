@@ -147,3 +147,21 @@ class Point:
             The manhattan distance between this point and another point.
         """
         return abs(self.x - point.x) + abs(self.y - point.y)
+
+    def is_equal(self, point):
+        """
+        Returns true if this point is equal to point
+
+        Parameters
+        ----------
+        point : Point
+            The Point to see if it is equal to this point
+
+        Returns
+        -------
+        bool
+            Returns true if this point is equal to point
+        """
+        if self.get_x() == point.get_x() and self.get_y() == point.get_y():
+            return True
+        return False

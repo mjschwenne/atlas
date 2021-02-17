@@ -313,6 +313,8 @@ class Polygon:
         for p in self.vertices:
             if p.get_x() > max_x:
                 max_x = p.get_x()
+            if p.is_equal(point):
+                return True
         y = point.get_y()
         ext = Point(float(max_x), y)
         count = 0
