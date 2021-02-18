@@ -37,6 +37,10 @@ class TestPolygon(unittest.TestCase):
     # ==============================
     sh3ver = [Point(0.0, 5.0), Point(4.0, -5.0), Point(-5.0, 2.0), Point(5.0, 2.0), Point(-4.0, -5.0)]
 
+    # Pentagram is_contained edge case 1
+    # ================================
+    sh4ver = [Point(-5, -5), Point(10, 15), Point(11, 15), Point(11, 14)]
+
     # Square 1 Tests
     def test_perimeter_s1(self):
         """
@@ -173,6 +177,9 @@ class TestPolygon(unittest.TestCase):
         i1 = Polygon(self.i1ver)
 
         self.assertEqual(False, i1.is_bordering(s2))
+
+    def test_is_contained_edge_case_1(self):
+        self.assertEqual(True, Polygon(self.sh4ver).is_contained(Point(11.0, 15.0)))
 
 
 if __name__ == '__main__':
