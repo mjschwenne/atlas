@@ -233,6 +233,11 @@ class Polygon:
         -------
         bool
             Returns true if the polygon is convex and has no intersecting lines, or false if not.
+
+        Notes
+        -----
+        This method will return false if the number of vertices in the polygon is less than 3 or if any of the vertices
+        repeat.
         """
         # Fewer than 3 vertices can not be convex
         if len(self.vertices) < 3:
@@ -296,6 +301,7 @@ class Polygon:
 
     def is_contained(self, point):
         """
+        Returns true if Point point is located on the edge of or in this Polygon.
 
         Parameters
         ----------
@@ -306,6 +312,14 @@ class Polygon:
         -------
         bool
             True if contained in the polygon
+
+        Notes
+        -----
+        This method utilises the Ray-casting algorithm. A horizontal ray from point increasing to infinity will
+        intersect with the polygon an odd number of times if it is located inside the polygon and an even number of
+        times if point is located outside the polygon.
+
+        You can find more information about the algorithm here: https://rosettacode.org/wiki/Ray-casting_algorithm
         """
         n = len(self.vertices)
 
