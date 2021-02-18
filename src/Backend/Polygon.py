@@ -79,7 +79,10 @@ def _in_segment(p1, p2, p3):
     # If the distance from p1 -> p2 -> p3 == to the distance from p1 directly to p2 then they are on the same line
     # as the optimal path from p1 to p2 is a straight line. Any deviation from this line will increase the distance
     # required to go to p3 first.
-    elif p1.simple_distance(p3) + p3.simple_distance(p2) == p1.simple_distance(p2):
+    # Because the simple_distance() method returns a float value, I only consider to the eight decimal places to avoid
+    # rounding errors.
+    elif float(int((p1.simple_distance(p3) + p3.simple_distance(p2)) * 100000000) / 100000000.0) == \
+            float(int(p1.simple_distance(p2) * 100000000) / 100000000.0):
         return True
     else:
         return False
@@ -310,24 +313,51 @@ class Polygon:
         if n < 3:
             return False
 
+        # Finds the max x of the polygon used as the x value for the furthest extent of the ray
         max_x = self.vertices[0].get_x()
         for p in self.vertices:
             if p.get_x() > max_x:
                 max_x = p.get_x()
             if p.is_equal(point):
                 return True
-        y = point.get_y()
-        ext = Point(float(max_x), y)
-        count = 0
 
-        for i in range(n - 1):
-            cur_point = self.vertices[i]
-            next_point = self.vertices[i + 1]
+        ext = Point(max_x, point.get_y())  # The furthest extent of the ray needed for the algorithm
+        intersect_count = 0  # count of number of times the ray crosses an edge of the polygon
+        i = 0  # index of vertices in the polygon
+        original_y = point.get_y()  # Stores the y value of the point to put back later if the y value has to be changed
 
-            if _intersects(cur_point, next_point, point, ext):
-                count += 1
+        # Finds how many times the ray crosses the an edge of the polygon
+        while True:
+            next_value = (i + 1) % n  # The next vertex index
+            cur_vertex = self.vertices[i]  # The current point (vertex) to start the edge of the polygon
+            next_vertex = self.vertices[next_value]  # The next point (vertex) to end the edge of the polygon
 
-        return (count % 2) == 1
+            # To avoid an edge case where the loop will count crossing a vertex twice, if the point lines up
+            # horizontally with any vertex being checked, we slightly move (+0.00000001) the y value of the point being
+            # checked we move the y value back at the end of the loop
+            if point.get_y() == cur_vertex.get_y() or point.get_y() == next_vertex.get_y():
+                point.set_y(point.get_y() + 0.00000001)
+                ext.set_y(ext.get_y() + 0.00000001)
+
+            # If the ray intersects the current edge of the polygon we increase the intersect_count by one
+            if _intersects(cur_vertex, next_vertex, point, ext):
+                # If the point and the line segment are collinear we return if the point is in_segment with the edge
+                if _three_point_orientation(cur_vertex, next_vertex, point) == 0:
+                    return _in_segment(cur_vertex, next_vertex, point)
+                intersect_count += 1
+
+            # We set the new current index to the old next index
+            i = next_value
+
+            # We break the loop if the i returns to 0 (The first vertex in the polygon)
+            if i == 0:
+                break
+
+        # We reset the y value of the point to make sure we haven't changed the value.
+        point.set_y(original_y)
+
+        # If the ray intersected an odd amount of times the point is inside, if not it is outside
+        return intersect_count % 2 == 1
 
     def is_bordering(self, other):
         """

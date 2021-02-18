@@ -129,7 +129,7 @@ class Point:
         float
             The simple distance between this point and another point.
         """
-        return math.sqrt(math.pow((point.x - self.x), 2) + math.pow((point.y - self.y), 2))
+        return math.sqrt(math.pow((point.x - self.x), 2.0) + math.pow((point.y - self.y), 2.0))
 
     def manhattan_distance(self, point):
         """

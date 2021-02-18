@@ -37,9 +37,9 @@ class TestPolygon(unittest.TestCase):
     # ==============================
     sh3ver = [Point(0.0, 5.0), Point(4.0, -5.0), Point(-5.0, 2.0), Point(5.0, 2.0), Point(-4.0, -5.0)]
 
-    # Pentagram is_contained edge case 1
-    # ================================
-    sh4ver = [Point(-5, -5), Point(10, 15), Point(11, 15), Point(11, 14)]
+    # Polygon is_contained exhaustive tests
+    # =====================================
+    poly_ex_1 = Polygon([Point(-5, 5), Point(-2, 2), Point(-3.5, -1), Point(-6.5, -1), Point(-8, 2)])
 
     # Square 1 Tests
     def test_perimeter_s1(self):
@@ -178,8 +178,71 @@ class TestPolygon(unittest.TestCase):
 
         self.assertEqual(False, i1.is_bordering(s2))
 
-    def test_is_contained_edge_case_1(self):
-        self.assertEqual(True, Polygon(self.sh4ver).is_contained(Point(11.0, 15.0)))
+    def test_poly_ex_1_1(self):
+        """
+        The first test in an exhaustive test of is_contained on poly_ex_1 for point (-8, 5)
+        """
+        self.assertEqual(False, self.poly_ex_1.is_contained(Point(-8, 5)))
+
+    def test_poly_ex_1_2(self):
+        """
+        The second test in an exhaustive test of is_contained on poly_ex_1 for point (-12, 2)
+        """
+        self.assertEqual(False, self.poly_ex_1.is_contained(Point(-12, 2)))
+
+    def test_poly_ex_1_3(self):
+        """
+        The third test in an exhaustive test of is_contained on poly_ex_1 for point (-8, 2)
+        """
+        self.assertEqual(True, self.poly_ex_1.is_contained(Point(-8, 2)))
+
+    def test_poly_ex_1_4(self):
+        """
+        The fourth test in an exhaustive test of is_contained on poly_ex_1 for point (-9, -1)
+        """
+        self.assertEqual(False, self.poly_ex_1.is_contained(Point(-9, -1)))
+
+    def test_poly_ex_1_5(self):
+        """
+        The fifth test in an exhaustive test of is_contained on poly_ex_1 for point (-5, -1)
+        """
+        self.assertEqual(True, self.poly_ex_1.is_contained(Point(-5, -1)))
+
+    def test_poly_ex_1_6(self):
+        """
+        The sixth test in an exhaustive test of is_contained on poly_ex_1 for point (-3.5, -1)
+        """
+        self.assertEqual(True, self.poly_ex_1.is_contained(Point(-3.5, -1)))
+
+    def test_poly_ex_1_7(self):
+        """
+        The seventh test in an exhaustive test of is_contained on poly_ex_1 for point (-5, 2)
+        """
+        self.assertEqual(True, self.poly_ex_1.is_contained(Point(-5, 2)))
+
+    def test_poly_ex_1_8(self):
+        """
+        The eighth test in an exhaustive test of is_contained on poly_ex_1 for point (-5, 1)
+        """
+        self.assertEqual(True, self.poly_ex_1.is_contained(Point(-5, 1)))
+
+    def test_poly_ex_1_9(self):
+        """
+        The ninth test in an exhaustive test of is_contained on poly_ex_1 for point (-4, 4)
+        """
+        self.assertEqual(True, self.poly_ex_1.is_contained(Point(-4, 4)))
+
+    def test_poly_ex_1_10(self):
+        """
+        The 10th test in an exhaustive test of is_contained on poly_ex_1 for point (1, 2)
+        """
+        self.assertEqual(False, self.poly_ex_1.is_contained(Point(1, 2)))
+
+    def test_poly_ex_1_11(self):
+        """
+        The 11th test in an exhaustive test of is_contained on poly_ex_1 for point (1, 1)
+        """
+        self.assertEqual(False, self.poly_ex_1.is_contained(Point(1, 1)))
 
 
 if __name__ == '__main__':
