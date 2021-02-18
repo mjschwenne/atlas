@@ -128,13 +128,14 @@ def _intersects(p1, q1, p2, q2):
     return False
 
 
-if __name__ == '__main__':
-    print(_in_segment(Point(0, 0), Point(5, 5), Point(-1, -1)))
-
-
 class Polygon:
     """
     This class represents a polygon as a list of vertex points ordered in clockwise order.
+
+    Attributes
+    ----------
+    vertices : List of Point
+        Store the vertices in a clockwise list
     """
 
     def __init__(self, vertices):
