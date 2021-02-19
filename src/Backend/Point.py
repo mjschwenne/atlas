@@ -165,3 +165,111 @@ class Point:
         if self.get_x() == point.get_x() and self.get_y() == point.get_y():
             return True
         return False
+
+    def __eq__(self, other):
+        """
+        Test to see if another point is equal to this one.
+
+        Parameters
+        ----------
+        other : Point
+            The other Point
+
+        Returns
+        -------
+        bool
+            True if the two points have the same `x` and `y` coordinates, false otherwise
+        """
+        if self.get() == other.get():
+            return True
+        return False
+
+    def __ne__(self, other):
+        """
+        Test to see if another point is different from this one.
+
+        Parameters
+        ----------
+        other : Point
+            The other Point
+
+        Returns
+        -------
+        bool
+            True if the two points have different `x` and `y` coordinates, false if they are the same
+        """
+        return not self == other
+
+    def __lt__(self, other):
+        """
+        Test to see if another point is less than this one. This is used in the Voronoi calculations.
+
+        Parameters
+        ----------
+        other : Point
+            The other Point
+
+        Returns
+        -------
+        bool
+            True if this Point has a smaller `y` coordinate or an equal `y` coordinate and a smaller `x` coordinate.
+        """
+        if self.get_y() < other.get_y():
+            return True
+        elif self.get_y() == other.get_y() and self.get_x() < other.get_x():
+            return True
+        return False
+
+    def __le__(self, other):
+        """
+        Test to see if another point is less than or equal to this one. This is used in the Voronoi calculations.
+
+        Parameters
+        ----------
+        other : Point
+            The other Point
+
+        Returns
+        -------
+        bool
+            True if this Point has a smaller `y` coordinate or an equal `y` coordinate and
+            a less than or equal `x` coordinate.
+        """
+        if self.get_y() < other.get_y():
+            return True
+        elif self.get_y() == other.get_y() and self.get_x() <= other.get_x():
+            return True
+        return False
+
+    def __gt__(self, other):
+        """
+        Test to see if another point is greater than this one.
+
+        Parameters
+        ----------
+        other : Point
+            The other Point
+
+        Returns
+        -------
+        bool
+            True if this Point has a larger `y` coordinate or and equal `y` coordinate and larger `x` coordinate.
+        """
+        return not self <= other
+
+    def __ge__(self, other):
+        """
+        Test to see if another point is greater than or equal to this one.
+
+        Parameters
+        ----------
+        other : Point
+            The other Point
+
+        Returns
+        -------
+        bool
+            True if this Point has a larger `y` coordinate or and equal `y` coordinate and
+            greater than or equal to `x` coordinate.
+        """
+        return not self < other
