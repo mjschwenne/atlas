@@ -1,21 +1,33 @@
 from src.Backend.Polygon import Polygon
+from src.Backend.Point import Point
+from scipy.spatial import ConvexHull
 
 
 class Wall(Polygon):
 
-    def __init__(self, vertices, gates):
+    def __init__(self, regions):
         """
-        Constructor for Wall
+        Constructs a wall given a list of Regions
 
         Parameters
         ----------
-        vertices : List of Points
-            The vertices that define the Wall/Polygon
-        gates : List of Points
-            The vertices that define where gates are on the wall
+        regions : List of Regions
+            A list of Regions to make a wall around
         """
+        gates = []
+
+        # Finds the total vertices from all the regions
+        total_vertices = Polygon.to_points(regions)
+
+        # Creates the wall and finds its vertices
+        list_points = Point.to_list(total_vertices)
+        hull = ConvexHull(list_points)
+        ver = []
+        for p in hull.vertices:
+            ver.append(hull.points[p])
+        vertices = Polygon.to_polygon(ver).get_vertices()
+
         super().__init__(vertices)
-        self.gates = gates
 
     def get_gates(self):
         """
@@ -38,6 +50,3 @@ class Wall(Polygon):
             The new List of Points that defines the Gates of the Wall
         """
         self.gates = new_gates
-
-    def create_wall(self):
-        pass

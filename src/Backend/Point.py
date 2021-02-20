@@ -166,6 +166,51 @@ class Point:
             return True
         return False
 
+    @staticmethod
+    def to_points(points):
+        """
+        Returns a list of Points given a list of lists i.e. [[1, 2], [3, 4], [5, 6]] to
+        [Point(1, 2), Point(3, 4), Point(5, 6)]
+
+        Parameters
+        ----------
+        points : list of lists
+            The points in list of list form
+
+        Returns
+        -------
+        List of points
+            The list of points
+        """
+        points_to_return = []
+        for p in points:
+            points_to_return.append(Point(p[0], p[1]))
+        return points_to_return
+
+    @staticmethod
+    def to_list(points):
+        """
+        Returns a list of lists given a list of Points i.e. [Point(1, 2), Point(3, 4), Point(5, 6)] to
+        [[1, 2], [3, 4], [5, 6]]
+
+        Parameters
+        ----------
+        points : list of Points
+            The points in list of Points form
+
+        Returns
+        -------
+        List of lists
+            The list of lists
+        """
+        list_to_return = []
+        for p in points:
+            list_to_return.append([p.get_x(), p.get_y()])
+        return list_to_return
+
+    def __hash__(self):
+        return hash(self.get())
+
     def __eq__(self, other):
         """
         Test to see if another point is equal to this one.

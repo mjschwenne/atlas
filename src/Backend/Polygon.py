@@ -152,6 +152,28 @@ class Polygon:
         """
         self.vertices = vertices
 
+    def set_vertices(self, vertices):
+        """
+        Sets the vertices of the polygon
+
+        Parameters
+        ----------
+        vertices : List of points
+            The new vertices
+        """
+        self.vertices = vertices
+
+    def get_vertices(self):
+        """
+        Gets the vertices of the polygon
+
+        Returns
+        -------
+        List of Points
+            The vertices
+        """
+        return self.vertices
+
     def get_perimeter(self):
         """
         Finds the perimeter of the polygon
@@ -399,3 +421,40 @@ class Polygon:
                 if _in_segment(self.vertices[v], self.vertices[(v + 1) % len(self.vertices)], u):
                     return True
         return False
+
+    @staticmethod
+    def to_polygon(vertices):
+        """
+        Returns a polygon given a list of lists, i.e. [[1, 2], [3, 4], [5, 6]] => polygon with those vertices
+
+        Parameters
+        ----------
+        vertices : list of lists
+            the vertices of the polygon in the form of a list of lists
+
+        Returns
+        -------
+
+        """
+        return Polygon(Point.to_points(vertices))
+
+    @staticmethod
+    def to_points(polygons):
+        """
+        Takes a list of polygons and converts it to a list of points
+
+        Parameters
+        ----------
+        polygons : List of Polygons
+            list of Polygons
+
+        Returns
+        -------
+        List of Points
+            List of all vertices in the list of Polygons
+        """
+        points = {polygons[0].vertices[0]}
+        for poly in polygons:
+            for p in poly.vertices:
+                points.add(p)
+        return list(points)
