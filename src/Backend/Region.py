@@ -125,6 +125,6 @@ class Region(Polygon):
 
         # Loops over every vertex of the region and checks to see if it is in the given Wall
         for point in self.vertices:
-            if not wall.is_contained(wall, point):
+            if not wall.is_contained(point):
                 return False
         return True
