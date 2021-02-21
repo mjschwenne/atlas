@@ -27,6 +27,8 @@ class TestRegion(unittest.TestCase):
         plt.plot(x_list, y_list, 'k-')
         for p in wall.vertices:
             plt.plot([p.get_x()], [p.get_y()], 'yo')
+        for p in wall.gates:
+            plt.plot([p.get_x()], [p.get_y()], 'ro')
         plt.show()
         self.assertEqual(True, wall.is_convex())
 
@@ -53,6 +55,8 @@ class TestRegion(unittest.TestCase):
         plt.plot(x_list, y_list, 'k-')
         for p in wall.vertices:
             plt.plot([p.get_x()], [p.get_y()], 'yo')
+        for p in wall.gates:
+            plt.plot([p.get_x()], [p.get_y()], 'ro')
         plt.show()
         self.assertEqual(True, wall.is_convex())
 

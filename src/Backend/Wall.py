@@ -1,3 +1,7 @@
+import random
+import time
+import math
+
 from src.Backend.Polygon import Polygon
 from src.Backend.Point import Point
 from scipy.spatial import ConvexHull
@@ -14,8 +18,6 @@ class Wall(Polygon):
         regions : List of Regions
             A list of Regions to make a wall around
         """
-        gates = []
-
         # Finds the total vertices from all the regions
         total_vertices = Polygon.to_points(regions)
 
@@ -28,6 +30,28 @@ class Wall(Polygon):
         vertices = Polygon.to_polygon(ver).get_vertices()
 
         super().__init__(vertices)
+
+        self.gates = []
+        random.seed(time.gmtime(0).tm_sec)
+
+        self.gates.append(vertices[int(random.uniform(0, len(vertices)))])
+
+        tries = 0
+        while tries < len(vertices):
+            tries += 1
+            r = int(random.uniform(0, len(vertices)))
+            if vertices[r] in self.gates:
+                continue
+            min_dis = vertices[r].simple_distance(self.gates[0])
+            for g in self.gates:
+                cur_dis = vertices[r].simple_distance(g)
+                if cur_dis < min_dis:
+                    min_dis = cur_dis
+            if min_dis < (self.get_perimeter() * 0.15):
+                continue
+            tries = 0
+            self.gates.append(vertices[r])
+
 
     def get_gates(self):
         """
