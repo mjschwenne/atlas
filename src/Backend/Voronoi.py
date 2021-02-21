@@ -25,11 +25,6 @@ class Voronoi:
     def generate_seeds(self):
         """
         Generate random Points which are used as seeds in the construction of a voronoi diagram.
-
-        Returns
-        -------
-        List of Point
-            A list of Points
         """
         random.seed(time.gmtime(0).tm_sec)
         delta_angle = random.random() * 2 * math.pi

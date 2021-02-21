@@ -12,10 +12,13 @@ Documentation is updated on Tuesdays and Fridays.
    :caption: Contents:
 
    District
+   Pathfinder
    Point
    Polygon
    Region
+   Voronoi
    Wall
+   Menu
 
 Indices and tables
 ==================
