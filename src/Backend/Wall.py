@@ -1,6 +1,5 @@
 import random
 import time
-import math
 
 from src.Backend.Polygon import Polygon
 from src.Backend.Point import Point
@@ -51,7 +50,6 @@ class Wall(Polygon):
                 continue
             tries = 0
             self.gates.append(vertices[r])
-
 
     def get_gates(self):
         """
