@@ -28,13 +28,17 @@ class Wall(Polygon):
             ver.append(hull.points[p])
         vertices = Polygon.to_polygon(ver).get_vertices()
 
+        # Makes this wall a Polygon
         super().__init__(vertices)
 
+        # Generates gates
         self.gates = []
         random.seed(time.gmtime(0).tm_sec)
 
+        # Picks the first gate
         self.gates.append(vertices[int(random.uniform(0, len(vertices)))])
 
+        # Loops to find more gates
         tries = 0
         while tries < len(vertices):
             tries += 1
@@ -46,6 +50,8 @@ class Wall(Polygon):
                 cur_dis = vertices[r].simple_distance(g)
                 if cur_dis < min_dis:
                     min_dis = cur_dis
+
+            # Minimum distance between gates can't be less than 15% of the perimeter
             if min_dis < (self.get_perimeter() * 0.15):
                 continue
             tries = 0
