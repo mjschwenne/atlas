@@ -148,23 +148,22 @@ class Point:
         """
         return abs(self.x - point.x) + abs(self.y - point.y)
 
-    def is_equal(self, point):
+    @staticmethod
+    def to_point(coordinate_list):
         """
-        Returns true if this point is equal to point
-
+        Given a list [x, y], return the associated Point
+        
         Parameters
         ----------
-        point : Point
-            The Point to see if it is equal to this point
+        coordinate_list : List of float
+            A list of the form [x, y]
 
         Returns
         -------
-        bool
-            Returns true if this point is equal to point
+        Point : 
+            The Point with x-coordinate x and y-coordinate y
         """
-        if self.get_x() == point.get_x() and self.get_y() == point.get_y():
-            return True
-        return False
+        return Point(coordinate_list[0], coordinate_list[1])
 
     @staticmethod
     def to_points(points):
@@ -318,3 +317,14 @@ class Point:
             greater than or equal to `x` coordinate.
         """
         return not self < other
+
+    def __str__(self):
+        """
+        Convert the Point to a string.
+
+        Returns
+        -------
+        String :
+            A string of the form '(x, y)'
+        """
+        return f"({self.x}, {self.y})"
