@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 
 class MyTestCase(unittest.TestCase):
-    def test_something(self):
+    def test_voronoi_graph_creation(self):
         """
         Display the voronoi diagram with the built-in visualization presets and the graph we will use later
         """

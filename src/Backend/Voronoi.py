@@ -13,7 +13,6 @@ class Voronoi:
     """
     Generates and stores a Voronoi diagram.
     """
-
     def __init__(self, num_district, bounds):
         self.seeds = []
         self.polygons = []
@@ -28,6 +27,8 @@ class Voronoi:
     def generate_seeds(self):
         """
         Generate random Points which are used as seeds in the construction of a voronoi diagram.
+
+        The notes are more concentrated in the middle of the map.
         """
         random.seed(time.gmtime(0).tm_sec)
         delta_angle = random.random() * 2 * math.pi
@@ -39,12 +40,39 @@ class Voronoi:
 
     def generate(self):
         """
-        Uses scipy and QHull to generate a voronoi diagram based off the the seeds from generate_seeds
+        Uses scipy and QHull to generate a voronoi diagram based off the the seeds from generate_seeds, then build
+        a NetworkX graph to match.
+
+        Notes
+        -----
+        For vertices with two defined endpoint, creating the graph is not hard. However, for vertices with an infinite
+        end the process is more complex.
+
+        From the definition of a voronoi ridge, it is the perpendicular bisector of the line segment between two voronoi
+        points, and thus a tangent line. Model the tangent as a vector, using a Point object to store the end of the
+        vector, assuming the other end is at the origin. Normalize it into a unit vector and find the normal vector,
+        which has an x coordinate equal to the negative y of the tangent and a y coordinate equal to the x coordinate of
+        the tangent.
+
+        Now we have a vector which is perpendicular to the segment between the voronoi points, but because this is a
+        ray, we need to account for which direction the infinite end extents. It can NEVER go towards the origin as that
+        it where the center of the diagram is and the most other points. So we find the midpoint between the two
+        voronoi points of interest, also modelling it as a vector like the tangent. Because the midpoint actually starts
+        at the origin, unlike the tangent which originates from one of the voronoi points, the midpoint vector will
+        always point away from the origin.
+
+        The dot product of two vectors is :math:`a \\cdot b = ||a|| \\times ||b|| \\times \\cos(\\theta)` where
+        :math:`\\theta` is the angle between the two vectors. We do not care about the product of the magnitudes, but we
+        can use the cosine to our advantage. The cosine is positive if :math:`\\theta` is within
+        :math:`\\pm\ \\frac{\\pi}{2}` radians. We need the direction of this ray to be no more than
+        :math:`\\frac{\\pi}{2}` radians from the midpoint vector or else it is closer to pointing at the origin and
+        thus pointing in the wrong direction. If the dot product between the normal vector and the midpoint vector is
+        negative, be multiply the normal vector by negative 1 to invert the direction it points.
+
+        Finally we take a large value that is outside the display range of the map, scale the voronoi directional
+        vector by that amount and then add it to the position of the known end of the ray.
         """
         self.voronoi = Vor(Point.to_list(self.seeds))
-        print(self.voronoi.points)
-        print(self.voronoi.vertices)
-        print(self.voronoi.ridge_dict)
         for v in range(len(self.voronoi.vertices)):
             self.graph.add_node(Point.to_point(self.voronoi.vertices[v].tolist()))
 
