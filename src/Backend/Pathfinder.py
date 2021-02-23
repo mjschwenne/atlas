@@ -2,10 +2,20 @@ import networkx as nx
 
 
 class Pathfinder:
-    def __init__(self, points):
-        g = nx.Graph()
-        for p in points:
-            g.add_node(p)
+    def __init__(self, graph):
+        """
+        Makes a pathfinder from a graph
 
-    def find_path(self, origin, point):
-        pass
+        Parameters
+        ----------
+        graph : graph
+            The graph to find a path in
+        """
+        self.g = graph
+
+    def find_path(self, origin, target):
+        if nx.has_path(self.g, origin, target):
+            return None
+
+        path = nx.astar_path(self.g, origin, target)
+        print(path)

@@ -10,6 +10,10 @@ import matplotlib.pyplot as plt
 class TestRegion(unittest.TestCase):
 
     def test_create_wall_basic_one_polygon(self):
+        """
+        Basic small test of Wall generation, blue dots are vertices and yellow for vertices on the wall and red dots for
+        gates.
+        """
         p1 = Polygon([Point(1, 0), Point(2, 4), Point(6, 12), Point(10, 5), Point(1, 4), Point(3, 5), Point(8, 9),
                      Point(1, 1), Point(2, 12)])
 
@@ -33,6 +37,10 @@ class TestRegion(unittest.TestCase):
         self.assertEqual(True, wall.is_convex())
 
     def test_create_wall_basic_many_polygons(self):
+        """
+        Random large test of Wall generation, blue dots are vertices and yellow for vertices on the wall and red dots for
+        gates.
+        """
         random.seed(time.gmtime(0).tm_sec)
         poly_list = []
         for i in range(0, int(random.uniform(1, 50))):
