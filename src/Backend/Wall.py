@@ -33,7 +33,7 @@ class Wall(Polygon):
 
         # Generates gates
         self.gates = []
-        random.seed(time.gmtime(0).tm_sec)
+        random.seed()
 
         # Picks the first gate
         self.gates.append(vertices[int(random.uniform(0, len(vertices)))])

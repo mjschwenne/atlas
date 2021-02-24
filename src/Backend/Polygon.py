@@ -354,7 +354,7 @@ class Polygon:
         for p in self.vertices:
             if p.get_x() > max_x:
                 max_x = p.get_x()
-            if p.is_equal(point):
+            if p == point:
                 return True
 
         ext = Point(max_x, point.get_y())  # The furthest extent of the ray needed for the algorithm

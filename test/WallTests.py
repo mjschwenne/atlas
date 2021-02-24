@@ -41,7 +41,7 @@ class TestRegion(unittest.TestCase):
         Random large test of Wall generation, blue dots are vertices and yellow for vertices on the wall and red dots for
         gates.
         """
-        random.seed(time.gmtime(0).tm_sec)
+        random.seed()
         poly_list = []
         for i in range(0, int(random.uniform(1, 50))):
             point_list = []
