@@ -36,58 +36,6 @@ def _three_point_orientation(p1, p2, p3):
         return 2
 
 
-def _in_segment(p1, p2, p3):
-    """
-    Returns true if p3 is in the line segment from p1 to p2.
-
-    Parameters
-    ----------
-    p1 : Point
-        First point of the line segment
-    p2 : Point
-        Second point of the line segment
-    p3 : Point
-        The point to see if it is in the line segment
-
-    Returns
-    -------
-    bool
-        True if p3 is in the line segment from p1 to p2
-
-    Notes
-    -----
-    After checking for vertical and horizontal lines, we know that the `p3` is only on the line segment between
-    `p1` and `p2` if the distance from `p1` to `p2` thorough `p3` is the same as the distance from `p1` directly
-    to `p2`.
-
-    This method is only accurate to approximately eight decimal places, after which internal rounding can affect the
-    result.
-    >>> print(_in_segment(Point(0, 0), Point(5, 5), Point(1, 1.00000001)))
-    True
-
-    Example of an incorrect, but even close test.
-    """
-    # Case 1: Vertical Line.
-    # If p3's y-coordinate is within the y-range of this line segment, return if they have the same x-coordinate
-    if p1.get_x() == p2.get_x() and min(p1.get_y(), p2.get_y()) <= p3.get_y() <= max(p1.get_y(), p2.get_y()):
-        return p1.get_x() == p3.get_x()
-    # Case 2: Horizontal Line.
-    # If p3's x-coordinate is within the x-range of this line segment, return if they have the same y-coordinate
-    elif p1.get_y() == p2.get_y() and min(p1.get_x(), p2.get_x()) <= p3.get_x() <= max(p1.get_x(), p2.get_x()):
-        return p1.get_y() == p3.get_y()
-    # Case 3:
-    # If the distance from p1 -> p2 -> p3 == to the distance from p1 directly to p2 then they are on the same line
-    # as the optimal path from p1 to p2 is a straight line. Any deviation from this line will increase the distance
-    # required to go to p3 first.
-    # Because the simple_distance() method returns a float value, I only consider to the eight decimal places to avoid
-    # rounding errors.
-    elif float(int((p1.simple_distance(p3) + p3.simple_distance(p2)) * 100000000) / 100000000.0) == \
-            float(int(p1.simple_distance(p2) * 100000000) / 100000000.0):
-        return True
-    else:
-        return False
-
-
 def _intersects(p1, q1, p2, q2):
     """
     Returns true if line segment from p1 to q1 intersects line segment from p2 to q2
@@ -119,13 +67,13 @@ def _intersects(p1, q1, p2, q2):
         return True
 
     # Special cases
-    if p1_q1_p2_or == 0 and _in_segment(p1, q1, p2):
+    if p1_q1_p2_or == 0 and Polygon.in_segment(p1, q1, p2):
         return True
-    if p1_q1_q2_or == 0 and _in_segment(p1, q1, q2):
+    if p1_q1_q2_or == 0 and Polygon.in_segment(p1, q1, q2):
         return True
-    if p2_q2_p1_or == 0 and _in_segment(p2, q2, p1):
+    if p2_q2_p1_or == 0 and Polygon.in_segment(p2, q2, p1):
         return True
-    if p2_q2_q1_or == 0 and _in_segment(p2, q2, q1):
+    if p2_q2_q1_or == 0 and Polygon.in_segment(p2, q2, q1):
         return True
 
     return False
@@ -379,7 +327,7 @@ class Polygon:
             if _intersects(cur_vertex, next_vertex, point, ext):
                 # If the point and the line segment are collinear we return if the point is in_segment with the edge
                 if _three_point_orientation(cur_vertex, next_vertex, point) == 0:
-                    return _in_segment(cur_vertex, next_vertex, point)
+                    return Polygon.in_segment(cur_vertex, next_vertex, point)
                 intersect_count += 1
 
             # We set the new current index to the old next index
@@ -418,7 +366,7 @@ class Polygon:
         """
         for v in range(len(self.vertices)):
             for u in other.vertices:
-                if _in_segment(self.vertices[v], self.vertices[(v + 1) % len(self.vertices)], u):
+                if Polygon.in_segment(self.vertices[v], self.vertices[(v + 1) % len(self.vertices)], u):
                     return True
         return False
 
@@ -458,3 +406,55 @@ class Polygon:
             for p in poly.vertices:
                 points.add(p)
         return list(points)
+
+    @staticmethod
+    def in_segment(p1, p2, p3):
+        """
+        Returns true if p3 is in the line segment from p1 to p2.
+
+        Parameters
+        ----------
+        p1 : Point
+            First point of the line segment
+        p2 : Point
+            Second point of the line segment
+        p3 : Point
+            The point to see if it is in the line segment
+
+        Returns
+        -------
+        bool
+            True if p3 is in the line segment from p1 to p2
+
+        Notes
+        -----
+        After checking for vertical and horizontal lines, we know that the `p3` is only on the line segment between
+        `p1` and `p2` if the distance from `p1` to `p2` thorough `p3` is the same as the distance from `p1` directly
+        to `p2`.
+
+        This method is only accurate to approximately eight decimal places, after which internal rounding can affect the
+        result.
+        >>> print(in_segment(Point(0, 0), Point(5, 5), Point(1, 1.00000001)))
+        True
+
+        Example of an incorrect, but even close test.
+        """
+        # Case 1: Vertical Line.
+        # If p3's y-coordinate is within the y-range of this line segment, return if they have the same x-coordinate
+        if p1.get_x() == p2.get_x() and min(p1.get_y(), p2.get_y()) <= p3.get_y() <= max(p1.get_y(), p2.get_y()):
+            return p1.get_x() == p3.get_x()
+        # Case 2: Horizontal Line.
+        # If p3's x-coordinate is within the x-range of this line segment, return if they have the same y-coordinate
+        elif p1.get_y() == p2.get_y() and min(p1.get_x(), p2.get_x()) <= p3.get_x() <= max(p1.get_x(), p2.get_x()):
+            return p1.get_y() == p3.get_y()
+        # Case 3:
+        # If the distance from p1 -> p2 -> p3 == to the distance from p1 directly to p2 then they are on the same line
+        # as the optimal path from p1 to p2 is a straight line. Any deviation from this line will increase the distance
+        # required to go to p3 first.
+        # Because the simple_distance() method returns a float value, I only consider to the eight decimal places to
+        # avoid rounding errors.
+        elif float(int((p1.simple_distance(p3) + p3.simple_distance(p2)) * 100000000) / 100000000.0) == \
+                float(int(p1.simple_distance(p2) * 100000000) / 100000000.0):
+            return True
+        else:
+            return False

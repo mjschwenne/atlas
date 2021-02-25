@@ -1,5 +1,7 @@
 import unittest
 from src.Backend.Voronoi import Voronoi
+from src.Backend.Polygon import Polygon
+from src.Backend.Point import Point
 from scipy.spatial import voronoi_plot_2d
 import matplotlib.pyplot as plt
 
@@ -9,18 +11,25 @@ class MyTestCase(unittest.TestCase):
         """
         Display the voronoi diagram with the built-in visualization presets and the graph we will use later
         """
-        vor = Voronoi(50, 150)
-        voronoi_plot_2d(vor.voronoi)
-        plt.xlim([-200, 200])
-        plt.ylim([-200, 200])
+        bounding_box = Polygon([Point(0, 200), Point(50, 50), Point(200, 0), Point(50, -50), Point(0, -200),
+                                Point(-50, -50),  Point(-200, 0), Point(-50, 50)])
+        vor = Voronoi(50, bounding_box)
+
+        voronoi_plot_2d(vor.voronoi, show_vertices=False, show_points=False)
+        plt.xlim([-250, 250])
+        plt.ylim([-250, 250])
         plt.show()
         for v in vor.graph:
             for adj in vor.graph[v]:
                 x_list = [v.get_x(), adj.get_x()]
                 y_list = [v.get_y(), adj.get_y()]
                 plt.plot(x_list, y_list, 'k-')
-        plt.xlim([-200, 200])
-        plt.ylim([-200, 200])
+        # plt.plot([-250, 250], [-200, -200], 'r--')
+        # plt.plot([-250, 250], [200, 200], 'r--')
+        # plt.plot([-200, -200], [-250, 250], 'r--')
+        # plt.plot([200, 200], [-250, 250], 'r--')
+        plt.xlim([-250, 250])
+        plt.ylim([-250, 250])
         plt.show()
         self.assertEqual(True, True)
 
