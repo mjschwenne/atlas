@@ -1,4 +1,6 @@
 from src.Backend.Region import Region
+
+
 class District:
 
     def __init__(self, chaos_level, probability_of_empty_space, min_building_size):
@@ -110,7 +112,7 @@ class District:
         for reg in other_regions:
             if region != reg:
                 if region.is_bordering(reg):
-                    if Region.isinstance(reg.get_district()):
+                    if isinstance(reg.get_district(), District):
                         rating += 1
         if region.in_city(city):
             rating -= 100
