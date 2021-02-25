@@ -305,6 +305,9 @@ class Polygon:
             if p == point:
                 return True
 
+        if max_x < point.get_x():
+            return False
+
         ext = Point(max_x, point.get_y())  # The furthest extent of the ray needed for the algorithm
         intersect_count = 0  # count of number of times the ray crosses an edge of the polygon
         i = 0  # index of vertices in the polygon

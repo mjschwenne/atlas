@@ -11,8 +11,7 @@ class MyTestCase(unittest.TestCase):
         """
         Display the voronoi diagram with the built-in visualization presets and the graph we will use later
         """
-        bounding_box = Polygon([Point(0, 200), Point(50, 50), Point(200, 0), Point(50, -50), Point(0, -200),
-                                Point(-50, -50),  Point(-200, 0), Point(-50, 50)])
+        bounding_box = Polygon([Point(-200, 200), Point(200, 200), Point(200, -200), Point(-200, -200)])
         vor = Voronoi(50, bounding_box)
 
         voronoi_plot_2d(vor.voronoi, show_vertices=False, show_points=False)

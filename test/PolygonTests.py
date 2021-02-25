@@ -41,6 +41,10 @@ class TestPolygon(unittest.TestCase):
     # =====================================
     poly_ex_1 = Polygon([Point(-5, 5), Point(-2, 2), Point(-3.5, -1), Point(-6.5, -1), Point(-8, 2)])
 
+    # Bounding box bug
+    # ================
+    bounding_box = Polygon([Point(-200, 200), Point(200, 200), Point(200, -200), Point(-200, -200)])
+
     # Square 1 Tests
     def test_perimeter_s1(self):
         """
@@ -243,6 +247,14 @@ class TestPolygon(unittest.TestCase):
         The 11th test in an exhaustive test of is_contained on poly_ex_1 for point (1, 1)
         """
         self.assertEqual(False, self.poly_ex_1.is_contained(Point(1, 1)))
+
+    def test_bounding_box_bug(self):
+        point = Point.to_point([265.2175165347952, 143.5904398457129])
+        self.assertEqual(False, self.bounding_box.is_contained(point))
+
+    def test_bounding_box_second_bug(self):
+        point = Point.to_point([-300, 199.9999999999999999999])
+        self.assertEqual(False, self.bounding_box.is_contained(point))
 
 
 if __name__ == '__main__':
