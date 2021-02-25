@@ -1,27 +1,34 @@
-import tkinter
 import tkinter as tk
-import tkinter.messagebox
-from tkinter.filedialog import asksaveasfilename, asksaveasfile
-
-
-def help_msg():
-    tkinter.messagebox.showinfo("Having trouble", "All you need to do is click generate")
-
-
-def save_file():
-    files = [('All Files', '*.*'),
-             ('PNG', '*.png'),
-             ('Text Document', '*.txt')]
-    file = asksaveasfile(filetypes=files, defaultextension=files)
-    if not files:
-        return
+from tkinter.filedialog import asksaveasfile
+from tkinter import *
 
 
 def main():
+    # handles all of the commands for buttons
+    def help_msg():
+        info = Toplevel()
+        info.title('Help Window')
+        Label(info, text="This is filler text till I know what to write here").pack()
+        Button(info, text="Close", command=info.destroy).pack()
+
+    # handles save and load
+    def save_file():
+        files = [('All Files', '*.*'),
+                 ('PNG', '*.png'),
+                 ('Text Document', '*.txt')]
+        file = asksaveasfile(filetypes=files, defaultextension=files)
+        if not files:
+            return
+
     # create the window object
     window = tk.Tk()
+    window.title("Atlas")
 
-    title = window.title("Atlas")
+    # creates the welcome window
+    welcome = tk.Toplevel(window)
+    welcome.title('Welcome Window')
+    Label(welcome, text="Hello user, thank you for downloading our map generator.").pack()
+    Button(welcome, text="Close", command=welcome.destroy).pack()
 
     # configure the two columns to expand properly
     window.columnconfigure(0, weight=0)
