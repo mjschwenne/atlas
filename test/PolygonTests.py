@@ -253,7 +253,7 @@ class TestPolygon(unittest.TestCase):
         self.assertEqual(False, self.bounding_box.is_contained(point))
 
     def test_bounding_box_second_bug(self):
-        point = Point.to_point([-300, 199.9999999999999999999])
+        point = Point.to_point([-300, 201])
         self.assertEqual(False, self.bounding_box.is_contained(point))
 
 
