@@ -1,4 +1,4 @@
-
+from src.Backend.Region import Region
 class District:
 
     def __init__(self, chaos_level, probability_of_empty_space, min_building_size):
@@ -84,8 +84,39 @@ class District:
         """
         return self.min_building_size
 
-    def determine_rating(self):
-        pass
+    @staticmethod
+    def determine_rating(region, other_regions, wall, city):
+        """
+        Determines the likely hood a given district will be in a region
+
+        Parameters
+        ----------
+        region : Region
+            The region that we are determining the likely hood the district will be in
+        other_regions : List of Regions
+            Every other region
+        wall : Wall
+            The wall of the city
+        city : Polygon
+            The Polygon Representing the City
+
+        Returns
+        -------
+        integer
+            The rating of the region for the district
+
+        """
+        rating = 0
+        for reg in other_regions:
+            if region != reg:
+                if region.is_bordering(reg):
+                    if Region.isinstance(reg.get_district()):
+                        rating += 1
+        if region.in_city(city):
+            rating -= 100
+        if region.in_walls(wall):
+            rating -= 100
+        return rating
 
     def generate_district(self):
         pass
