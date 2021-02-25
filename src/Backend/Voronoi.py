@@ -1,5 +1,4 @@
 import random
-import time
 import math
 
 from src.Backend.Polygon import Polygon
@@ -155,7 +154,7 @@ class Voronoi:
         len_bound_points = len(bound_points)
         for v in bound_points:
             self.graph.add_node(v)
-
+        # Find the link the perimeter vertices
         for v in range(len_bound_points):
             bound_start = bound_points[v]
             bound_end = bound_points[(v + 1) % len_bound_points]
@@ -163,7 +162,9 @@ class Voronoi:
             for vert in self.graph:
                 if Polygon.in_segment(bound_start, bound_end, vert):
                     edge_vertices.append(vert)
+            # Thanks to python magic methods, these are sorted from min y t0 max y and from min to max x if y is equal
             edge_vertices.sort()
+            # Add the edges
             for vert in range(len(edge_vertices) - 1):
                 start = edge_vertices[vert]
                 end = edge_vertices[vert + 1]
@@ -197,13 +198,13 @@ class Voronoi:
             bound_start = np.array([[bound_points[v].get_x()], [bound_points[v].get_y()]])
             bound_end = np.array([[bound_points[(v + 1) % len_bound_points].get_x()],
                                   [bound_points[(v + 1) % len_bound_points].get_y()]])
-            a = np.concatenate((ray_slope, np.array([[-1]]) * (bound_start - bound_end)), axis=1)
+            a = np.concatenate((ray_slope, np.array([[-1]]) * (bound_end - bound_start)), axis=1)
             b = bound_start - ray_start
             try:
                 parameters_intersect = np.linalg.solve(a, b)
             except np.linalg.LinAlgError:
                 continue
-            if parameters_intersect[0][0] >= 0 and 0 <= abs(parameters_intersect[1][0]) <= 1:
+            if parameters_intersect[0][0] >= 0 and 0 <= parameters_intersect[1][0] <= 1:
                 return parameters_intersect[0][0]
 
     def relax(self):
