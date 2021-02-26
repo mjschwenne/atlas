@@ -4,15 +4,19 @@ from tkinter import *
 
 
 def main():
-    # handles all of the commands for buttons
     def help_msg():
+        """
+        command for the help message
+        """
         info = Toplevel()
         info.title('Help Window')
         Label(info, text="This is filler text till I know what to write here").pack()
         Button(info, text="Close", command=info.destroy).pack()
 
-    # handles save and load
     def save_file():
+        """
+        sets up ability to save
+        """
         files = [('All Files', '*.*'),
                  ('PNG', '*.png'),
                  ('Text Document', '*.txt')]
