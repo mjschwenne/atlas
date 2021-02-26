@@ -36,56 +36,56 @@ class TestRegion(unittest.TestCase):
         """
         Test of the Region.py in_city method with s1 being the Region and i1 being the City
         """
-        reg = Region(self.district, self.s1ver)
+        reg = Region(self.district, self.s1ver, False, False)
         self.assertEqual(True, reg.in_city(self.i1Poly))
 
     def test_in_city_i1_s1(self):
         """
         Test of the Region.py in_city method with i1 being the Region and s1 being the City
         """
-        reg = Region(self.district, self.i1ver)
+        reg = Region(self.district, self.i1ver, False, False)
         self.assertEqual(False, reg.in_city(self.s1Poly))
 
     def test_in_city_s1_i2(self):
         """
         Test of the Region.py in_city method with s1 being the Region and i2 being the City
         """
-        reg = Region(self.district, self.s1ver)
+        reg = Region(self.district, self.s1ver, False, False)
         self.assertEqual(False, reg.in_city(self.i2Poly))
 
     def test_in_city_i2_s1(self):
         """
         Test of the Region.py in_city method with i2 being the Region and s1 being the City
         """
-        reg = Region(self.district, self.i2ver)
+        reg = Region(self.district, self.i2ver, False, False)
         self.assertEqual(False, reg.in_city(self.s1Poly))
 
     def test_in_city_s1_s1(self):
         """
         Test of the Region.py in_city method with s1 being the Region and s1 being the City
         """
-        reg = Region(self.district, self.s1ver)
+        reg = Region(self.district, self.s1ver, False, False)
         self.assertEqual(True, reg.in_city(self.s1Poly))
 
     def test_in_city_i3_i2(self):
         """
         Test of the Region.py in_city method with i3 being the Region and i2 being the City
         """
-        reg = Region(self.district, self.i3ver)
+        reg = Region(self.district, self.i3ver, False, False)
         self.assertEqual(False, reg.in_city(self.i2Poly))
 
     def test_in_city_i3_i1(self):
         """
         Test of the Region.py in_city method with i3 being the Region and i1 being the City
         """
-        reg = Region(self.district, self.i3ver)
+        reg = Region(self.district, self.i3ver, False, False)
         self.assertEqual(False, reg.in_city(self.i1Poly))
 
     def test_in_city_s1_i3(self):
         """
         Test of the Region.py in_city method with s1 being the Region and i3 being the City
         """
-        reg = Region(self.district, self.s1ver)
+        reg = Region(self.district, self.s1ver, False, False)
         self.assertEqual(True, reg.in_city(self.i3Poly))
 
     # in_walls Tests
@@ -93,57 +93,58 @@ class TestRegion(unittest.TestCase):
         """
         Test of the Region.py in_city method with s1 being the Region and i1 being the City
         """
-        reg = Region(self.district, self.s1ver)
+        reg = Region(self.district, self.s1ver, False, False)
         self.assertEqual(True, reg.in_walls(self.i1Poly))
 
     def test_in_walls_i1_s1(self):
         """
         Test of the Region.py in_city method with i1 being the Region and s1 being the City
         """
-        reg = Region(self.district, self.i1ver)
+        reg = Region(self.district, self.i1ver, False, False)
         self.assertEqual(False, reg.in_walls(self.s1Poly))
 
     def test_in_walls_s1_i2(self):
         """
         Test of the Region.py in_city method with s1 being the Region and i2 being the City
         """
-        reg = Region(self.district, self.s1ver)
+        reg = Region(self.district, self.s1ver, False, False)
         self.assertEqual(False, reg.in_walls(self.i2Poly))
 
     def test_in_walls_i2_s1(self):
         """
         Test of the Region.py in_city method with i2 being the Region and s1 being the City
         """
-        reg = Region(self.district, self.i2ver)
+        reg = Region(self.district, self.i2ver, False, False)
         self.assertEqual(False, reg.in_walls(self.s1Poly))
 
     def test_in_walls_s1_s1(self):
         """
         Test of the Region.py in_city method with s1 being the Region and s1 being the City
         """
-        reg = Region(self.district, self.s1ver)
+        reg = Region(self.district, self.s1ver, False, False)
         self.assertEqual(True, reg.in_walls(self.s1Poly))
 
     def test_in_walls_i3_i2(self):
         """
         Test of the Region.py in_city method with i3 being the Region and i2 being the City
         """
-        reg = Region(self.district, self.i3ver)
+        reg = Region(self.district, self.i3ver, False, False)
         self.assertEqual(False, reg.in_walls(self.i2Poly))
 
     def test_in_walls_i3_i1(self):
         """
         Test of the Region.py in_city method with i3 being the Region and i1 being the City
         """
-        reg = Region(self.district, self.i3ver)
+        reg = Region(self.district, self.i3ver, False, False)
         self.assertEqual(False, reg.in_walls(self.i1Poly))
 
     def test_in_walls_s1_i3(self):
         """
         Test of the Region.py in_city method with s1 being the Region and i3 being the City
         """
-        reg = Region(self.district, self.s1ver)
+        reg = Region(self.district, self.s1ver, False, False)
         self.assertEqual(True, reg.in_walls(self.i3Poly))
+
 
 if __name__ == '__main__':
     unittest.main()

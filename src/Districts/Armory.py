@@ -1,10 +1,17 @@
 from src.Backend.District import District
-from src.Districts.Precinct import Precinct
+from src.Districts.Cathedral import Cathedral
+from src.Districts.Farmland import Farmland
 from src.Districts.Housing import Housing
+from src.Districts.Castle import Castle
+from src.Districts.Docks import Docks
+from src.Districts.Precinct import Precinct
+from src.Districts.Slum import Slum
+from src.Districts.Smithing import Smithing
+from src.Districts.WarCamp import WarCamp
 from src.Backend.Region import Region
 
 
-class Farmland(District):
+class Armory(District):
 
     # Overrides District's determine Rating
     @staticmethod
@@ -35,13 +42,23 @@ class Farmland(District):
                 if region.is_bordering(reg):
                     dis = reg.get_district()
                     if isinstance(dis, Farmland):
-                        rating += 50
+                        rating += 0
                     elif isinstance(dis, Housing):
+                        rating += -20
+                    elif isinstance(dis, Smithing):
+                        rating += 30
+                    elif isinstance(dis, Docks):
                         rating += 10
+                    elif isinstance(dis, Cathedral):
+                        rating += -10
+                    elif isinstance(dis, Castle):
+                        rating += 20
+                    elif isinstance(dis, Slum):
+                        rating += 20
+                    elif isinstance(dis, Armory):
+                        rating += -20
                     elif isinstance(dis, Precinct):
-                        rating -= 10
-        if region.in_city(city):
-            rating -= 100
-        if region.in_walls(wall):
-            rating -= 1000
+                        rating += 10
+                    elif isinstance(dis, WarCamp):
+                        rating += 40
         return rating
