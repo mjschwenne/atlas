@@ -10,6 +10,7 @@ def main():
         """
         info = Toplevel()
         info.title('Help Window')
+        info.iconbitmap('../../images/Atlas.ico')
         Label(info, text="This is filler text till I know what to write here").pack()
         Button(info, text="Close", command=info.destroy).pack()
 
@@ -33,6 +34,10 @@ def main():
     welcome.title('Welcome Window')
     Label(welcome, text="Hello user, thank you for downloading our map generator.").pack()
     Button(welcome, text="Close", command=welcome.destroy).pack()
+
+    # sets the icons in the corner to our logo
+    window.iconbitmap('../../images/Atlas.ico')
+    welcome.iconbitmap('../../images/Atlas.ico')
 
     # configure the two columns to expand properly
     window.columnconfigure(0, weight=0)
