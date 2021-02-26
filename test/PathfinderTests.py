@@ -1,12 +1,15 @@
 import unittest
 from src.Backend.Pathfinder import Pathfinder
+from src.Backend.Point import Point
+from src.Backend.Polygon import Polygon
 from src.Backend.Voronoi import Voronoi
 import matplotlib.pyplot as plt
 
 
 class PathfinderTests(unittest.TestCase):
     def test_pathfinder_basic(self):
-        vor = Voronoi(50, 150)
+        bounding_box = Polygon([Point(-200, 200), Point(200, 200), Point(200, -200), Point(-200, -200)])
+        vor = Voronoi(50, bounding_box)
         p = Pathfinder(vor.graph, [])
         nodes = list(vor.graph.nodes)
         origin = nodes[0]
@@ -23,8 +26,8 @@ class PathfinderTests(unittest.TestCase):
             p_x_list.append(p.get_x())
             p_y_list.append(p.get_y())
         plt.plot(p_x_list, p_y_list, 'b-')
-        plt.xlim([-vor.bounds, vor.bounds])
-        plt.ylim([-vor.bounds, vor.bounds])
+        plt.xlim([-250, 250])
+        plt.ylim([-250, 250])
         plt.show()
         self.assertEqual(True, True)
 
