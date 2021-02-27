@@ -122,5 +122,3 @@ class DistrictTests(unittest.TestCase):
         self.assertEqual(-1160, WarCamp.determine_rating(self.reg13, self.regList, self.wall, self.polyCity))
 
 
-if __name__ == '__main__':
-    unittest.main()
