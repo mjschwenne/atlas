@@ -4,6 +4,32 @@ from tkinter import *
 
 
 def main():
+
+    def draw_region(map_canvas, region_type, points):
+        """
+        command to draw a region as specified on the map
+        Region encoding:
+        0 = Farmland
+        1 = Housing
+        2 = Docks
+        3 = Smithing
+        4 = Slum
+        5 = Market
+        6 = Castle
+
+        """
+        switcher =  {
+            0: "#4aa75d",
+            1: "#ffac58",
+            2: "#003399",
+            3: "#020101",
+            4: "#ac6024",
+            5: "#6ab0b0",
+            6: "#a3a3a3"
+        }
+        map_canvas.create_polygon(*points, fill=switcher.get(region_type, "#ebd5b3"))
+
+
     def help_msg():
         """
         command for the help message
@@ -48,8 +74,12 @@ def main():
     button_frame = tk.Frame(background="#CCCCCC", relief='raised', width=8)
     button_frame.grid(column=0, row=0, sticky=('n', 's', 'e', 'w'))
 
+    # Create the canvas that the picture will be rendered on
+    canvas = tk.Canvas(background="#ebd5b3")
+    canvas.grid(column=1, row=0, sticky=('n', 's', 'e', 'w'))
+
     # Each of These are for the buttons that are created
-    action_btn = tk.Button(button_frame, text="Generate", background="#6ab0b0", foreground="black")
+    action_btn = tk.Button(button_frame, text="Generate", background="#6ab0b0", foreground="black", command=lambda: draw_region(canvas, 0, [100, 150, 50, 50, 200, 50, 200, 150])) # Replace this with draw_map when I have it made
     action_btn.grid(column=0, row=0, sticky='w', padx=5, pady=5)
 
     load_btn = tk.Button(button_frame, text="Load", background="#ac6024", foreground="black")
@@ -62,9 +92,7 @@ def main():
     help_btn = tk.Button(button_frame, text="Help", background="#a3a3a3", foreground="black", command=help_msg)
     help_btn.grid(column=0, row=3, sticky='w', padx=5)
 
-    # Create the canvas that the picture will be rendered on
-    canvas = tk.Canvas(background="#ebd5b3")
-    canvas.grid(column=1, row=0, sticky=('n', 's', 'e', 'w'))
+
 
     window.mainloop()
 
