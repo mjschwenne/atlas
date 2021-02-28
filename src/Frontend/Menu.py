@@ -4,10 +4,9 @@ from tkinter import *
 
 from src.DemoStuff import DemoStuff
 from src.Backend.District import *
-from src.Backend.Point import Point
+
 
 def main():
-    
     def draw_region(map_canvas, region_type, points):
         """
         command to draw a region as specified on the map,
@@ -23,33 +22,34 @@ def main():
             An array of points for making a polygon, not as tuples, (x1, y1, x2, y2,...)
 
         Region encoding:
-        0 = Farmland
-        1 = Housing
-        2 = Docks
-        3 = Smithing
-        4 = Slum
-        5 = Market
-        6 = Castle
-        -Up For Debate Colors (Especially if these aren't actual areas, I just went off of the defined regions)-
-        7 = Cathedral
-        8 = Armory
-        9 = Warcamp
-        10 = Gate
-        11 = Precinct
+        0 = Farmland - Green
+        1 = Housing - Sandy Orangy
+        2 = Docks - Dark Blue
+        3 = Smithing - Black
+        4 = Slum - Brown
+        5 = Market - Teal
+        6 = Castle - Grey
+        7 = Cathedral - Purple
+        8 = Armory - Pale Red
+        9 = Warcamp - Light Limy Green
+        10 = Gate - Tan/Gray Wall Paint like
+        11 = Precinct - Yellow
         """
+
+        # https://www.colorcombos.com/combotester.html?color0=4aa75d&color1=ffac58&color2=003399&color3=020101&color4=ac6024&color5=6ab0b0&color6=a3a3a3&color7=952e85&color8=a93939&color9=7ba74c&color10=e5e5be&color11=eaea02&show_text=
         switcher = {
-            0: "#4aa75d",
-            1: "#ffac58",
-            2: "#003399",
-            3: "#020101",
-            4: "#ac6024",
-            5: "#6ab0b0",
-            6: "#a3a3a3",
-            7: "#952e85",
-            8: "#a93939",
-            9: "#7ba74c",
-            10: "#e5e5be",
-            11: "#dadabc"
+            0: "#4aa75d",  # Green
+            1: "#ffac58",  # Sandy Orangy
+            2: "#003399",  # Dark Blue
+            3: "#020101",  # Black
+            4: "#ac6024",  # Brown
+            5: "#6ab0b0",  # Teal
+            6: "#a3a3a3",  # Grey
+            7: "#952e85",  # Purple
+            8: "#a93939",  # Pale Red
+            9: "#7ba74c",  # Light Limy Green
+            10: "#e5e5be",  # Tan/Gray Wall Paint like
+            11: "#eaea02"  # Yellow
         }
         map_canvas.create_polygon(*points, fill=switcher.get(region_type, "#ebd5b3"))
 
@@ -84,8 +84,8 @@ def main():
                 switch_val = 11
             verts = []
             for v in reg.get_vertices():
-                verts.append((v.get_x()+9) * 10)
-                verts.append((v.get_y()+4) * 10)
+                verts.append((v.get_x() + 9) * 10)
+                verts.append((v.get_y() + 4) * 10)
             draw_region(map_canvas, switch_val, verts)
 
     def help_msg():
