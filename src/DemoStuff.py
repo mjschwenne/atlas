@@ -110,10 +110,10 @@ class DemoStuff:
     wall.set_gates([Point(-6, 4), Point(6, 4), Point(-2, -2)])
 
     # city
-    verCity = [Point(-6, 12), Point(-6, -2), Point(6, -2), Point(6, 12)]
-    polyCity = Polygon(verCity)
+    ver_city = [Point(-6, 12), Point(-6, -2), Point(6, -2), Point(6, 12)]
+    poly_city = Polygon(ver_city)
 
     def assign_districts(self):
-        Constructor().assign_districts(self.regList, self.wall, self.polyCity)
+        Constructor().assign_districts(self.regList, self.wall, self.poly_city)
         return self.regList
 

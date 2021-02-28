@@ -54,9 +54,9 @@ def main():
         map_canvas.create_polygon(*points, fill=switcher.get(region_type, "#ebd5b3"))
 
     def draw_map(map_canvas):
-        regList = DemoStuff().assign_districts()
+        reg_list = DemoStuff().assign_districts()
         switch_val = 0
-        for reg in regList:
+        for reg in reg_list:
             dis = reg.get_district()
             if isinstance(dis, Farmland):
                 switch_val = 0
