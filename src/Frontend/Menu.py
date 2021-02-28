@@ -4,10 +4,21 @@ from tkinter import *
 
 
 def main():
-
+    
     def draw_region(map_canvas, region_type, points):
         """
-        command to draw a region as specified on the map
+        command to draw a region as specified on the map,
+        Will handle populating each region according to type
+
+        Parameters
+        ----------
+        map_canvas : Canvas
+            The canvas that the region will be displayed on
+        region_type : Integer
+            Corresponds to the type of region on the map
+        points : Integer Array
+            An array of points for making a polygon, not as tuples, (x1, y1, x2, y2,...)
+
         Region encoding:
         0 = Farmland
         1 = Housing
@@ -16,19 +27,28 @@ def main():
         4 = Slum
         5 = Market
         6 = Castle
-
+        -Up For Debate Colors (Especially if these aren't actual areas, I just went off of the defined regions)-
+        7 = Cathedral
+        8 = Armory
+        9 = Warcamp
+        10 = Gate
+        11 = Precinct
         """
-        switcher =  {
+        switcher = {
             0: "#4aa75d",
             1: "#ffac58",
             2: "#003399",
             3: "#020101",
             4: "#ac6024",
             5: "#6ab0b0",
-            6: "#a3a3a3"
+            6: "#a3a3a3",
+            7: "#952e85",
+            8: "#a93939",
+            9: "#7ba74c",
+            10: "#e5e5be",
+            11: "#dadabc"
         }
         map_canvas.create_polygon(*points, fill=switcher.get(region_type, "#ebd5b3"))
-
 
     def help_msg():
         """
@@ -79,7 +99,9 @@ def main():
     canvas.grid(column=1, row=0, sticky=('n', 's', 'e', 'w'))
 
     # Each of These are for the buttons that are created
-    action_btn = tk.Button(button_frame, text="Generate", background="#6ab0b0", foreground="black", command=lambda: draw_region(canvas, 0, [100, 150, 50, 50, 200, 50, 200, 150])) # Replace this with draw_map when I have it made
+    action_btn = tk.Button(button_frame, text="Generate", background="#6ab0b0", foreground="black",
+                           command=lambda: draw_region(canvas, 9, [100, 150, 50, 50, 200, 50, 200,
+                                                                   150, 300, 450, 275, 500]))  # Replace this with draw_map when I have it made
     action_btn.grid(column=0, row=0, sticky='w', padx=5, pady=5)
 
     load_btn = tk.Button(button_frame, text="Load", background="#ac6024", foreground="black")
@@ -91,8 +113,6 @@ def main():
 
     help_btn = tk.Button(button_frame, text="Help", background="#a3a3a3", foreground="black", command=help_msg)
     help_btn.grid(column=0, row=3, sticky='w', padx=5)
-
-
 
     window.mainloop()
 
