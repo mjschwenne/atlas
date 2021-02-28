@@ -18,6 +18,7 @@ Documentation is updated on Tuesdays and Fridays.
    Region
    Voronoi
    Wall
+   Constructor
    Menu
 
 Indices and tables
