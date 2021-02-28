@@ -82,7 +82,6 @@ def main():
                 switch_val = 10
             if isinstance(dis, Precinct):
                 switch_val = 11
-            print("hi")
             verts = []
             for v in reg.get_vertices():
                 verts.append((v.get_x()+9) * 10)
