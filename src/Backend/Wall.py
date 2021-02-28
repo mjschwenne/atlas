@@ -1,5 +1,4 @@
 import random
-import time
 
 from src.Backend.Polygon import Polygon
 from src.Backend.Point import Point
@@ -7,7 +6,14 @@ from scipy.spatial import ConvexHull
 
 
 class Wall(Polygon):
+    """
+    This class represents a Wall using a Polygon
 
+    Attributes
+    ----------
+    gates : list of Points
+        The vertices in the polygon representing the wall that are gates.
+    """
     def __init__(self, regions):
         """
         Constructs a wall given a list of Regions

@@ -1,14 +1,15 @@
 import unittest
 import random
-import time
 from src.Backend.Wall import Wall
 from src.Backend.Point import Point
 from src.Backend.Polygon import Polygon
 import matplotlib.pyplot as plt
 
 
-class TestRegion(unittest.TestCase):
-
+class TestWall(unittest.TestCase):
+    """
+    Tests for Wall.py
+    """
     def test_create_wall_basic_one_polygon(self):
         """
         Basic small test of Wall generation, blue dots are vertices and yellow for vertices on the wall and red dots for
@@ -38,8 +39,8 @@ class TestRegion(unittest.TestCase):
 
     def test_create_wall_basic_many_polygons(self):
         """
-        Random large test of Wall generation, blue dots are vertices and yellow for vertices on the wall and red dots for
-        gates.
+        Random large test of Wall generation, blue dots are vertices and yellow for vertices on the wall and red dots
+        for gates.
         """
         random.seed()
         poly_list = []
