@@ -57,6 +57,7 @@ def main():
         info = Toplevel()
         info.title('Help Window')
         info.iconbitmap('../../images/Atlas.ico')
+        Label(info, text="ATLAS help", font="Helvetica 16 bold", bg="#a3a3a3").pack(side=TOP)
         Label(info, text="This is filler text till I know what to write here").pack()
         Button(info, text="Close", command=info.destroy).pack()
 
@@ -78,8 +79,12 @@ def main():
     # creates the welcome window
     welcome = tk.Toplevel(window)
     welcome.title('Welcome Window')
-    Label(welcome, text="Hello user, thank you for downloading our map generator.").pack()
-    Button(welcome, text="Close", command=welcome.destroy).pack()
+    Label(welcome, text="Welcome to ATLAS", font="Helvetica 16 bold", bg="#a3a3a3").pack(side=TOP)
+    Label(welcome, text="Hello user, thank you for downloading our map generator.\n").pack(side=TOP)
+    Label(welcome, text=" Directions:\n\n\n").pack(side=LEFT)
+    Label(welcome, text="To create the map click generate.").pack()
+    Label(welcome, text="To create the map click generate.").pack()
+    Button(welcome, text="Close", command=welcome.destroy).pack(side=BOTTOM)
 
     # sets the icons in the corner to our logo
     window.iconbitmap('../../images/Atlas.ico')
