@@ -1,14 +1,11 @@
-import unittest
-
 from src.Backend.Constructor import Constructor
-from src.Backend.District import *
 from src.Backend.Point import Point
 from src.Backend.Polygon import Polygon
 from src.Backend.Region import Region
 from src.Backend.Wall import Wall
 
 
-class ConstructorTests(unittest.TestCase):
+class DemoStuff:
     # 12Sided
     # =======
     ver0 = [Point(0, 0), Point(-2, 1), Point(-4, 3), Point(-5, 5), Point(-4, 7), Point(-2, 9), Point(0, 10),
@@ -116,12 +113,7 @@ class ConstructorTests(unittest.TestCase):
     verCity = [Point(-6, 12), Point(-6, -2), Point(6, -2), Point(6, 12)]
     polyCity = Polygon(verCity)
 
-    def test_assign_districts(self):
+    def assign_districts(self):
         Constructor().assign_districts(self.regList, self.wall, self.polyCity)
-        for reg in self.regList:
-            print(reg.get_district())
-        self.assertTrue(True)
+        return self.regList
 
-
-if __name__ == '__main__':
-    unittest.main()

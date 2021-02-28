@@ -2,6 +2,9 @@ import tkinter as tk
 from tkinter.filedialog import asksaveasfile
 from tkinter import *
 
+from src.DemoStuff import DemoStuff
+from src.Backend.District import *
+from src.Backend.Point import Point
 
 def main():
     
@@ -49,6 +52,42 @@ def main():
             11: "#dadabc"
         }
         map_canvas.create_polygon(*points, fill=switcher.get(region_type, "#ebd5b3"))
+
+    def draw_map(map_canvas):
+        regList = DemoStuff().assign_districts()
+        switch_val = 0
+        for reg in regList:
+            dis = reg.get_district()
+            if isinstance(dis, Farmland):
+                switch_val = 0
+            if isinstance(dis, Housing):
+                switch_val = 1
+            if isinstance(dis, Docks):
+                switch_val = 2
+            if isinstance(dis, Smithing):
+                switch_val = 3
+            if isinstance(dis, Slum):
+                switch_val = 4
+            if isinstance(dis, Market):
+                switch_val = 5
+            if isinstance(dis, Castle):
+                switch_val = 6
+            if isinstance(dis, Cathedral):
+                switch_val = 7
+            if isinstance(dis, Armory):
+                switch_val = 8
+            if isinstance(dis, WarCamp):
+                switch_val = 9
+            if isinstance(dis, Gate):
+                switch_val = 10
+            if isinstance(dis, Precinct):
+                switch_val = 11
+            print("hi")
+            verts = []
+            for v in reg.get_vertices():
+                verts.append((v.get_x()+9) * 10)
+                verts.append((v.get_y()+4) * 10)
+            draw_region(map_canvas, switch_val, verts)
 
     def help_msg():
         """
@@ -105,8 +144,7 @@ def main():
 
     # Each of These are for the buttons that are created
     action_btn = tk.Button(button_frame, text="Generate", background="#6ab0b0", foreground="black",
-                           command=lambda: draw_region(canvas, 9, [100, 150, 50, 50, 200, 50, 200,
-                                                                   150, 300, 450, 275, 500]))  # Replace this with draw_map when I have it made
+                           command=lambda: draw_map(canvas))  # Replace this with draw_map when I have it made
     action_btn.grid(column=0, row=0, sticky='w', padx=5, pady=5)
 
     load_btn = tk.Button(button_frame, text="Load", background="#ac6024", foreground="black")
