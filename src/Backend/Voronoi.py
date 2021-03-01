@@ -1,11 +1,95 @@
 import random
 import math
+from queue import SimpleQueue
 
 from src.Backend.Polygon import Polygon
 from src.Backend.Point import Point
 import networkx as nx
 import numpy as np
 from scipy.spatial import Voronoi as Vor
+
+
+def remove_vertices(G, vertices):
+    """
+    Remove all vertices in `vertices` from the graph `G`
+
+    Parameters
+    ----------
+    G : nx.Graph
+        The Graph from which vertices will be removed
+    vertices : list
+        The list of vertices in G to be removed
+
+    Returns
+    -------
+    nx.Graph
+        A copy of the graph `G` without the vertices listed in `vertices`
+    """
+    return G.copy().remove_nodes_from(vertices)
+
+
+def bfs_path(G, source, destination):
+    """
+    Use a breadth first search to find the path from vertex `source` to vertex `destination`.
+
+    Parameters
+    ----------
+    G : nx.Graph
+        The graph to search
+    source : Point
+        Origin point
+    destination : Point
+        Destination point
+
+    Returns
+    -------
+    Queue
+        A queue with the path from `source` to `destination` already enqueued.
+    """
+    vertex_dict = dict(nx.bfs_predecessors(G, source))
+    # Build a stack from destination to source which can be transferred into a queue
+    stack = [destination, vertex_dict[destination]]
+    while stack[-1] != source:
+        stack.append(vertex_dict[stack[-1]])
+    # Build the queue
+    queue = SimpleQueue()
+    while len(stack) > 0:
+        queue.put(stack[-1])
+        stack.pop()
+    return queue
+
+
+def merge(comp_ptr, u_rep, v_rep):
+    """
+    Merge the smaller component into the larger one
+
+    Parameters
+    ----------
+    comp_ptr : Dict of Point
+        The list of component pointers
+    u_rep : Point
+        The component representative for the first component
+    v_rep : Point
+        The component representative for the first component
+    """
+    # Find the sizes of the components
+    if type(comp_ptr[u_rep]) is int:
+        u_size = -comp_ptr[u_rep]
+    else:
+        return
+    if type(comp_ptr[v_rep]) is int:
+        v_size = -comp_ptr[v_rep]
+    else:
+        return
+
+    if u_size < v_size:
+        # Update the component representative for both vertices
+        comp_ptr[u_rep] = v_rep
+        comp_ptr[v_rep] = -(u_size + v_size)
+    else:
+        # Update the component representative for both vertices
+        comp_ptr[v_rep] = u_rep
+        comp_ptr[u_rep] = -(u_size + v_size)
 
 
 class Voronoi:
@@ -25,6 +109,7 @@ class Voronoi:
     bounds : Polygon
         The bounding polygon
     """
+
     def __init__(self, num_district, bounds):
         self.seeds = []
         self.polygons = []
@@ -242,39 +327,6 @@ class Voronoi:
             comp_ptr[u] = rep
             return rep
 
-    @staticmethod
-    def __merge(comp_ptr, u_rep, v_rep):
-        """
-        Merge the smaller component into the larger one
-
-        Parameters
-        ----------
-        comp_ptr : Dict of Point
-            The list of component pointers
-        u_rep : Point
-            The component representative for the first component
-        v_rep : Point
-            The component representative for the first component
-        """
-        # Find the sizes of the components
-        if type(comp_ptr[u_rep]) is int:
-            u_size = -comp_ptr[u_rep]
-        else:
-            return
-        if type(comp_ptr[v_rep]) is int:
-            v_size = -comp_ptr[v_rep]
-        else:
-            return
-
-        if u_size < v_size:
-            # Update the component representative for both vertices
-            comp_ptr[u_rep] = v_rep
-            comp_ptr[v_rep] = -(u_size + v_size)
-        else:
-            # Update the component representative for both vertices
-            comp_ptr[v_rep] = u_rep
-            comp_ptr[u_rep] = -(u_size + v_size)
-
     def __components(self, G):
         """
         Find the components of graph G
@@ -304,5 +356,5 @@ class Voronoi:
                 u_rep = self.__comp_rep(comp_ptr, u)
                 v_rep = self.__comp_rep(comp_ptr, v)
                 if u_rep != v_rep:
-                    self.__merge(comp_ptr, u_rep, v_rep)
+                    merge(comp_ptr, u_rep, v_rep)
         return comp_ptr

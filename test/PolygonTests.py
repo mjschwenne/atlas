@@ -256,6 +256,33 @@ class TestPolygon(unittest.TestCase):
         point = Point.to_point([-300, 201])
         self.assertEqual(False, self.bounding_box.is_contained(point))
 
+    def test_Polygon_is_equal(self):
+        """
+        Test if two non-equal polygons are returned non-equal
+        """
+        i1 = Polygon(self.i1ver)
+        s1 = Polygon(self.s1ver)
+        self.assertEqual(False, i1 == s1)
+
+    def test_Polygon_is_equal_2(self):
+        """
+        Test the __eq__ magic function with two equal polygons
+        """
+        poly1 = Polygon(self.i3ver)
+        poly2 = Polygon(self.i3ver)
+        self.assertEqual(True, poly1 == poly2)
+
+    def test_polygon_is_equal_3(self):
+        """
+        Test the __eq__ magic function with two equal polygons with offset vertex lists
+        """
+        poly1 = Polygon(self.i2ver)
+        shifted_vert_list = self.i2ver.copy()
+        first_vert = shifted_vert_list.pop(0)
+        shifted_vert_list.append(first_vert)
+        poly2 = Polygon(shifted_vert_list)
+        self.assertEqual(True, poly1 == poly2)
+
 
 if __name__ == '__main__':
     unittest.main()

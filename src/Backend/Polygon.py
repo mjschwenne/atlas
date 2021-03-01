@@ -437,10 +437,10 @@ class Polygon:
 
         This method is only accurate to approximately eight decimal places, after which internal rounding can affect the
         result.
-        >>> print(in_segment(Point(0, 0), Point(5, 5), Point(1, 1.00000001)))
+        >>> print(Polygon.in_segment(Point(0, 0), Point(5, 5), Point(1, 1.00000001)))
         True
 
-        Example of an incorrect, but even close test.
+        Example of an incorrect, but very close test.
         """
         # Case 1: Vertical Line.
         # If p3's y-coordinate is within the y-range of this line segment, return if they have the same x-coordinate
@@ -461,3 +461,29 @@ class Polygon:
             return True
         else:
             return False
+
+    def __eq__(self, other):
+        """
+        Test to see if another Polygon is equal to this one.
+
+        Parameters
+        ----------
+        other : Polygon
+            The other Polygon
+
+        Returns
+        -------
+        bool
+            True if the two polygons have the same coordinate list, false otherwise
+        """
+        # If there is a different number of vertices, the polygons cannot be the same
+        if len(self.vertices) != len(other.vertices):
+            return False
+        sorted_self_vertices = self.vertices.copy()
+        sorted_self_vertices.sort()
+        sorted_other_vertices = other.vertices.copy()
+        sorted_other_vertices.sort()
+        for i in range(len(sorted_self_vertices)):
+            if sorted_self_vertices[i] != sorted_other_vertices[i]:
+                return False
+        return True
