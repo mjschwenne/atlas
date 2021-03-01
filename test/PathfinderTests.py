@@ -8,6 +8,10 @@ import matplotlib.pyplot as plt
 
 class PathfinderTests(unittest.TestCase):
     def test_pathfinder_basic(self):
+        """
+        Basic test of pathfinder on a basic random Voronoi, the path generated is drawn in blue, the voronoi is draw in
+        black.
+        """
         bounding_box = Polygon([Point(-200, 200), Point(200, 200), Point(200, -200), Point(-200, -200)])
         vor = Voronoi(50, bounding_box)
         p = Pathfinder(vor.graph, [])

@@ -42,13 +42,13 @@ class DemoStuff:
     reg9 = Region(None, ver9, False, False)
 
     ver10 = [Point(3.5, -2), Point(6, 2), Point(4, 3), Point(2, 1)]
-    reg10 = Region(None, ver9, False, False)
+    reg10 = Region(None, ver10, False, False)
 
     ver11 = [Point(-3.5, -2), Point(0, -2), Point(0, 0), Point(-2, 1)]
     reg11 = Region(None, ver11, False, False)
 
     ver12 = [Point(3.5, -2), Point(0, -2), Point(0, 0), Point(2, 1)]
-    reg12 = Region(None, ver11, False, False)
+    reg12 = Region(None, ver12, False, False)
 
     ver13 = [Point(-6, 8), Point(-6, 12), Point(-3.5, 12)]
     reg13 = Region(None, ver13, False, False)
@@ -110,10 +110,10 @@ class DemoStuff:
     wall.set_gates([Point(-6, 4), Point(6, 4), Point(-2, -2)])
 
     # city
-    verCity = [Point(-6, 12), Point(-6, -2), Point(6, -2), Point(6, 12)]
-    polyCity = Polygon(verCity)
+    ver_city = [Point(-6, 12), Point(-6, -2), Point(6, -2), Point(6, 12)]
+    poly_city = Polygon(ver_city)
 
     def assign_districts(self):
-        Constructor().assign_districts(self.regList, self.wall, self.polyCity)
+        Constructor().assign_districts(self.regList, self.wall, self.poly_city)
         return self.regList
 

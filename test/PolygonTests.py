@@ -45,6 +45,13 @@ class TestPolygon(unittest.TestCase):
     # ================
     bounding_box = Polygon([Point(-200, 200), Point(200, 200), Point(200, -200), Point(-200, -200)])
 
+    # is_contained district bug 02/28/21
+    # ==================================
+    reg_1 = Polygon([Point(-3.5, 12), Point(0, 12), Point(0, 10), Point(-2, 9)])
+    reg_2 = Polygon([Point(3.5, 12), Point(0, 12), Point(0, 10), Point(2, 9)])
+    Wall_1 = Polygon([Point(3.5, -2), Point(6, 2), Point(6, 8), Point(3.5, 12), Point(-3.5, 12), Point(-6, 8),
+                      Point(-6, 2), Point(-3.5, -2)])
+
     # Square 1 Tests
     def test_perimeter_s1(self):
         """
@@ -249,12 +256,66 @@ class TestPolygon(unittest.TestCase):
         self.assertEqual(False, self.poly_ex_1.is_contained(Point(1, 1)))
 
     def test_bounding_box_bug(self):
+        """
+        First test of edge case found in Voronoi.py
+        """
         point = Point.to_point([265.2175165347952, 143.5904398457129])
         self.assertEqual(False, self.bounding_box.is_contained(point))
 
     def test_bounding_box_second_bug(self):
+        """
+        Second test of edge case found in Voronoi.py
+        """
         point = Point.to_point([-300, 201])
         self.assertEqual(False, self.bounding_box.is_contained(point))
+
+    def test_bug_is_contained_districts_022821_0(self):
+        """
+        First test of edge case found in districts
+        """
+        self.assertEqual(True, self.Wall_1.is_contained(Point(-3.5, 12)))
+
+    def test_bug_is_contained_districts_022821_1(self):
+        """
+        Second test of edge case found in districts
+        """
+        self.assertEqual(True, self.Wall_1.is_contained(Point(0, 12)))
+
+    def test_bug_is_contained_districts_022821_2(self):
+        """
+        Third test of edge case found in districts
+        """
+        self.assertEqual(True, self.Wall_1.is_contained(Point(0, 10)))
+
+    def test_bug_is_contained_districts_022821_3(self):
+        """
+        Fourth test of edge case found in districts
+        """
+        self.assertEqual(True, self.Wall_1.is_contained(Point(-2, 9)))
+
+    def test_bug_is_contained_districts_022821_4(self):
+        """
+        Fifth test of edge case found in districts
+        """
+        self.assertEqual(True, self.Wall_1.is_contained(Point(3.5, 12)))
+
+    def test_bug_is_contained_districts_022821_5(self):
+        """
+        Sixth test of edge case found in districts
+        """
+        self.assertEqual(True, self.Wall_1.is_contained(Point(0, 12)))
+
+    def test_bug_is_contained_districts_022821_6(self):
+        """
+        Seventh test of edge case found in districts
+        """
+        self.assertEqual(True, self.Wall_1.is_contained(Point(0, 10)))
+
+    def test_bug_is_contained_districts_022821_7(self):
+        """
+        Eighth test of edge case found in districts
+        """
+        self.assertEqual(True, self.Wall_1.is_contained(Point(2, 9)))
 
     def test_Polygon_is_equal(self):
         """

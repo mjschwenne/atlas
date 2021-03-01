@@ -7,6 +7,8 @@ class Constructor:
 
     def assign_districts(self, regions, wall, city):
         for reg in regions:
+            reg.set_district(None)
+        for reg in regions:
             self.assign_district(reg, regions, wall, city)
         change = True
         while change:

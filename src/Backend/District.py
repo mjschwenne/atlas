@@ -379,7 +379,7 @@ class Farmland(District):
         if region.in_city(city):
             rating -= 100
         if region.in_walls(wall):
-            rating -= 1000
+            return -1000
         return rating
 
 
@@ -759,5 +759,5 @@ class WarCamp(District):
         if region.in_city(city):
             rating -= 100
         if region.in_walls(wall):
-            rating -= 1000
+            return -1000
         return rating
