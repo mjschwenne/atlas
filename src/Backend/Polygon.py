@@ -1,5 +1,6 @@
 import math
 from src.Backend.Point import Point
+from decimal import *
 
 
 def _three_point_orientation(p1, p2, p3):
@@ -22,14 +23,13 @@ def _three_point_orientation(p1, p2, p3):
         clockwise = 1
         counter-clockwise = 2
     """
-    slope = (p2.get_y() - p1.get_y()) * (p3.get_x() - p2.get_x()) - \
-            (p2.get_x() - p1.get_x()) * (p3.get_y() - p2.get_y())
+    slp = (p2.get_y() - p1.get_y()) * (p3.get_x() - p2.get_x()) - (p2.get_x() - p1.get_x()) * (p3.get_y() - p2.get_y())
 
     # If slope_p1_p2 == slope_p2_p3 then the three points are collinear
-    if slope == 0:
+    if slp == 0:
         return 0
     # If slope_p1_p2 > slope_p2_p3 then the three points are clockwise (right turn)
-    elif slope > 0:
+    elif slp > 0:
         return 1
     # If slope_p1_p2 < slope_p2_p3 then the three points are counter-clockwise (left turn)
     else:
@@ -319,10 +319,16 @@ class Polygon:
             cur_vertex = self.vertices[i]  # The current point (vertex) to start the edge of the polygon
             next_vertex = self.vertices[next_value]  # The next point (vertex) to end the edge of the polygon
 
+            # Need to reset the y value of checking point each loop in case the point is level and in_segement with both
+            # points, also avoids a double change of the y value
+            point.set_y(original_y)
+            ext.set_y(original_y)
+
             # To avoid an edge case where the loop will count crossing a vertex twice, if the point lines up
             # horizontally with any vertex being checked, we slightly move (+0.00000001) the y value of the point being
             # checked we move the y value back at the end of the loop
-            if point.get_y() == cur_vertex.get_y() or point.get_y() == next_vertex.get_y():
+            if (point.get_y() == cur_vertex.get_y() or point.get_y() == next_vertex.get_y()) and \
+                    not self.in_segment(cur_vertex, next_vertex, point):
                 point.set_y(point.get_y() + 0.00000001)
                 ext.set_y(ext.get_y() + 0.00000001)
 
