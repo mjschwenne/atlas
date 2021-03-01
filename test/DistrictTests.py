@@ -95,7 +95,7 @@ class DistrictTests(unittest.TestCase):
         self.assertEqual(-1000, Docks.determine_rating(self.reg13, self.regList2, self.wall, self.polyCity))
 
     def test_Farmland(self):
-        self.assertEqual(-1040, Farmland.determine_rating(self.reg13, self.regList, self.wall, self.polyCity))
+        self.assertEqual(-1000, Farmland.determine_rating(self.reg13, self.regList, self.wall, self.polyCity))
 
     def test_Gate_with_Gate(self):
         self.assertEqual(60, Gate.determine_rating(self.reg13, self.regList, self.wall, self.polyCity))
@@ -119,6 +119,6 @@ class DistrictTests(unittest.TestCase):
         self.assertEqual(130, Smithing.determine_rating(self.reg13, self.regList, self.wall, self.polyCity))
 
     def test_WarCamp(self):
-        self.assertEqual(-1160, WarCamp.determine_rating(self.reg13, self.regList, self.wall, self.polyCity))
+        self.assertEqual(-1000, WarCamp.determine_rating(self.reg13, self.regList, self.wall, self.polyCity))
 
 
