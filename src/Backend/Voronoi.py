@@ -1,6 +1,6 @@
 import random
 import math
-from queue import SimpleQueue
+from collections import deque
 
 from src.Backend.Polygon import Polygon
 from src.Backend.Point import Point
@@ -16,7 +16,7 @@ def remove_vertices(G, vertices):
     Parameters
     ----------
     G : nx.Graph
-        The Graph from which vertices will be removed
+        The graph from which vertices will be removed
     vertices : list
         The list of vertices in G to be removed
 
@@ -25,7 +25,36 @@ def remove_vertices(G, vertices):
     nx.Graph
         A copy of the graph `G` without the vertices listed in `vertices`
     """
-    return G.copy().remove_nodes_from(vertices)
+    # print("Removing vertices [", end=" ")
+    # for v in vertices:
+    #     print(f"{v},", end=" ")
+    # print("]")
+    H = G.copy()
+    H.remove_nodes_from(vertices)
+    return H
+
+
+def remove_edge(G, u, v):
+    """
+    Remove the edge `u``v` from graph `G`
+
+    Parameters
+    ----------
+    G : nx.Graph
+        The graph from which the edge will be removed
+    u : Point
+        The first endpoint of the edge
+    v : Point
+        The second endpoint of the edge
+
+    Returns
+    -------
+    nx.Graph
+        A copy of the graph `G` without the `u``v` edge
+    """
+    H = G.copy()
+    H.remove_edge(u, v)
+    return H
 
 
 def bfs_path(G, source, destination):
@@ -43,20 +72,42 @@ def bfs_path(G, source, destination):
 
     Returns
     -------
-    Queue
+    deque
         A queue with the path from `source` to `destination` already enqueued.
     """
     vertex_dict = dict(nx.bfs_predecessors(G, source))
-    # Build a stack from destination to source which can be transferred into a queue
-    stack = [destination, vertex_dict[destination]]
-    while stack[-1] != source:
-        stack.append(vertex_dict[stack[-1]])
-    # Build the queue
-    queue = SimpleQueue()
-    while len(stack) > 0:
-        queue.put(stack[-1])
-        stack.pop()
+    queue = deque()
+    queue.append(destination)
+    while queue[-1] != source:
+        queue.append(vertex_dict[queue[-1]])
+    queue.reverse()
     return queue
+
+
+def comp_rep(comp_ptr, u):
+    """
+    Find the component representative for the input vertex
+
+    Parameters
+    ----------
+    comp_ptr : Dict
+        The dictionary of component pointers
+    u : Point
+        The vertex of interest
+
+    Returns
+    -------
+    Point :
+        The component representative of the component u is a part of
+    """
+    # The pointer for the representative vertex is equal to negative the size of the component
+    if isinstance(comp_ptr[u], int):
+        return u
+    else:
+        # Recurse to find the component representative, using path compression so that the next access is faster
+        rep = comp_rep(comp_ptr, comp_ptr[u])
+        comp_ptr[u] = rep
+        return rep
 
 
 def merge(comp_ptr, u_rep, v_rep):
@@ -92,6 +143,103 @@ def merge(comp_ptr, u_rep, v_rep):
         comp_ptr[u_rep] = -(u_size + v_size)
 
 
+def components(G):
+    """
+    Find the components of graph G
+
+    Parameters
+    ----------
+    G : nx.Graph
+        The graph to find the connected components in
+
+    Returns
+    -------
+    Dict of Point
+        A dictionary such that each Point in the dictionary points to it's component representative or the size of
+        the component that it represents
+    """
+    # Create and initialize the lists
+    # comp_ptr is seeded with -1 as each vertex is in its own component at the start of the algorithm
+    # comp_list is seeded with a list containing n for the same reason as comp_ptr gets -1
+    comp_ptr = {}
+    for v in G:
+        comp_ptr[v] = -1
+
+    # For each vertex, look at all of its adjacent vertices
+    for u in G:
+        for v in G[u]:
+            # if the component representatives are different, merge the components
+            u_rep = comp_rep(comp_ptr, u)
+            v_rep = comp_rep(comp_ptr, v)
+            if u_rep != v_rep:
+                merge(comp_ptr, u_rep, v_rep)
+    return comp_ptr
+
+
+def chordless_path(G, t, Q, P, master_Q):
+    """
+    Find all the chordless paths from `source` to `target`.
+
+    `Q` and `P` are recursive helper variables.
+
+    Parameters
+    ----------
+    G : nx.Graph
+        The Graph to find the chordless paths in
+    t : Point
+        The target point for the path
+    Q : List
+        A list of the current path from the original source to `target`
+    P : deque
+        A SimpleQueue representing the breadth first search path from `source` to `target`
+    master_Q : List of List
+        A List of List such that each list in the list is a chordless path
+
+    Returns
+    -------
+    List
+        The list of vertices from the original source to the target vertex
+    """
+    # print(f"Source is {P[0]}, Target is {t},\nP = [", end=" ")
+    # for p in P:
+    #     print(f"{p},", end=" ")
+    s = P.popleft()
+    # print(f"] \nG[{s}] = [", end=" ")
+    # for v in G[s]:
+    #     print(f"{v},", end=" ")
+    # print(f"], \nQ = [", end=" ")
+    # for q in Q:
+    #     print(f"{q},", end=" ")
+    # print(f"] {t} in G[{s}] = {t in G[s]}")
+    if t in G[s]:
+        Q.append(t)
+        master_Q.append(Q)
+        # print("returning")
+        return
+    for v in G[s]:
+        if v is not P[0]:
+            # Determine if there is a vt-Path in G \ (N(s) \ v)
+            vertices_to_remove = list(G[s].keys())
+            vertices_to_remove.remove(v)
+            removed_graph = remove_vertices(G, vertices_to_remove)
+            comp_ptr = components(removed_graph)
+            # Three cases depending on which vertex (if any of these ones) is the component representative
+            if isinstance(comp_ptr[v], Point) and isinstance(comp_ptr[t], Point) and comp_ptr[v] == comp_ptr[t]:
+                if isinstance(comp_ptr[v], int) and comp_ptr[t] == v:
+                    if isinstance(comp_ptr[t], int) and comp_ptr[v] == t:
+                        bfs_route = bfs_path(removed_graph, v, t)
+                        new_Q = Q.copy()
+                        new_Q.append(v)
+                        print("NON-BFS BRANCH")
+                        chordless_path(removed_graph, t, new_Q, bfs_route, master_Q)
+    next_vert = P[0]
+    Q.append(next_vert)
+    # Find G \ (N(s) \ nxt(s))
+    vertices_to_remove = list(G[s].keys())
+    vertices_to_remove.remove(next_vert)
+    chordless_path(remove_vertices(G, vertices_to_remove), t, Q, P, master_Q)
+
+
 class Voronoi:
     """
     Generates and stores a Voronoi diagram as a graph and list of polygons
@@ -112,10 +260,11 @@ class Voronoi:
 
     def __init__(self, num_district, bounds):
         self.seeds = []
-        self.polygons = []
+        self.polygons = set()
         self.graph = nx.Graph()
         self.num_district = num_district
         self.bounds = bounds
+
         self.generate_seeds()
         self.voronoi = Vor(Point.to_list(self.seeds))
         self.generate_graph()
@@ -126,7 +275,7 @@ class Voronoi:
 
         The notes are more concentrated in the middle of the map.
         """
-        random.seed()
+        random.seed(37)
         delta_angle = random.random() * 2 * math.pi
 
         for p in range(self.num_district):
@@ -242,16 +391,21 @@ class Voronoi:
         for v in range(len_bound_points):
             bound_start = bound_points[v]
             bound_end = bound_points[(v + 1) % len_bound_points]
-            edge_vertices = [bound_start, bound_end]
+            edge_vertices = []
             for vert in self.graph:
                 if Polygon.in_segment(bound_start, bound_end, vert):
                     edge_vertices.append(vert)
             # Thanks to python magic methods, these are sorted from min y t0 max y and from min to max x if y is equal
             edge_vertices.sort()
             # Add the edges
+            # print("edge_vertices = [", end=" ")
+            # for e in edge_vertices:
+            #     print(f"{e},", end=" ")
+            # print("]")
             for vert in range(len(edge_vertices) - 1):
                 start = edge_vertices[vert]
                 end = edge_vertices[vert + 1]
+                # print(f"Adding perimeter edge between {start} and {end}")
                 self.graph.add_edge(start, end, weight=start.simple_distance(end))
 
     def generate_polygons(self):
@@ -260,7 +414,24 @@ class Voronoi:
 
         Stores the polygons in a class attribute list
         """
-        pass
+        # for each vertex in the graph... Find the chordless cycles
+        # print("Vertices of G are [", end=" ")
+        # for v in self.graph:
+        #     print(f"{v},", end=" ")
+        # print("]")
+        for v in self.graph:
+            # print(f"Vertices adjacent to {v} are [", end=" ")
+            # for t in self.graph[v]:
+            #     print(f"{t},", end=" ")
+            # print("]")
+            for t in self.graph[v]:
+                # print(f"Generating polygons with segment {v} -- {t} ")
+                removed_graph = remove_edge(self.graph, v, t)
+                bfs_route = bfs_path(removed_graph, v, t)
+                paths = []
+                chordless_path(removed_graph, t, [v], bfs_route, paths)
+                for p in paths:
+                    self.polygons.add(Polygon(p))
 
     def relax(self):
         pass
@@ -301,60 +472,3 @@ class Voronoi:
                 continue
             if parameters_intersect[0][0] >= 0 and 0 <= parameters_intersect[1][0] <= 1:
                 return parameters_intersect[0][0]
-
-    def __comp_rep(self, comp_ptr, u):
-        """
-        Find the component representative for the input vertex
-
-        Parameters
-        ----------
-        comp_ptr : Dict
-            The dictionary of component pointers
-        u : Point
-            The vertex of interest
-
-        Returns
-        -------
-        Point :
-            The component representative of the component u is a part of
-        """
-        # The pointer for the representative vertex is equal to negative the size of the component
-        if comp_ptr[u] < 0:
-            return u
-        else:
-            # Recurse to find the component representative, using path compression so that the next access is faster
-            rep = self.__comp_rep(comp_ptr, comp_ptr[u])
-            comp_ptr[u] = rep
-            return rep
-
-    def __components(self, G):
-        """
-        Find the components of graph G
-
-        Parameters
-        ----------
-        G : nx.Graph
-            The graph to find the connected components in
-
-        Returns
-        -------
-        Dict of Point
-            A dictionary such that each Point in the dictionary points to it's component representative or the size of
-            the component that it represents
-        """
-        # Create and initialize the lists
-        # comp_ptr is seeded with -1 as each vertex is in its own component at the start of the algorithm
-        # comp_list is seeded with a list containing n for the same reason as comp_ptr gets -1
-        comp_ptr = {}
-        for v in G:
-            comp_ptr[v] = -1
-
-        # For each vertex, look at all of its adjacent vertices
-        for u in G:
-            for v in G[u]:
-                # if the component representatives are different, merge the components
-                u_rep = self.__comp_rep(comp_ptr, u)
-                v_rep = self.__comp_rep(comp_ptr, v)
-                if u_rep != v_rep:
-                    merge(comp_ptr, u_rep, v_rep)
-        return comp_ptr

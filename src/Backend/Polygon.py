@@ -493,3 +493,11 @@ class Polygon:
             if sorted_self_vertices[i] != sorted_other_vertices[i]:
                 return False
         return True
+
+    def __hash__(self):
+        """
+        Hash the tuples of the vertices
+        """
+        sorted_vertices = self.vertices.copy()
+        sorted_vertices.sort()
+        return hash(tuple(sorted_vertices))
