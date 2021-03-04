@@ -114,6 +114,6 @@ class DemoStuff:
     poly_city = Polygon(ver_city)
 
     def assign_districts(self):
-        Constructor().assign_districts(self.regList, self.wall, self.poly_city)
+        Constructor.assign_districts(self.regList, self.wall, self.poly_city)
         return self.regList
 
