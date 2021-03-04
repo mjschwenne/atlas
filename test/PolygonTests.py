@@ -1,4 +1,7 @@
 import unittest
+
+import math
+
 from src.Backend.Polygon import Polygon
 from src.Backend.Point import Point
 
@@ -343,6 +346,82 @@ class TestPolygon(unittest.TestCase):
         shifted_vert_list.append(first_vert)
         poly2 = Polygon(shifted_vert_list)
         self.assertEqual(True, poly1 == poly2)
+
+    def test_polygon_cut_1(self):
+        """
+        First test of the cut method
+        """
+        poly = Polygon(self.s1ver)
+        polys = poly.cut(Point(0.0, 0.5), Point(1.0, 0.5))
+        self.assertEqual(2, len(polys))
+
+    def test_polygon_cut_2(self):
+        """
+        Second test of the cut method
+        """
+        poly = Polygon(self.s1ver)
+        polys = poly.cut(Point(0.5, 0.0), Point(0.5, 1.0))
+        self.assertEqual(2, len(polys))
+
+    def test_polygon_cut_3(self):
+        """
+        Third test of the cut method
+        """
+        poly = Polygon(self.s1ver)
+        polys = poly.cut(Point(0.0, 0.0), Point(1.0, 1.0))
+        self.assertEqual(2, len(polys))
+
+    def test_polygon_split_1(self):
+        """
+        First test of the split method
+        """
+        poly = Polygon(self.s1ver)
+        polys = poly.split(Point(0.5, 0.0), math.pi / 2)
+        self.assertEqual(2, len(polys))
+
+    def test_polygon_split_2(self):
+        """
+        Second test of the split method
+        """
+        poly = Polygon(self.s1ver)
+        polys = poly.split(Point(0.0, 0.5), math.pi)
+        self.assertEqual(2, len(polys))
+
+    def test_polygon_split_3(self):
+        """
+        Third test of the split method
+        """
+        poly = Polygon(self.s1ver)
+        polys = poly.split(Point(0.0, 0.0), math.pi / 4.0)
+        self.assertEqual(2, len(polys))
+
+    def test_polygon_intersection_1(self):
+        inter = Polygon.intersection(Point(1.0, 5.0), Point(5.0, 1.0), Point(0.0, 2.0), Point(3.0, 5.0))
+        self.assertEqual(Point(2.0, 4.0), inter)
+
+    def test_polygon_intersection_2(self):
+        inter = Polygon.intersection(Point(1.0, 0.0), Point(2.0, 0.0), Point(0.0, 0.0), Point(1.0, 0.0))
+        self.assertEqual(Point(1.0, 0.0), inter)
+
+    def test_polygon_intersection_3(self):
+        inter = Polygon.intersection(Point(1.0, 3.0), Point(1.0, -3.0), Point(0.0, 0.0), Point(5.0, 0.0))
+        self.assertEqual(Point(1.0, 0.0), inter)
+
+    def test_polygon_intersection_4(self):
+        inter = Polygon.intersection(Point(1.0, 3.0), Point(1.0, -3.0), Point(1.0, 3.0), Point(1.0, 5.0))
+        self.assertEqual(Point(1.0, 3.0), inter)
+
+    def test_polygon_intersection_5(self):
+        inter = Polygon.intersection(Point(1.0, 3.0), Point(5.0, -1.0), Point(0.0, 0.0), Point(5.0, 0.0))
+        self.assertEqual(Point(4.0, 0.0), inter)
+
+    def test_polygon_intersection_6(self):
+        inter = Polygon.intersection(Point(5.0, 3.0), Point(5.0, -3.0), Point(0.0, 0.0), Point(5.0, 0.0))
+        self.assertEqual(Point(5.0, 0.0), inter)
+
+    def test_polygon_intersection_7(self):
+        inter = Polygon.intersection(Point(0.0, 0.0), Point(1.0, 1.0), Point(1.0, 1.0), Point(1.0, 0.0))
+        self.assertEqual(Point(1.0, 1.0), inter)
 
 
 if __name__ == '__main__':

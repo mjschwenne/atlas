@@ -4,22 +4,70 @@ from src.Backend.District import *
 
 
 class Constructor:
+    """
+    The constructor handles the compilation and processing of information from the backend and the transition of that
+    information into something that the front end can handle
 
-    def assign_districts(self, regions, wall, city):
+    Methods
+    -------
+    assign_districts(regions, wall, city)
+        Assigns the provided regions a district
+    assign_district(reg, regions, wall, city)
+        Assigns the region a district
+
+    """
+
+    @staticmethod
+    def assign_districts(regions, wall, city):
+        """
+        Assigns the provided regions a district at sudo-random order, taking into account the wall and city bounds
+
+        Parameters
+        ----------
+        regions : List of regions
+            Regions to have districts assigned
+        wall : Wall
+            The wall of the city
+        city : Polygon
+            The polygon representing the city bounds
+        """
+
+        # Clears out the previously stored regions if any
         for reg in regions:
             reg.set_district(None)
+
+        # Assigns a district to each Region
         for reg in regions:
-            self.assign_district(reg, regions, wall, city)
+            Constructor.assign_district(reg, regions, wall, city)
+
+        # Loops over the districts to ensure valid placement at every location until all assignments are valid
         change = True
         while change:
             change = False
             for reg in regions:
                 rating = reg.get_district().determine_rating(reg, regions, wall, city)
                 if rating < 0:
-                    self.assign_district(reg, regions, wall, city)
+                    Constructor.assign_district(reg, regions, wall, city)
                     change = True
 
-    def assign_district(self, reg, regions, wall, city):
+    @staticmethod
+    def assign_district(reg, regions, wall, city):
+        """
+        Assigns a district to a region based on Ratings
+
+        Parameters
+        ----------
+        reg : Region
+            Region to have a district assigned to it
+        regions : List of Regions
+            All of the Regions on the map
+        wall : Wall
+            The City wall
+        city : Polygon
+            The polygon representing the city limits
+        """
+
+        # Gets the rating for every District
         armory_val = Armory.determine_rating(reg, regions, wall, city)
         castle_val = Castle.determine_rating(reg, regions, wall, city)
         cathedral_val = Cathedral.determine_rating(reg, regions, wall, city)
@@ -32,8 +80,12 @@ class Constructor:
         slum_val = Slum.determine_rating(reg, regions, wall, city)
         smithing_val = Smithing.determine_rating(reg, regions, wall, city)
         warcamp_val = WarCamp.determine_rating(reg, regions, wall, city)
+
+        # creates lists of valid Districts and Weights
         values = []
         districts = []
+
+        # checks to see if a district is valid, if so adds it to the lists
         if armory_val >= 0:
             values.append(armory_val + 10)
             districts.append(Armory(0, 0, 0))
@@ -71,5 +123,6 @@ class Constructor:
             values.append(warcamp_val + 10)
             districts.append(WarCamp(0, 0, 0))
 
+        # randomly selects a district based on the weights/ratings of the districts
         dist = random.choices(districts, k=1, weights=values)
         reg.set_district(dist[0])
