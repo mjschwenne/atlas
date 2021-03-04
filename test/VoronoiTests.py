@@ -40,10 +40,10 @@ class TestVoronoi(unittest.TestCase):
         Test the creation of polygons from the Voronoi graph, then visualize them
         """
 
-        bounding_box = Polygon([Point(-200, 200), Point(200, 200), Point(200, -200), Point(-200, -200)])
-        vor = Voronoi(50, bounding_box)
+        bounding_box = Polygon([Point(-50, 50), Point(50, 50), Point(50, -50), Point(-50, -50)])
+        vor = Voronoi(10, bounding_box)
         vor.generate_polygons()
-        polys = []
+
         for v in vor.graph:
             for adj in vor.graph[v]:
                 x_list = [v.get_x(), adj.get_x()]
@@ -57,8 +57,8 @@ class TestVoronoi(unittest.TestCase):
                 x_list.append(v.get_x())
                 y_list.append(v.get_y())
             plt.fill(x_list, y_list, "c")
-            plt.xlim([-225, 225])
-            plt.ylim([-225, 225])
+            plt.xlim([-60, 60])
+            plt.ylim([-60, 60])
         plt.show()
 
 
