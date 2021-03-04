@@ -1,6 +1,6 @@
 import math
 from src.Backend.Point import Point
-from decimal import *
+import numpy as np
 
 
 def _three_point_orientation(p1, p2, p3):
@@ -319,7 +319,7 @@ class Polygon:
             cur_vertex = self.vertices[i]  # The current point (vertex) to start the edge of the polygon
             next_vertex = self.vertices[next_value]  # The next point (vertex) to end the edge of the polygon
 
-            # Need to reset the y value of checking point each loop in case the point is level and in_segement with both
+            # Need to reset the y value of checking point each loop in case the point is level and in_segment with both
             # points, also avoids a double change of the y value
             point.set_y(original_y)
             ext.set_y(original_y)
@@ -467,6 +467,105 @@ class Polygon:
             return True
         else:
             return False
+
+    def split(self, p, ang):
+        """
+        splits a polygon along a point and an angle relative to edge of p
+
+        Parameters
+        ----------
+        p : Point
+            The starting point of the cut
+        ang : float
+            The angle of the line to cut down in radians
+
+        Returns
+        -------
+        List of Polygons
+            A list of polygons from the resulting split
+        """
+        inter_p = self.intersection(p, ang)
+        return self.cut(p, inter_p)
+
+    def cut(self, p1, p2):
+        """
+        Cuts a polygon along two points
+
+        Parameters
+        ----------
+        p1 : Point
+            First Point
+        p2 : Point
+            Second Point
+
+        Returns
+        -------
+        List of Polygons
+            Two new polygons formed by the cut
+        """
+        new_vertices = self.vertices.copy()
+        pointer = 1
+        for i in range(0, len(self.vertices) - 1):
+            v1 = self.vertices[i]
+            v2 = self.vertices[i + 1]
+            if Polygon.in_segment(v1, v2, p1):
+                new_vertices.insert(pointer, p1)
+                pointer += 1
+            if Polygon.in_segment(v1, v2, p2):
+                new_vertices.insert(pointer, p2)
+                pointer += 1
+            pointer += 1
+
+        is_poly1 = True
+        poly1_point_list = []
+        poly2_point_list = []
+        for v in new_vertices:
+            if v == p1 or v == p2:
+                is_poly1 = not is_poly1
+                poly1_point_list.append(v)
+                poly2_point_list.append(v)
+                continue
+            if is_poly1:
+                poly1_point_list.append(v)
+            else:
+                poly2_point_list.append(v)
+
+        return [Polygon(poly1_point_list), Polygon(poly2_point_list)]
+
+    def intersection(self, p, ang):
+        """
+        Finds the point of intersection given a starting point on and edge of a polygon and an angle relative to the x
+        axis.
+        Parameters
+        ----------
+        p : Point
+            Starting point on an edge of of this polygon
+        ang : float
+            Angle in radians
+
+        Returns
+        -------
+        Point
+            The intersection
+        """
+        pass
+
+    def area(self):
+        """
+        Finds the area of the polygon
+
+        Returns
+        -------
+        float
+            The area of the polygon
+        """
+        a = 0
+        j = len(self.vertices)
+        for i in range(0, len(self.vertices)):
+            a += (self.vertices[j].get_x() + self.vertices[i].get_x()) * \
+                 (self.vertices[j].get_y() - self.vertices[i].get_y())
+            j = i
+        return a / 2.0
 
     def __eq__(self, other):
         """

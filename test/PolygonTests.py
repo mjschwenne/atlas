@@ -1,4 +1,7 @@
 import unittest
+
+import math
+
 from src.Backend.Polygon import Polygon
 from src.Backend.Point import Point
 
@@ -343,6 +346,22 @@ class TestPolygon(unittest.TestCase):
         shifted_vert_list.append(first_vert)
         poly2 = Polygon(shifted_vert_list)
         self.assertEqual(True, poly1 == poly2)
+
+    def test_polygon_cut_1(self):
+        """
+        First test of the cut method
+        """
+        poly = Polygon(self.s1ver)
+        polys = poly.cut(Point(0, 0.5), Point(1, 0.5))
+        self.assertEqual(2, len(polys))
+
+    def test_polygon_split_1(self):
+        """
+        First test of the split method
+        """
+        poly = Polygon(self.s1ver)
+        polys = poly.split(Point(0.5, 0.0), math.pi / 2)
+        #  self.assertEqual(2, len(polys))  # Doesn't work yet
 
 
 if __name__ == '__main__':
