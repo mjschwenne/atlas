@@ -484,7 +484,29 @@ class Polygon:
         List of Polygons
             A list of polygons from the resulting split
         """
-        inter_p = self.intersection(p, ang)
+        max_distance_vert = self.vertices[0]
+        for v in self.vertices:
+            cur_dis = p.simple_distance(v)
+            if cur_dis > max_distance_vert.simple_distance(p):
+                max_distance_vert = v
+        ext_p = Point(0, 0)
+        if (ang % (math.pi / 2)) == 0 and (ang % math.pi) != 0:
+            ext_p = Point(p.get_x(), max_distance_vert.get_y())
+        elif (ang % math.pi) == 0:
+            ext_p = Point(max_distance_vert.get_x(), p.get_y())
+        else:
+            m = round(math.tan(ang), 8)
+            n = p.get_y() - (m * p.get_x())
+            ext_p = Point(max_distance_vert.get_x(), n + m * max_distance_vert.get_x())
+        edge = (self.vertices[0], self.vertices[1])
+        for i in range(0, len(self.vertices) - 1):
+            v1 = self.vertices[i]
+            v2 = self.vertices[i + 1]
+            if _intersects(v1, v2, p, ext_p) and not Polygon.in_segment(v1, v2, p):
+                edge = (v1, v2)
+        inter_p = Polygon.intersection(p, ext_p, edge[0], edge[1])
+        if inter_p is None:
+            return None
         return self.cut(p, inter_p)
 
     def cut(self, p1, p2):
@@ -505,13 +527,13 @@ class Polygon:
         """
         new_vertices = self.vertices.copy()
         pointer = 1
-        for i in range(0, len(self.vertices) - 1):
+        for i in range(0, len(self.vertices)):
             v1 = self.vertices[i]
-            v2 = self.vertices[i + 1]
-            if Polygon.in_segment(v1, v2, p1):
+            v2 = self.vertices[(i + 1) % len(self.vertices)]
+            if Polygon.in_segment(v1, v2, p1) and p1 not in self.vertices:
                 new_vertices.insert(pointer, p1)
                 pointer += 1
-            if Polygon.in_segment(v1, v2, p2):
+            if Polygon.in_segment(v1, v2, p2) and p2 not in self.vertices:
                 new_vertices.insert(pointer, p2)
                 pointer += 1
             pointer += 1
@@ -532,23 +554,54 @@ class Polygon:
 
         return [Polygon(poly1_point_list), Polygon(poly2_point_list)]
 
-    def intersection(self, p, ang):
+    @staticmethod
+    def intersection(p1, p2, p3, p4):
         """
-        Finds the point of intersection given a starting point on and edge of a polygon and an angle relative to the x
-        axis.
+        Finds the point of intersection given twp line segments
         Parameters
         ----------
-        p : Point
-            Starting point on an edge of of this polygon
-        ang : float
-            Angle in radians
+        p1 : Point
+            The first point in the first line segment
+        p2 : Point
+            The second point in the first line segment
+        p3 : Point
+            The first point in the second line segment
+        p4 : Point
+            The second point in the second line segment
 
         Returns
         -------
         Point
             The intersection
         """
-        pass
+        # Edge case for if line segments are perpendicular
+        if p1.get_x() == p2.get_x() and p3.get_y() == p4.get_y():
+            return Point(p1.get_x(), p3.get_y())
+        if p1.get_y() == p2.get_y() and p3.get_x() == p4.get_x():
+            return Point(p3.get_x(), p1.get_y())
+
+        e = Point(p2.get_x() - p1.get_x(), p2.get_y() - p1.get_y())
+        f = Point(p4.get_x() - p3.get_x(), p4.get_y() - p3.get_y())
+        p = Point(-e.get_y(), e.get_x())
+        g = Point(p1.get_x() - p3.get_x(), p1.get_y() - p3.get_y())
+        d = (f.get_x() * p.get_x()) + (f.get_y() * p.get_y())
+
+        if Polygon.in_segment(p1, p2, p3):
+            return p3
+        if Polygon.in_segment(p1, p2, p4):
+            return p4
+        if Polygon.in_segment(p3, p4, p1):
+            return p1
+        if Polygon.in_segment(p3, p4, p2):
+            return p2
+
+        if d == 0:
+            return None
+
+        h = ((g.get_x() * p.get_x()) + (g.get_y() * p.get_x())) / d
+        if 0 <= h <= 1:
+            return Point(p3.get_x() + f.get_x() * h, p3.get_y() + f.get_y() * h)
+        return None
 
     def area(self):
         """
