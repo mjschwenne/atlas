@@ -60,6 +60,7 @@ class Region(Polygon):
         self.district = district
         self.is_water = is_water
         self.has_river = has_river
+        self.buildings = []
 
     def get_district(self):
         """
