@@ -35,6 +35,15 @@ class TestVoronoi(unittest.TestCase):
     def test_voronoi_generate_polygons(self):
         """
         Test the creation of polygons from the Voronoi graph, then visualize them
+
+        New method to generate polygons. Take self.voronoi.regions and if there are no -1's in the region, take pick the
+        first vertex and move in a clockwise direction to another vertex listed in the region. repeat.
+
+        If there is a -1, do mostly the same process as before except that we will generate the polyline 'in' the
+        voronoi diagram. For the end vertices of the polyline, find the adjacent vertex to that point which is on the
+        bounding polygon, then find the path between them only on the bounding polygon?? There are a few edge cases here
+
+        Check work be ensuring that the voronoi point is inside the polygon which has been constructed!
         """
 
         bounding_box = Polygon([Point(-50, 50), Point(50, 50), Point(50, -50), Point(-50, -50)])
