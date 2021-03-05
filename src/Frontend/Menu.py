@@ -34,6 +34,7 @@ def main():
         9 = Warcamp - Light Limy Green
         10 = Gate - Tan/Gray Wall Paint like
         11 = Precinct - Yellow
+        12 = Building - Black
         """
 
         # https://www.colorcombos.com/combotester.html?color0=4aa75d&color1=ffac58&color2=003399&color3=020101&color4=ac6024&color5=6ab0b0&color6=a3a3a3&color7=952e85&color8=a93939&color9=7ba74c&color10=e5e5be&color11=eaea02&show_text=
@@ -49,7 +50,8 @@ def main():
             8: "#a93939",  # Pale Red
             9: "#7ba74c",  # Light Limy Green
             10: "#e5e5be",  # Tan/Gray Wall Paint like
-            11: "#eaea02"  # Yellow
+            11: "#eaea02",  # Yellow
+            12: "0000000"  #Black - Building
         }
         map_canvas.create_polygon(*points, fill=switcher.get(region_type, "#ebd5b3"))
 
@@ -87,6 +89,12 @@ def main():
                 verts.append((v.get_x() + 9) * 10)
                 verts.append((v.get_y() + 4) * 10)
             draw_region(map_canvas, switch_val, verts)
+            for build in reg.buildings:
+                verts = []
+                for v in build.get_vertices():
+                    verts.append((v.get_x() + 9) * 10)
+                    verts.append((v.get_y() + 4) * 10)
+                draw_region(map_canvas, 12, verts)
 
     def help_msg():
         """
