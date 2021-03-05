@@ -28,7 +28,6 @@ class DistrictGeneration:
         max_p1 = region.vertices[0]
         max_p2 = region.vertices[1]
         max_distance = max_p1.simple_distance(max_p2)
-        buildings = []
 
         # finds the longest length on an edge of the region
         for i in range(0, (len(region.vertices) - 1)):
@@ -59,8 +58,8 @@ class DistrictGeneration:
         random.seed()
         ran_p = Point(0, 0)
 
-        # Finds a random value informed by chaos_level
-        cut_rand = random.uniform((1 - chaos_level), (0.5 * chaos_level + 0.5))
+        # Finds a random value informed by chaos_level (when chaos is 0 it will always be half)
+        cut_rand = random.uniform((1 - (0.5 * chaos_level + 0.5)), (0.5 * chaos_level + 0.5))
 
         # Finds a random point on the edge (using cut_rand) to cut the edge at.
         if max_p1.get_x() != max_p2.get_x():
@@ -77,12 +76,12 @@ class DistrictGeneration:
                                  ((_PI / 2) + ((chaos_level / 36) * _PI))) + edge_angle
 
         # Slit the region into two parts
-        parts = region.cut(ran_p, ran_ang)
+        parts = region.slipt(ran_p, ran_ang)
 
         # For each part
         for part in parts:
             if part.area() < min_building_size + (random.uniform(0, chaos_level) * min_building_size):
                 if random.random() < probability_of_empty_space:
-                    buildings.append(part)
+                    region.buildings.append(part)
             else:
                 DistrictGeneration.create_buildings(part, chaos_level, probability_of_empty_space, min_building_size)
