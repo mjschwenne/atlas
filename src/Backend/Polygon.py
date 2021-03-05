@@ -580,27 +580,12 @@ class Polygon:
         if p1.get_y() == p2.get_y() and p3.get_x() == p4.get_x():
             return Point(p3.get_x(), p1.get_y())
 
-        e = Point(p2.get_x() - p1.get_x(), p2.get_y() - p1.get_y())
-        f = Point(p4.get_x() - p3.get_x(), p4.get_y() - p3.get_y())
-        p = Point(-e.get_y(), e.get_x())
-        g = Point(p1.get_x() - p3.get_x(), p1.get_y() - p3.get_y())
-        d = (f.get_x() * p.get_x()) + (f.get_y() * p.get_y())
-
-        if Polygon.in_segment(p1, p2, p3):
-            return p3
-        if Polygon.in_segment(p1, p2, p4):
-            return p4
-        if Polygon.in_segment(p3, p4, p1):
-            return p1
-        if Polygon.in_segment(p3, p4, p2):
-            return p2
-
-        if d == 0:
-            return None
-
-        h = ((g.get_x() * p.get_x()) + (g.get_y() * p.get_x())) / d
-        if 0 <= h <= 1:
-            return Point(p3.get_x() + f.get_x() * h, p3.get_y() + f.get_y() * h)
+        # If not perpendicular
+        a = np.array([])
+        b = np.array([])
+        x = list(np.linalg.solve(a, b))
+        if np.allclose(np.dot(a, x), b):
+            return Point(x[0], x[1])
         return None
 
     def area(self):

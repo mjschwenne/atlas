@@ -190,13 +190,11 @@ class BasicDistrict(District):
             ran_p.set_y((max_p2.get_y() - max_p1.get_y()) * cut_rand + max_p1.get_y())
 
         # Find the random angle of the division from the angle of the edge
-        ran_ang = random.uniform(-((_PI / 2) + ((self.chaos_level / 36) * _PI)),
-                                 ((_PI / 2) + ((self.chaos_level / 36) * _PI))) + edge_angle
-
         cut_ang = edge_angle + math.pi / 2
+        ran_ang = (random.uniform(-self.chaos_level, self.chaos_level) * (math.pi / 12)) + cut_ang
 
         # Slit the region into two parts
-        parts = section.split(ran_p, cut_ang)
+        parts = section.split(ran_p, ran_ang)
 
         for part in parts:
             if part.area() <= self.min_building_size + (random.uniform(0, self.chaos_level) * self.min_building_size):
