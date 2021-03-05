@@ -423,6 +423,11 @@ class TestPolygon(unittest.TestCase):
         inter = Polygon.intersection(Point(0.0, 0.0), Point(1.0, 1.0), Point(1.0, 1.0), Point(1.0, 0.0))
         self.assertEqual(Point(1.0, 1.0), inter)
 
+    def test_polygon_area_1(self):
+        poly = Polygon(self.s1ver)
+        a = poly.area()
+        self.assertEqual(1, a)
+
 
 if __name__ == '__main__':
     unittest.main()

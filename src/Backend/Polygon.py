@@ -613,12 +613,11 @@ class Polygon:
             The area of the polygon
         """
         a = 0
-        j = len(self.vertices)
         for i in range(0, len(self.vertices)):
-            a += (self.vertices[j].get_x() + self.vertices[i].get_x()) * \
-                 (self.vertices[j].get_y() - self.vertices[i].get_y())
-            j = i
-        return a / 2.0
+            v1 = self.vertices[i]
+            v2 = self.vertices[(i + 1) % len(self.vertices)]
+            a += v1.get_x() * v2.get_y() - v1.get_y() * v2.get_x()
+        return abs(a / 2.0)
 
     def __eq__(self, other):
         """
