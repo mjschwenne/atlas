@@ -499,9 +499,9 @@ class Polygon:
             n = p.get_y() - (m * p.get_x())
             ext_p = Point(max_distance_vert.get_x(), n + m * max_distance_vert.get_x())
         edge = (self.vertices[0], self.vertices[1])
-        for i in range(0, len(self.vertices) - 1):
+        for i in range(0, len(self.vertices)):
             v1 = self.vertices[i]
-            v2 = self.vertices[i + 1]
+            v2 = self.vertices[(i + 1) % len(self.vertices)]
             if _intersects(v1, v2, p, ext_p) and not Polygon.in_segment(v1, v2, p):
                 edge = (v1, v2)
         inter_p = Polygon.intersection(p, ext_p, edge[0], edge[1])

@@ -88,7 +88,7 @@ class Constructor:
         # checks to see if a district is valid, if so adds it to the lists
         if armory_val >= 0:
             values.append(armory_val + 10)
-            districts.append(Armory(0, 0, 0))
+            districts.append(Armory(0, 1, 10))
         if castle_val >= 0:
             values.append(castle_val + 10)
             districts.append(Castle(0, 0, 0))

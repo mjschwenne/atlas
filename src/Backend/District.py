@@ -129,23 +129,19 @@ class District:
 
 class BasicDistrict(District):
 
-    @staticmethod
-    def generate_buildings(region, section,chaos_level, probability_of_empty_space, min_building_size):
+    def generate_district(self, region):
+        self.generate_buildings(region, region)
+
+    def generate_buildings(self, region, section):
         """
         Splits a given region into buildings randomly
 
         Parameters
         ----------
         region : Region
-            The Region to split into buildings
-        chaos_level : float
-            A float from 0 to 1 that indicates how random/chaotic the region will be (0 is the most normal, 1 is the
-            most chaotic)
-        probability_of_empty_space : float
-            A float from 0 to 1 that indicates how likely there is to be empty space in the region (0 is impossible and
-            1 is 100% clear space)
-        min_building_size : float
-            The area around which the smallest building will be.
+            The Region to split into buildings that stores the buildings list
+        section : Polygon
+            The possibly not Region Polygon that needs to be split
         """
         max_p1 = section.vertices[0]
         max_p2 = section.vertices[1]
@@ -162,7 +158,11 @@ class BasicDistrict(District):
                 max_p2 = p2
 
         # find the angle of the edge
-        if max_p1.get_y() > max_p2.get_y():
+        if max_p1.get_x() == max_p2.get_x():
+            edge_angle = _PI / 2
+        elif max_p1.get_y() == max_p2.get_y():
+            edge_angle = _PI
+        elif max_p1.get_y() > max_p2.get_y():
             help_p = Point(max_p1.get_x(), max_p2.get_y())
             c = max_p2.simple_distance(max_p1)
             a = max_p1.simple_distance(help_p)
@@ -172,16 +172,12 @@ class BasicDistrict(District):
             c = max_p1.simple_distance(max_p2)
             a = max_p2.simple_distance(help_p)
             edge_angle = math.sin(a / c)
-        elif max_p1.get_x == max_p2.get_x():
-            edge_angle = _PI / 2
-        else:
-            edge_angle = _PI
 
         random.seed()
         ran_p = Point(0, 0)
 
         # Finds a random value informed by chaos_level (when chaos is 0 it will always be half)
-        cut_rand = random.uniform((1 - (0.5 * chaos_level + 0.5)), (0.5 * chaos_level + 0.5))
+        cut_rand = random.uniform((1 - (0.5 * self.chaos_level + 0.5)), (0.5 * self.chaos_level + 0.5))
 
         # Finds a random point on the edge (using cut_rand) to cut the edge at.
         if max_p1.get_x() != max_p2.get_x():
@@ -194,24 +190,23 @@ class BasicDistrict(District):
             ran_p.set_y((max_p2.get_y() - max_p1.get_y()) * cut_rand + max_p1.get_y())
 
         # Find the random angle of the division from the angle of the edge
-        ran_ang = random.uniform(-((_PI / 2) + ((chaos_level / 36) * _PI)),
-                                 ((_PI / 2) + ((chaos_level / 36) * _PI))) + edge_angle
+        ran_ang = random.uniform(-((_PI / 2) + ((self.chaos_level / 36) * _PI)),
+                                 ((_PI / 2) + ((self.chaos_level / 36) * _PI))) + edge_angle
+
+        cut_ang = edge_angle + math.pi / 2
 
         # Slit the region into two parts
-        parts = section.split(ran_p, ran_ang)
+        parts = section.split(ran_p, cut_ang)
 
-        # For each part
-        if parts is None:
-            parts = []
         for part in parts:
-            if part.area() < min_building_size + (random.uniform(0, chaos_level) * min_building_size):
-                if random.random() < probability_of_empty_space:
-                    region.buildings.append(part)
+            if part.area() <= self.min_building_size + (random.uniform(0, self.chaos_level) * self.min_building_size):
+                # if random.random() < self.probability_of_empty_space:
+                region.buildings.append(part)
             else:
-                BasicDistrict.generate_buildings(region, part, chaos_level, probability_of_empty_space, min_building_size)
+                self.generate_buildings(region, part)
 
 
-class Armory(District):
+class Armory(BasicDistrict):
 
     # Overrides District's determine Rating
     @staticmethod
@@ -262,10 +257,6 @@ class Armory(District):
                     elif isinstance(dis, WarCamp):
                         rating += 40
         return rating
-
-    @staticmethod
-    def generate_buildings(region):
-        BasicDistrict.generate_buildings(region, region,0.8, 0.8, 0.8)
 
 
 class Castle(District):

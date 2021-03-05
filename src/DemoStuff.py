@@ -118,6 +118,6 @@ class DemoStuff:
         Constructor.assign_districts(self.regList, self.wall, self.poly_city)
         for reg in self.regList:
             if isinstance(reg.get_district(), Armory):
-                Armory.generate_buildings(reg)
+                reg.get_district().generate_district(reg)
         return self.regList
 

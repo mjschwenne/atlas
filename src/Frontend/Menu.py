@@ -51,7 +51,7 @@ def main():
             9: "#7ba74c",  # Light Limy Green
             10: "#e5e5be",  # Tan/Gray Wall Paint like
             11: "#eaea02",  # Yellow
-            12: "0000000"  #Black - Building
+            12: "#000000"  #Black - Building
         }
         map_canvas.create_polygon(*points, fill=switcher.get(region_type, "#ebd5b3"))
 
