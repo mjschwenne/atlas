@@ -580,19 +580,29 @@ class Polygon:
         if p1.get_y() == p2.get_y() and p3.get_x() == p4.get_x():
             return Point(p3.get_x(), p1.get_y())
 
+        if p2.get_x()-p1.get_x() == 0:
+            slope2 = (p4.get_y() - p3.get_y()) / (p4.get_x() - p3.get_x())
+            b2 = p3.get_y() - (slope2 * p3.get_x())
+            p = Point(p2.get_x(), slope2*p2.get_x()+b2)
+            return p
+        if p4.get_x()-p3.get_x() == 0:
+            slope1 = (p2.get_y() - p1.get_y()) / (p2.get_x() - p1.get_x())
+            b1 = p1.get_y() - (slope1 * p1.get_x())
+            p = Point(p3.get_x(), slope1 * p3.get_x() + b1)
+            return p
+
         slope1 = (p2.get_y() - p1.get_y()) / (p2.get_x() - p1.get_x())
         b1 = p1.get_y() - (slope1 * p1.get_x())
 
         slope2 = (p4.get_y() - p3.get_y()) / (p4.get_x() - p3.get_x())
         b2 = p3.get_y() - (slope2 * p3.get_x())
 
-        # If not perpendicular
-        a = np.array([[1, -slope1], [1, -slope2]])
-        b = np.array([[b1], [b2]])
-        x = list(np.linalg.solve(a, b))
-        if np.allclose(np.dot(a, x), b):
-            return Point(x[0], x[1])
-        return None
+        x = (b2 - b1)/(slope1-slope2)
+
+        y = slope1*x+b1
+
+        return Point(x, y)
+
 
     def area(self):
         """
