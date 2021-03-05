@@ -4,9 +4,6 @@ from src.Backend.Polygon import Polygon
 from src.Backend.Point import Point
 from scipy.spatial import voronoi_plot_2d
 import matplotlib.pyplot as plt
-from matplotlib.patches import Polygon as mplPoly
-from matplotlib.collections import PatchCollection
-import numpy as np
 
 
 class TestVoronoi(unittest.TestCase):
@@ -49,16 +46,20 @@ class TestVoronoi(unittest.TestCase):
                 x_list = [v.get_x(), adj.get_x()]
                 y_list = [v.get_y(), adj.get_y()]
                 plt.plot(x_list, y_list, 'k-')
-        for p in vor.polygons:
-            vert_list = p.get_vertices()
-            x_list = []
-            y_list = []
-            for v in vert_list:
-                x_list.append(v.get_x())
-                y_list.append(v.get_y())
-            plt.fill(x_list, y_list, "c")
-            plt.xlim([-60, 60])
-            plt.ylim([-60, 60])
+        # for p in vor.polygons:
+        print("Edges =", len(vor.graph.edges))
+        print("Polygons =", len(vor.polygons))
+        print(vor.voronoi.vertices)
+        print(vor.voronoi.regions)
+        # vert_list = p.get_vertices()
+        # x_list = []
+        # y_list = []
+        # for v in vert_list:
+        #     x_list.append(v.get_x())
+        #     y_list.append(v.get_y())
+        # plt.fill(x_list, y_list)
+        # plt.xlim([-60, 60])
+        # plt.ylim([-60, 60])
         plt.show()
 
 

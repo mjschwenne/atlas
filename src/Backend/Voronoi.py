@@ -10,14 +10,16 @@ from scipy.spatial import Voronoi as Vor
 import matplotlib.pyplot as plt
 
 
-def plot_graph(G, u):
+def plot_graph(G, u, t, c="k-"):
     for v in G:
         if u == v:
             plt.plot(v.get_x(), v.get_y(), "r*")
+        if t == v:
+            plt.plot(v.get_x(), v.get_y(), "b*")
         for adj in G[v]:
             x_list = [v.get_x(), adj.get_x()]
             y_list = [v.get_y(), adj.get_y()]
-            plt.plot(x_list, y_list, 'k-')
+            plt.plot(x_list, y_list, c)
     plt.xlim([-60, 60])
     plt.ylim([-60, 60])
     plt.show()
@@ -218,7 +220,7 @@ def chordless_path(G, t, Q, P, master_Q):
     # for p in P:
     #     print(f"{p},", end=" ")
     s = P.popleft()
-    plot_graph(G, s)
+    # plot_graph(G, s, t)
     # print(f"] \nG[{s}] = [", end=" ")
     # for v in G[s]:
     #     print(f"{v},", end=" ")
@@ -238,19 +240,28 @@ def chordless_path(G, t, Q, P, master_Q):
             vertices_to_remove.remove(v)
             removed_graph = remove_vertices(G, vertices_to_remove)
             comp_ptr = components(removed_graph)
-            print("comp_ptr = [", end=" ")
-            for c in comp_ptr:
-                print(f"{c} : {comp_ptr[c]},", end=" ")
-            print("]")
+            # plot_graph(removed_graph, s, t, "g-")
+            # print("comp_ptr = [", end=" ")
+            # for c in comp_ptr:
+            #     print(f"{c} : {comp_ptr[c]},", end=" ")
+            # print("]")
             # Three cases depending on which vertex (if any of these ones) is the component representative
+            path = False
             if isinstance(comp_ptr[v], Point) and isinstance(comp_ptr[t], Point) and comp_ptr[v] == comp_ptr[t]:
-                if isinstance(comp_ptr[v], int) and comp_ptr[t] == v:
-                    if isinstance(comp_ptr[t], int) and comp_ptr[v] == t:
-                        bfs_route = bfs_path(removed_graph, v, t)
-                        new_q = Q.copy()
-                        new_q.append(v)
-                        print("NON-BFS BRANCH")
-                        chordless_path(removed_graph, t, new_q, bfs_route, master_Q)
+                path = True
+            elif isinstance(comp_ptr[v], int) and isinstance(comp_ptr[t], int):
+                pass
+            elif isinstance(comp_ptr[v], int) and comp_ptr[t] == v:
+                path = True
+            elif isinstance(comp_ptr[t], int) and comp_ptr[v] == t:
+                path = True
+
+            if path:
+                bfs_route = bfs_path(removed_graph, v, t)
+                new_q = Q.copy()
+                new_q.append(v)
+                # print("NON-BFS BRANCH")
+                chordless_path(removed_graph, t, new_q, bfs_route, master_Q)
     next_vert = P[0]
     Q.append(next_vert)
     # Find G \ (N(s) \ nxt(s))
