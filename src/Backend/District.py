@@ -130,7 +130,7 @@ class District:
 class BasicDistrict(District):
 
     @staticmethod
-    def generate_buildings(region, chaos_level, probability_of_empty_space, min_building_size):
+    def generate_buildings(region, section,chaos_level, probability_of_empty_space, min_building_size):
         """
         Splits a given region into buildings randomly
 
@@ -147,14 +147,14 @@ class BasicDistrict(District):
         min_building_size : float
             The area around which the smallest building will be.
         """
-        max_p1 = region.vertices[0]
-        max_p2 = region.vertices[1]
+        max_p1 = section.vertices[0]
+        max_p2 = section.vertices[1]
         max_distance = max_p1.simple_distance(max_p2)
 
-        # finds the longest length on an edge of the region
-        for i in range(0, (len(region.vertices) - 1)):
-            p1 = region.vertices[i]
-            p2 = region.vertices[i + 1]
+        # finds the longest length on an edge of the section
+        for i in range(0, (len(section.vertices) - 1)):
+            p1 = section.vertices[i]
+            p2 = section.vertices[i + 1]
             distance = p1.simple_distance(p2)
             if max_distance < distance:
                 max_distance = distance
@@ -198,15 +198,17 @@ class BasicDistrict(District):
                                  ((_PI / 2) + ((chaos_level / 36) * _PI))) + edge_angle
 
         # Slit the region into two parts
-        parts = region.split(ran_p, ran_ang)
+        parts = section.split(ran_p, ran_ang)
 
         # For each part
+        if parts is None:
+            parts = []
         for part in parts:
             if part.area() < min_building_size + (random.uniform(0, chaos_level) * min_building_size):
                 if random.random() < probability_of_empty_space:
                     region.buildings.append(part)
             else:
-                BasicDistrict.generate_buildings(part, chaos_level, probability_of_empty_space, min_building_size)
+                BasicDistrict.generate_buildings(region, part, chaos_level, probability_of_empty_space, min_building_size)
 
 
 class Armory(District):
@@ -263,7 +265,7 @@ class Armory(District):
 
     @staticmethod
     def generate_buildings(region):
-        BasicDistrict.generate_buildings(region, 0.8, 0.8, 0.8)
+        BasicDistrict.generate_buildings(region, region,0.8, 0.8, 0.8)
 
 
 class Castle(District):
