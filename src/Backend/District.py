@@ -191,13 +191,14 @@ class BasicDistrict(District):
 
         # Find the random angle of the division from the angle of the edge
         cut_ang = edge_angle + math.pi / 2
-        ran_ang = (random.uniform(-self.chaos_level, self.chaos_level) * (math.pi / 12)) + cut_ang
+        ran_ang = (random.uniform(-self.chaos_level, self.chaos_level) * (math.pi / 24)) + cut_ang
 
         # Slit the region into two parts
         parts = section.split(ran_p, ran_ang)
 
         for part in parts:
-            if part.area() <= self.min_building_size + (random.uniform(0, self.chaos_level) * self.min_building_size):
+            if round(part.area(), 8) <= self.min_building_size + \
+                    (random.uniform(0, self.chaos_level) * self.min_building_size):
                 # if random.random() < self.probability_of_empty_space:
                 region.buildings.append(part)
             else:

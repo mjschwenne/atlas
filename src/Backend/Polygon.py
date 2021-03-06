@@ -484,30 +484,55 @@ class Polygon:
         List of Polygons
             A list of polygons from the resulting split
         """
-        max_distance_vert = self.vertices[0]
-        for v in self.vertices:
-            cur_dis = p.simple_distance(v)
-            if cur_dis > max_distance_vert.simple_distance(p):
-                max_distance_vert = v
-        ext_p = Point(0, 0)
-        if (ang % (math.pi / 2)) == 0 and (ang % math.pi) != 0:
-            ext_p = Point(p.get_x(), max_distance_vert.get_y())
-        elif (ang % math.pi) == 0:
-            ext_p = Point(max_distance_vert.get_x(), p.get_y())
-        else:
-            m = round(math.tan(ang), 8)
-            n = p.get_y() - (m * p.get_x())
-            ext_p = Point(max_distance_vert.get_x(), n + m * max_distance_vert.get_x())
-        edge = (self.vertices[0], self.vertices[1])
+        # max_distance_vert = self.vertices[0]
+        # for v in self.vertices:
+        #     cur_dis = p.simple_distance(v)
+        #     if cur_dis > max_distance_vert.simple_distance(p):
+        #         max_distance_vert = v
+
+        # ext_p = Point(0, 0)
+        # if (ang % (math.pi / 2)) == 0 and (ang % math.pi) != 0:
+        #     ext_p = Point(p.get_x(), max_distance_vert.get_y())
+        # elif (ang % math.pi) == 0:
+        #     ext_p = Point(max_distance_vert.get_x(), p.get_y())
+        # else:
+        #     m = round(math.tan(ang), 8)
+        #     n = p.get_y() - (m * p.get_x())
+        #     ext_p = Point(max_distance_vert.get_x(), n + m * max_distance_vert.get_x())
+        #     if not self.is_contained(ext_p):
+        #         ext_p = Point((max_distance_vert.get_y() - n) / m, max_distance_vert.get_y())
+
+        ext_p = None
+        ang = ang % (2 * math.pi)
+        if ang > math.pi:
+            ang -= 2 * math.pi
         for i in range(0, len(self.vertices)):
             v1 = self.vertices[i]
             v2 = self.vertices[(i + 1) % len(self.vertices)]
-            if _intersects(v1, v2, p, ext_p) and not Polygon.in_segment(v1, v2, p):
-                edge = (v1, v2)
-        inter_p = Polygon.intersection(p, ext_p, edge[0], edge[1])
-        if inter_p is None:
-            return None
-        return self.cut(p, inter_p)
+            if (ang % (math.pi / 2)) == 0 and (ang % math.pi) != 0:
+                pos_points = [Point(p.get_x(), v1.get_y()), Point(p.get_x(), v2.get_y())]
+            elif (ang % math.pi) == 0:
+                pos_points = [Point(v1.get_x(), p.get_y()), Point(v2.get_x(), p.get_y())]
+            else:
+                m = round(math.tan(ang), 8)
+                mn = round(math.tan(-ang), 8)
+                n = round(p.get_y() - (m * p.get_x()), 8)
+                pos_points = [Point((v1.get_y() - n) / m, n + m * v1.get_x()),
+                              Point((v2.get_y() - n) / m, n + m * v2.get_x()),
+                              Point((v1.get_y() - n) / m, n + m * v2.get_x()),
+                              Point((v2.get_y() - n) / m, n + m * v1.get_x()),
+                              Point((v1.get_y() - n) / mn, n + mn * v1.get_x()),
+                              Point((v2.get_y() - n) / mn, n + mn * v2.get_x()),
+                              Point((v1.get_y() - n) / mn, n + mn * v2.get_x()),
+                              Point((v2.get_y() - n) / mn, n + mn * v1.get_x()),
+                              Point(v1.get_x(), n + m * v1.get_x()), Point((v1.get_y() - n) / m, v1.get_y()),
+                              Point(v2.get_x(), n + m * v2.get_x()), Point((v2.get_y() - n) / m, v2.get_y()),
+                              Point(v1.get_x(), n + mn * v1.get_x()), Point((v1.get_y() - n) / mn, v1.get_y()),
+                              Point(v2.get_x(), n + mn * v2.get_x()), Point((v2.get_y() - n) / mn, v2.get_y())]
+            for ps in pos_points:
+                if _intersects(v1, v2, p, ps) and self.in_segment(v1, v2, ps):
+                    ext_p = ps
+        return self.cut(p, ext_p)
 
     def cut(self, p1, p2):
         """
