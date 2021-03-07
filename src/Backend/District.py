@@ -157,6 +157,7 @@ class BasicDistrict(District):
                 max_p1 = p1
                 max_p2 = p2
 
+        edge_angle = 0
         # find the angle of the edge
         if max_p1.get_x() == max_p2.get_x():
             edge_angle = _PI / 2
