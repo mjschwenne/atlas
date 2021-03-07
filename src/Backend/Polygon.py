@@ -487,7 +487,7 @@ class Polygon:
         max_distance_vert = self.vertices[0]
         for v in self.vertices:
             cur_dis = p.simple_distance(v)
-            if cur_dis > max_distance_vert.simple_distance(p):
+            if cur_dis >= max_distance_vert.simple_distance(p):
                 max_distance_vert = v
 
         ext_p = None
