@@ -165,14 +165,18 @@ class BasicDistrict(District):
             edge_angle = _PI
         elif max_p1.get_y() > max_p2.get_y():
             help_p = Point(max_p1.get_x(), max_p2.get_y())
-            c = max_p2.simple_distance(max_p1)
-            a = max_p1.simple_distance(help_p)
-            edge_angle = math.sin(a / c)
+            a = max_p2.simple_distance(max_p1)
+            b = max_p1.simple_distance(help_p)
+            c = max_p2.simple_distance(help_p)
+            interVal = ((b ** 2) + (c ** 2) - (a ** 2))/(2 * b * c)
+            edge_angle = math.acos(interVal)
         elif max_p1.get_y() < max_p2.get_y():
             help_p = Point(max_p2.get_x(), max_p1.get_y())
-            c = max_p1.simple_distance(max_p2)
-            a = max_p2.simple_distance(help_p)
-            edge_angle = math.sin(a / c)
+            a = max_p1.simple_distance(max_p2)
+            b = max_p2.simple_distance(help_p)
+            c = max_p1.simple_distance(help_p)
+            interVal = ((b ** 2) + (c ** 2) - (a ** 2)) / (2 * b * c)
+            edge_angle = math.acos(interVal)
 
         random.seed()
         ran_p = Point(0, 0)
@@ -192,8 +196,10 @@ class BasicDistrict(District):
 
         # Find the random angle of the division from the angle of the edge
         cut_ang = edge_angle + math.pi / 2
-        ran_ang = (random.uniform(-self.chaos_level, self.chaos_level) * (math.pi / 24)) + cut_ang
-
+        ran_ang = (random.uniform(-self.chaos_level, self.chaos_level) * (math.pi / 6)) + cut_ang
+        print("Cut Point = ", ran_p)
+        print("Edge ang =", edge_angle)
+        print("Cut ang = ", ran_ang)
         # Slit the region into two parts
         parts = section.split(ran_p, ran_ang)
 

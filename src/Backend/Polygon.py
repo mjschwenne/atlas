@@ -79,6 +79,13 @@ def _intersects(p1, q1, p2, q2):
     return False
 
 
+def _intersect_segment(p1, p2, p3, p4):
+    inter = Polygon.intersection(p1, p2, p3, p4)
+    if inter is not None and Polygon.in_segment(p1, p2, inter):
+        return True
+    return False
+
+
 class Polygon:
     """
     This class represents a polygon as a list of vertex points ordered in clockwise order.
@@ -507,7 +514,7 @@ class Polygon:
             v1 = self.vertices[i]
             v2 = self.vertices[(i + 1) % len(self.vertices)]
 
-            if _intersects(v1, v2, p, ext_p) and not self.in_segment(v1, v2, p):
+            if _intersect_segment(v1, v2, p, ext_p) and not self.in_segment(v1, v2, p):
                 edge = (v1, v2)
 
         inter_p = self.intersection(edge[0], edge[1], p, ext_p)
@@ -665,3 +672,4 @@ class Polygon:
         sorted_vertices = self.vertices.copy()
         sorted_vertices.sort()
         return hash(tuple(sorted_vertices))
+

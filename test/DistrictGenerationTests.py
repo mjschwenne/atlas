@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 class DistrictGenerationTests(unittest.TestCase):
 
     def test_basic_district_Generation(self):
-        a = Armory(0.1, 0, 15)
+        a = Armory(0.1, 0, 25)
         r = Region(a, [Point(0.0, 0.0), Point(0.0, 10.0), Point(10.0, 10.0), Point(10.0, 0.0)], False, False)
         r.get_district().generate_district(r)
         buildings = r.buildings
