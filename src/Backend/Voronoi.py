@@ -270,6 +270,54 @@ def chordless_path(G, t, Q, P, master_Q):
     chordless_path(remove_vertices(G, vertices_to_remove), t, Q, P, master_Q)
 
 
+def clockwise_order(vertices):
+    """
+    Given a list of vertices, return them ordered in clockwise order
+
+    Parameters
+    ----------
+    vertices : List
+        The vertices of a polygon
+
+    Returns
+    -------
+    List
+        The vertices ordered in clockwise order.
+    """
+    # Calculate an approximate center of this polygon.
+    # We just need a point inside the shape.
+    # We cannot use Polygon.get_center() because that methods makes an assumption about the order of the vertices.
+    simple_center = Point(0, 0)
+    for v in vertices:
+        cx, cy = simple_center.get()
+        cx += v.get_x()
+        cy += v.get_y()
+        simple_center.set(cx, cy)
+    cx, cy = simple_center.get()
+    cx = cx / len(vertices)
+    cy = cy / len(vertices)
+    simple_center.set(cx, cy)
+
+    # Create a mapping between the original vertices and the translation of the polygons such that simple_center is the
+    # origin.
+    vert_map = {}
+    for v in vertices:
+        vert_map[Point(v.get_x() - simple_center.get_x(), v.get_y() - simple_center.get_y())] = v
+
+    # Create a list of angle such that each angle is the angle between the new point and the positive x-axis.
+    # Add pi so that the angle vary from 0 to 2pi rather than -pi to pi
+    angles = {}
+    for v in vert_map.keys():
+        angles[math.atan2(v.get_x(), v.get_y()) + math.pi] = vert_map[v]
+
+    # Rebuild the angles dictionary to be sorted from greatest to least
+    sorted_angles = {}
+    for a in sorted(angles, reverse=True):
+        sorted_angles[a] = angles[a]
+
+    return list(sorted_angles.values())
+
+
 class Voronoi:
     """
     Generates and stores a Voronoi diagram as a graph and list of polygons
@@ -444,27 +492,21 @@ class Voronoi:
 
         Stores the polygons in a class attribute list
         """
-        # for each vertex in the graph... Find the chordless cycles
-        # print("Vertices of G are [", end=" ")
-        # for v in self.graph:
-        #     print(f"{v},", end=" ")
-        # print("]")
-        # for v in self.graph:
-        #     print(f"Vertices adjacent to {v} are [", end=" ")
-        #     for t in self.graph[v]:
-        #         print(f"{t},", end=" ")
-        #     print("]")
-        #     for t in self.graph[v]:
-        #         print(f"Generating polygons with segment {v} -- {t} ")
-        v = next(iter(self.graph))
-        t = next(iter(self.graph[v]))
-        print(f"Generating polygons with segment {v} -- {t} ")
-        removed_graph = remove_edge(self.graph, v, t)
-        bfs_route = bfs_path(removed_graph, v, t)
-        paths = []
-        chordless_path(removed_graph, t, [v], bfs_route, paths)
-        for p in paths:
-            self.polygons.add(Polygon(p))
+        for r in self.voronoi.regions:
+            # If the region is not complete according to QHull and SciPy
+            if -1 in r:
+                pass
+            elif len(r) > 0:
+                vertices = []
+                for p in r:
+                    point = self.voronoi.vertices[p]
+                    vertices.append(Point(point[0], point[1]))
+                print("vertices = [", end=" ")
+                for v in vertices:
+                    print(f"{v},", end=" ")
+                print("]")
+                self.polygons.add(Polygon(clockwise_order(vertices)))
+
 
     def relax(self):
         pass
