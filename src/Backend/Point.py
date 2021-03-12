@@ -87,7 +87,7 @@ class Point:
         tuple
             A tuple in the form (`x`, `y`)
         """
-        return self.x, self.y
+        return round(self.x, 8), round(self.y, 8)
 
     def get_x(self):
         """

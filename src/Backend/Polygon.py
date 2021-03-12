@@ -79,6 +79,13 @@ def _intersects(p1, q1, p2, q2):
     return False
 
 
+def _intersect_segment(p1, p2, p3, p4):
+    inter = Polygon.intersection(p1, p2, p3, p4)
+    if inter is not None and Polygon.in_segment(p1, p2, inter):
+        return True
+    return False
+
+
 class Polygon:
     """
     This class represents a polygon as a list of vertex points ordered in clockwise order.
@@ -487,9 +494,10 @@ class Polygon:
         max_distance_vert = self.vertices[0]
         for v in self.vertices:
             cur_dis = p.simple_distance(v)
-            if cur_dis > max_distance_vert.simple_distance(p):
+            if cur_dis >= max_distance_vert.simple_distance(p):
                 max_distance_vert = v
-        ext_p = Point(0, 0)
+
+        ext_p = None
         if (ang % (math.pi / 2)) == 0 and (ang % math.pi) != 0:
             ext_p = Point(p.get_x(), max_distance_vert.get_y())
         elif (ang % math.pi) == 0:
@@ -498,15 +506,20 @@ class Polygon:
             m = round(math.tan(ang), 8)
             n = p.get_y() - (m * p.get_x())
             ext_p = Point(max_distance_vert.get_x(), n + m * max_distance_vert.get_x())
+            if not self.is_contained(ext_p):
+                ext_p = Point((max_distance_vert.get_y() - n) / m, max_distance_vert.get_y())
+
         edge = (self.vertices[0], self.vertices[1])
         for i in range(0, len(self.vertices)):
             v1 = self.vertices[i]
             v2 = self.vertices[(i + 1) % len(self.vertices)]
-            if _intersects(v1, v2, p, ext_p) and not Polygon.in_segment(v1, v2, p):
+
+            if _intersect_segment(v1, v2, p, ext_p) and not self.in_segment(v1, v2, p):
                 edge = (v1, v2)
-        inter_p = Polygon.intersection(p, ext_p, edge[0], edge[1])
-        if inter_p is None:
-            return None
+
+        inter_p = self.intersection(edge[0], edge[1], p, ext_p)
+        print("")
+        print(p, " -- ", inter_p)
         return self.cut(p, inter_p)
 
     def cut(self, p1, p2):
@@ -552,6 +565,16 @@ class Polygon:
             else:
                 poly2_point_list.append(v)
 
+        print("polygon 1: [", end="")
+        for p in poly1_point_list:
+            print(p, end=", ")
+        print("]")
+
+        print("polygon 2: [", end="")
+        for p in poly2_point_list:
+            print(p, end=", ")
+        print("]")
+
         return [Polygon(poly1_point_list), Polygon(poly2_point_list)]
 
     @staticmethod
@@ -574,35 +597,31 @@ class Polygon:
         Point
             The intersection
         """
-        # Edge case for if line segments are perpendicular
-        if p1.get_x() == p2.get_x() and p3.get_y() == p4.get_y():
-            return Point(p1.get_x(), p3.get_y())
-        if p1.get_y() == p2.get_y() and p3.get_x() == p4.get_x():
-            return Point(p3.get_x(), p1.get_y())
+        # Standard Form of Line Segment from p1 to p2
+        a1 = p2.get_y() - p1.get_y()
+        b1 = p1.get_x() - p2.get_x()
+        c1 = (a1*p1.get_x()) + (b1 * p1.get_y())
 
-        if p2.get_x()-p1.get_x() == 0:
-            slope2 = (p4.get_y() - p3.get_y()) / (p4.get_x() - p3.get_x())
-            b2 = p3.get_y() - (slope2 * p3.get_x())
-            p = Point(p2.get_x(), slope2*p2.get_x()+b2)
-            return p
-        if p4.get_x()-p3.get_x() == 0:
-            slope1 = (p2.get_y() - p1.get_y()) / (p2.get_x() - p1.get_x())
-            b1 = p1.get_y() - (slope1 * p1.get_x())
-            p = Point(p3.get_x(), slope1 * p3.get_x() + b1)
-            return p
+        # Standard Form of Line Segment from p3 to p4
+        a2 = p4.get_y() - p3.get_y()
+        b2 = p3.get_x() - p4.get_x()
+        c2 = (a2 * p3.get_x()) + (b2 * p3.get_y())
 
-        slope1 = (p2.get_y() - p1.get_y()) / (p2.get_x() - p1.get_x())
-        b1 = p1.get_y() - (slope1 * p1.get_x())
+        # Denominator for system of equations calculations below
+        d = ((a1 * b2) - (a2 * b1))
 
-        slope2 = (p4.get_y() - p3.get_y()) / (p4.get_x() - p3.get_x())
-        b2 = p3.get_y() - (slope2 * p3.get_x())
+        # If the line segments are parallel return None (the line segments have no intersection)
+        # This also handles collinear lines (which would otherwise return multiple intersection points)
+        if d == 0:
+            return None
 
-        x = (b2 - b1)/(slope1-slope2)
+        # Solve for x using the system of equations above
+        inter_x = ((b2 * c1) - (b1 * c2)) / d
 
-        y = slope1*x+b1
+        # Solve for y using the system of equations above
+        inter_y = ((a1 * c2) - (a2 * c1)) / d
 
-        return Point(x, y)
-
+        return Point(round(inter_x, 8), round(inter_y, 8))
 
     def area(self):
         """
@@ -653,3 +672,4 @@ class Polygon:
         sorted_vertices = self.vertices.copy()
         sorted_vertices.sort()
         return hash(tuple(sorted_vertices))
+
