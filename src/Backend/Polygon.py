@@ -505,8 +505,9 @@ class Polygon:
         else:
             m = round(math.tan(ang), 8)
             n = p.get_y() - (m * p.get_x())
-            ext_p = Point(max_distance_vert.get_x(), n + m * max_distance_vert.get_x())
-            if not self.is_contained(ext_p):
+            if max_distance_vert.get_x() != p.get_x():
+                ext_p = Point(max_distance_vert.get_x(), n + m * max_distance_vert.get_x())
+            else:
                 ext_p = Point((max_distance_vert.get_y() - n) / m, max_distance_vert.get_y())
 
         edge = (self.vertices[0], self.vertices[1])
