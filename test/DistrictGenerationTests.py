@@ -5,10 +5,11 @@ from src.Backend.Region import Region
 from src.Backend.District import Armory
 import matplotlib.pyplot as plt
 
+
 class DistrictGenerationTests(unittest.TestCase):
 
     def test_basic_district_Generation_1(self):
-        a = Armory(0.5, 0, 1)
+        a = Armory(1, 0, 1)
         r = Region(a, [Point(0.0, 0.0), Point(0.0, 10.0), Point(10.0, 10.0), Point(10.0, 0.0)], False, False)
         r.get_district().generate_district(r)
         buildings = r.buildings
@@ -35,7 +36,7 @@ class DistrictGenerationTests(unittest.TestCase):
         self.assertEqual(True, True)
 
     def test_basic_district_Generation_2(self):
-        a = Armory(0.1, 0, 1)
+        a = Armory(0.5, 0, 1)
         r = Region(a, [Point(0.0, 0.0), Point(0.0, 5.0), Point(10.0, 10.0), Point(7.0, 0.0)], False, False)
         r.get_district().generate_district(r)
         buildings = r.buildings

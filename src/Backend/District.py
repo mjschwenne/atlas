@@ -178,7 +178,7 @@ class BasicDistrict(District):
 
         # Find the random angle of the division from the angle of the edge
         cut_ang = edge_angle + math.pi / 2
-        ran_ang = (random.uniform(-self.chaos_level, self.chaos_level) * (math.pi / 6)) + cut_ang
+        ran_ang = (random.uniform(-self.chaos_level, self.chaos_level) * (math.pi / 12)) + cut_ang
 
         # Slit the region into two parts
         parts = section.split(ran_p, ran_ang)
