@@ -25,6 +25,8 @@ class ResizingCanvas(tk.Canvas):
         self.bind("<Configure>", self.resize)
         self.height = self.winfo_height()
         self.width = self.winfo_width()
+        self.permheight = self.winfo_height()
+        self.permwidth = self.winfo_width()
 
     def resize(self, event):
         """
@@ -41,10 +43,16 @@ class ResizingCanvas(tk.Canvas):
         hscale = float(event.height) / self.height
         self.width = event.width
         self.height = event.height
-        if self.height < self.width:
-            self.scale("all", 0, 0, hscale, hscale)
+        if self.width > 300 or self.height > 250:
+            if self.height < self.width:
+                self.scale("all", 0, 0, hscale, hscale)
+            else:
+                self.scale("all", 0, 0, wscale, wscale)
         else:
-            self.scale("all", 0, 0, wscale, wscale)
+            print("THings")
+            wscale = float(event.width) / self.permwidth
+            hscale = float(event.height) / self.permheight
+            self.scale("all", 0, 0, wscale, hscale)
         return
 
 
@@ -164,6 +172,7 @@ def main():
     # create the window object
     window = tk.Tk()
     window.title("Atlas")
+    window.minsize(300, 250)
 
     # creates the welcome window
     welcome = tk.Toplevel(window)
@@ -187,6 +196,7 @@ def main():
     # Creates the button frame
     button_frame = tk.Frame(background="#CCCCCC", relief='raised', width=8)
     button_frame.grid(column=0, row=0, sticky=('n', 's', 'e', 'w'))
+    button_frame.rowconfigure(4, weight=2)
 
     # Create the canvas that the picture will be rendered on
     canvas = ResizingCanvas(window, background="#ebd5b3")
@@ -210,7 +220,7 @@ def main():
     # Sets up and puts the image of the cardinal directions on the screen 
     img = tk.PhotoImage(file='../../images/compass.png')
     mylabel = tk.Label(button_frame, image=img, background="#CCCCCC")
-    mylabel.grid(column=0, row=12, sticky='s', padx=10, pady=10)
+    mylabel.grid(column=0, row=4, sticky='s', padx=10, pady=10)
 
     window.mainloop()
 
