@@ -5,6 +5,8 @@ import math
 from src.Backend.Polygon import Polygon
 from src.Backend.Point import Point
 
+import matplotlib.pyplot as plt
+
 
 class TestPolygon(unittest.TestCase):
     # Square 1
@@ -377,6 +379,60 @@ class TestPolygon(unittest.TestCase):
         """
         poly = Polygon(self.s1ver)
         polys = poly.split(Point(0.5, 0.0), math.pi / 2)
+        self.assertEqual(2, len(polys))
+
+    def test_polygon_cut_gap_1(self):
+        """
+        First test of the cut method
+        """
+        poly = Polygon(self.s1ver)
+        polys = poly.cut_gap(Point(0.0, 0.5), Point(1.0, 0.5), 0.1)
+        for p in polys:
+            x_list = []
+            y_list = []
+            for v in p.vertices:
+                x_list.append(v.get_x())
+                y_list.append(v.get_y())
+            x_list.append(p.vertices[0].get_x())
+            y_list.append(p.vertices[0].get_y())
+            plt.plot(x_list, y_list)
+        plt.show()
+        self.assertEqual(2, len(polys))
+
+    def test_polygon_cut_gap_2(self):
+        """
+        First test of the cut method
+        """
+        poly = Polygon(self.s1ver)
+        polys = poly.cut_gap(Point(0.5, 0.0), Point(0.5, 1.0), 0.1)
+        for p in polys:
+            x_list = []
+            y_list = []
+            for v in p.vertices:
+                x_list.append(v.get_x())
+                y_list.append(v.get_y())
+            x_list.append(p.vertices[0].get_x())
+            y_list.append(p.vertices[0].get_y())
+            plt.plot(x_list, y_list)
+        plt.show()
+        self.assertEqual(2, len(polys))
+
+    def test_polygon_cut_gap_3(self):
+        """
+        First test of the cut method
+        """
+        poly = Polygon(self.s1ver)
+        polys = poly.cut_gap(Point(0.0, 0.0), Point(1.0, 1.0), 0.1)
+        for p in polys:
+            x_list = []
+            y_list = []
+            for v in p.vertices:
+                x_list.append(v.get_x())
+                y_list.append(v.get_y())
+            x_list.append(p.vertices[0].get_x())
+            y_list.append(p.vertices[0].get_y())
+            plt.plot(x_list, y_list)
+        plt.show()
         self.assertEqual(2, len(polys))
 
     def test_polygon_split_2(self):

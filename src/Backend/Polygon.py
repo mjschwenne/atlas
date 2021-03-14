@@ -475,7 +475,7 @@ class Polygon:
         else:
             return False
 
-    def split(self, p, ang):
+    def split(self, p, ang, gap):
         """
         splits a polygon along a point and an angle relative to edge of p
 
@@ -485,6 +485,8 @@ class Polygon:
             The starting point of the cut
         ang : float
             The angle of the line to cut down in radians
+        gap : float
+            width of the cut between the split polygon
 
         Returns
         -------
@@ -519,7 +521,7 @@ class Polygon:
                 edge = (v1, v2)
 
         inter_p = self.intersection(edge[0], edge[1], p, ext_p)
-        return self.cut(p, inter_p)
+        return self.cut_gap(p, inter_p, gap)
 
     def cut(self, p1, p2):
         """
@@ -558,6 +560,79 @@ class Polygon:
                 is_poly1 = not is_poly1
                 poly1_point_list.append(v)
                 poly2_point_list.append(v)
+                continue
+            if is_poly1:
+                poly1_point_list.append(v)
+            else:
+                poly2_point_list.append(v)
+
+        return [Polygon(poly1_point_list), Polygon(poly2_point_list)]
+
+    def cut_gap(self, p1, p2, gap):
+        """
+        Cuts a polygon along two points
+
+        Parameters
+        ----------
+        p1 : Point
+            First Point
+        p2 : Point
+            Second Point
+        gap : float
+            width of the cut
+
+        Returns
+        -------
+        List of Polygons
+            Two new polygons formed by the cut
+        """
+        if gap == 0:
+            return self.cut(p1, p2)
+        new_vertices = self.vertices.copy()
+        pointer = 1
+        for i in range(0, len(self.vertices)):
+            v1 = self.vertices[i]
+            v2 = self.vertices[(i + 1) % len(self.vertices)]
+            if Polygon.in_segment(v1, v2, p1):
+                ang = math.atan2((v2.get_y() - v1.get_y()), (v2.get_x() - v1.get_x()))
+                vector = Point(math.cos(ang), math.sin(ang))
+                first_p = Point(round(p1.get_x() - gap * vector.get_x(), 8),
+                                round(p1.get_y() - gap * vector.get_y(), 8))
+                second_p = Point(round(p1.get_x() + gap * vector.get_x(), 8),
+                                 round(p1.get_y() + gap * vector.get_y(), 8))
+
+                if self.in_segment(v1, v2, first_p):
+                    new_vertices.insert(pointer, first_p)
+                    pointer += 1
+                new_vertices.insert(pointer, p2)
+                pointer += 1
+                if self.in_segment(v1, v2, second_p):
+                    new_vertices.insert(pointer, second_p)
+                    pointer += 1
+            if Polygon.in_segment(v1, v2, p2):
+                ang = math.atan2((v2.get_y() - v1.get_y()), (v2.get_x() - v1.get_x()))
+                vector = Point(math.cos(ang), math.sin(ang))
+                first_p = Point(round(p2.get_x() - gap * vector.get_x(), 8),
+                                round(p2.get_y() - gap * vector.get_y(), 8))
+                second_p = Point(round(p2.get_x() + gap * vector.get_x(), 8),
+                                 round(p2.get_y() + gap * vector.get_y(), 8))
+
+                if self.in_segment(v1, v2, first_p):
+                    new_vertices.insert(pointer, first_p)
+                    pointer += 1
+                new_vertices.insert(pointer, p2)
+                pointer += 1
+                if self.in_segment(v1, v2, second_p):
+                    new_vertices.insert(pointer, second_p)
+                    pointer += 1
+            pointer += 1
+
+        is_poly1 = True
+        poly1_point_list = []
+        poly2_point_list = []
+        for v in new_vertices:
+            if v == p1 or v == p2:
+                is_poly1 = not is_poly1
                 continue
             if is_poly1:
                 poly1_point_list.append(v)
