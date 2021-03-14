@@ -6,6 +6,42 @@ from src.DemoStuff import DemoStuff
 from src.Backend.District import *
 
 
+class ResizingCanvas(tk.Canvas):
+    '''
+    This altered Canvas stores the current size and acts like a normal canvas.
+    It also includes the trigger for scaling the map when resizing the window.
+
+    Methods
+    -------
+    resize(self, event)
+        Handles the action of resizing the window appropriately
+    '''
+    def __init__(self, parent, **kwargs):
+        tk.Canvas.__init__(self, parent, **kwargs)
+        self.bind("<Configure>", self.resize)
+        self.height = self.winfo_height()
+        self.width = self.winfo_width()
+
+    def resize(self, event):
+        """
+        Takes in the Canvas and the event and resizes the contents of the map accordingly. *Not Perfect, needs some work*
+
+        Parameters
+        ----------
+        self: Modified Canvas
+
+        event: the resizing of the window
+        """
+        wscale = float(event.width) / self.width
+        hscale = float(event.height) / self.height
+        self.width = event.width
+        self.height = event.height
+        if self.height < self.width:
+            self.scale("all", 0, 0, hscale, hscale)
+        else:
+            self.scale("all", 0, 0, wscale, wscale)
+        return
+
 def main():
     def draw_region(map_canvas, region_type, points):
         """
@@ -56,6 +92,7 @@ def main():
         map_canvas.create_polygon(*points, fill=switcher.get(region_type, "#ebd5b3"))
 
     def draw_map(map_canvas):
+        map_canvas.delete("all")
         reg_list = DemoStuff().assign_districts()
         switch_val = 0
         for reg in reg_list:
@@ -118,6 +155,8 @@ def main():
         if not files:
             return
 
+
+
     # create the window object
     window = tk.Tk()
     window.title("Atlas")
@@ -146,7 +185,7 @@ def main():
     button_frame.grid(column=0, row=0, sticky=('n', 's', 'e', 'w'))
 
     # Create the canvas that the picture will be rendered on
-    canvas = tk.Canvas(background="#ebd5b3")
+    canvas = ResizingCanvas(window, background="#ebd5b3")
     canvas.grid(column=1, row=0, sticky=('n', 's', 'e', 'w'))
 
     # Each of These are for the buttons that are created
