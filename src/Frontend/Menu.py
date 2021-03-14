@@ -5,6 +5,9 @@ from tkinter import *
 from src.DemoStuff import DemoStuff
 from src.Backend.District import *
 
+from PIL import Image
+from PIL import ImageTk
+
 
 class ResizingCanvas(tk.Canvas):
     """
@@ -16,6 +19,7 @@ class ResizingCanvas(tk.Canvas):
     resize(self, event)
         Handles the action of resizing the window appropriately
     """
+
     def __init__(self, parent, **kwargs):
         tk.Canvas.__init__(self, parent, **kwargs)
         self.bind("<Configure>", self.resize)
@@ -202,6 +206,11 @@ def main():
 
     help_btn = tk.Button(button_frame, text="Help", background="#a3a3a3", foreground="black", command=help_msg)
     help_btn.grid(column=0, row=3, sticky='w', padx=5)
+
+    # Sets up and puts the image of the cardinal directions on the screen 
+    img = tk.PhotoImage(file='../../images/compass.png')
+    mylabel = tk.Label(button_frame, image=img, background="#CCCCCC")
+    mylabel.grid(column=0, row=12, sticky='s', padx=10, pady=10)
 
     window.mainloop()
 
