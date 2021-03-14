@@ -7,7 +7,7 @@ from src.Backend.District import *
 
 
 class ResizingCanvas(tk.Canvas):
-    '''
+    """
     This altered Canvas stores the current size and acts like a normal canvas.
     It also includes the trigger for scaling the map when resizing the window.
 
@@ -15,7 +15,7 @@ class ResizingCanvas(tk.Canvas):
     -------
     resize(self, event)
         Handles the action of resizing the window appropriately
-    '''
+    """
     def __init__(self, parent, **kwargs):
         tk.Canvas.__init__(self, parent, **kwargs)
         self.bind("<Configure>", self.resize)
@@ -24,7 +24,8 @@ class ResizingCanvas(tk.Canvas):
 
     def resize(self, event):
         """
-        Takes in the Canvas and the event and resizes the contents of the map accordingly. *Not Perfect, needs some work*
+        Takes in the Canvas and the event and resizes the contents of the map accordingly.
+        *Not Perfect, needs some work*
 
         Parameters
         ----------
@@ -41,6 +42,7 @@ class ResizingCanvas(tk.Canvas):
         else:
             self.scale("all", 0, 0, wscale, wscale)
         return
+
 
 def main():
     def draw_region(map_canvas, region_type, points):
@@ -87,7 +89,7 @@ def main():
             9: "#7ba74c",  # Light Limy Green
             10: "#e5e5be",  # Tan/Gray Wall Paint like
             11: "#eaea02",  # Yellow
-            12: "#000000"  #Black - Building
+            12: "#000000"  # Black - Building
         }
         map_canvas.create_polygon(*points, fill=switcher.get(region_type, "#ebd5b3"))
 
@@ -154,8 +156,6 @@ def main():
         file = asksaveasfile(filetypes=files, defaultextension=files)
         if not files:
             return
-
-
 
     # create the window object
     window = tk.Tk()
