@@ -518,8 +518,6 @@ class Polygon:
                 edge = (v1, v2)
 
         inter_p = self.intersection(edge[0], edge[1], p, ext_p)
-        print("")
-        print(p, " -- ", inter_p)
         return self.cut(p, inter_p)
 
     def cut(self, p1, p2):
@@ -564,16 +562,6 @@ class Polygon:
                 poly1_point_list.append(v)
             else:
                 poly2_point_list.append(v)
-
-        print("polygon 1: [", end="")
-        for p in poly1_point_list:
-            print(p, end=", ")
-        print("]")
-
-        print("polygon 2: [", end="")
-        for p in poly2_point_list:
-            print(p, end=", ")
-        print("]")
 
         return [Polygon(poly1_point_list), Polygon(poly2_point_list)]
 
