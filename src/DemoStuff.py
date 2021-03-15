@@ -1,5 +1,5 @@
 from src.Backend.Constructor import Constructor
-from src.Backend.District import Armory, BasicDistrict
+from src.Backend.District import Armory, BasicDistrict, HousingMid, Slum
 from src.Backend.Point import Point
 from src.Backend.Polygon import Polygon
 from src.Backend.Region import Region
@@ -120,6 +120,10 @@ class DemoStuff:
         Constructor.assign_districts(self.regList, self.wall, self.poly_city)
         for reg in self.regList:
             if isinstance(reg.get_district(), Armory):
+                reg.get_district().generate_district(reg)
+            elif isinstance(reg.get_district(), HousingMid):
+                reg.get_district().generate_district(reg)
+            elif isinstance(reg.get_district(), Slum):
                 reg.get_district().generate_district(reg)
         return self.regList
 

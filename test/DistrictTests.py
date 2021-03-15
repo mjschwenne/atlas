@@ -37,7 +37,7 @@ class DistrictTests(unittest.TestCase):
     reg6 = Region(Gate(0, 0, 0), ver6, False, False)
 
     ver7 = [Point(-6, 5), Point(-6, 2), Point(-4, 3), Point(-5, 5)]
-    reg7 = Region(Housing(0, 0, 0), ver7, False, False)
+    reg7 = Region(HousingMid(0, 0, 0), ver7, False, False)
 
     ver8 = [Point(6, 5), Point(6, 2), Point(4, 3), Point(5, 5)]
     reg8 = Region(Market(0, 0, 0), ver8, False, False)
@@ -104,7 +104,7 @@ class DistrictTests(unittest.TestCase):
         self.assertEqual(-1000, Gate.determine_rating(self.reg13, self.regList, self.wall2, self.polyCity))
 
     def test_Housing(self):
-        self.assertEqual(70, Housing.determine_rating(self.reg13, self.regList, self.wall, self.polyCity))
+        self.assertEqual(70, HousingMid.determine_rating(self.reg13, self.regList, self.wall, self.polyCity))
 
     def test_Market(self):
         self.assertEqual(100, Market.determine_rating(self.reg13, self.regList, self.wall, self.polyCity))

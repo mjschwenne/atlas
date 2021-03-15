@@ -73,7 +73,7 @@ def main():
 
         Region encoding:
         0 = Farmland - Green
-        1 = Housing - Sandy Orangy
+        1 = HousingMid - Sandy Orangy
         2 = Docks - Dark Blue
         3 = Smithing - Black
         4 = Slum - Brown
@@ -113,7 +113,7 @@ def main():
             dis = reg.get_district()
             if isinstance(dis, Farmland):
                 switch_val = 0
-            if isinstance(dis, Housing):
+            if isinstance(dis, HousingMid):
                 switch_val = 1
             if isinstance(dis, Docks):
                 switch_val = 2

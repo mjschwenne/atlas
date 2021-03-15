@@ -9,22 +9,14 @@ _PI = math.pi
 
 class District:
 
-    def __init__(self, chaos_level, probability_of_empty_space, min_building_size):
+    def __init__(self):
         """
         District constructor
 
-        Parameters
-        ----------
-        chaos_level : float
-            The initial value of chaos_level for this district
-        probability_of_empty_space : float
-            The initial value of chaos_level for this district
-        min_building_size : float
-            The initial value of min_building_size for this district
         """
-        self.chaos_level = chaos_level
-        self.probability_of_empty_space = probability_of_empty_space
-        self.min_building_size = min_building_size
+        self.chaos_level = 0
+        self.probability_of_empty_space = 0
+        self.min_building_size = 0
 
     def set_chaos_level(self, new_chaos_level):
         """
@@ -129,6 +121,23 @@ class District:
 
 class BasicDistrict(District):
 
+    def __init__(self, chaos_level, probability_of_empty_space, min_building_size):
+        """
+        Basic District constructor
+
+        Parameters
+        ----------
+        chaos_level : float
+            The initial value of chaos_level for this district
+        probability_of_empty_space : float
+            The initial value of chaos_level for this district
+        min_building_size : float
+            The initial value of min_building_size for this district
+        """
+        self.chaos_level = chaos_level
+        self.probability_of_empty_space = probability_of_empty_space
+        self.min_building_size = min_building_size
+
     def generate_district(self, region):
         self.generate_buildings(region, region)
 
@@ -228,7 +237,7 @@ class Armory(BasicDistrict):
                     dis = reg.get_district()
                     if isinstance(dis, Farmland):
                         rating += 0
-                    elif isinstance(dis, Housing):
+                    elif isinstance(dis, HousingMid):
                         rating += -20
                     elif isinstance(dis, Smithing):
                         rating += 30
@@ -281,7 +290,7 @@ class Castle(District):
                     return -10000
                 if region.is_bordering(reg):
                     dis = reg.get_district()
-                    if isinstance(dis, Housing):
+                    if isinstance(dis, HousingMid):
                         rating += 20
                     elif isinstance(dis, Cathedral):
                         rating += 30
@@ -332,7 +341,7 @@ class Cathedral(District):
             if region != reg:
                 if region.is_bordering(reg):
                     dis = reg.get_district()
-                    if isinstance(dis, Housing):
+                    if isinstance(dis, HousingMid):
                         rating += 20
                     elif isinstance(dis, Smithing):
                         rating += -10
@@ -389,7 +398,7 @@ class Docks(District):
             if region != reg:
                 if region.is_bordering(reg):
                     dis = reg.get_district()
-                    if isinstance(dis, Housing):
+                    if isinstance(dis, HousingMid):
                         rating += 20
                     elif isinstance(dis, Smithing):
                         rating += 20
@@ -442,7 +451,7 @@ class Farmland(District):
                     dis = reg.get_district()
                     if isinstance(dis, Farmland):
                         rating += 50
-                    elif isinstance(dis, Housing):
+                    elif isinstance(dis, HousingMid):
                         rating += 10
                     elif isinstance(dis, Market):
                         rating += 10
@@ -492,7 +501,7 @@ class Gate(District):
             if region != reg:
                 if region.is_bordering(reg):
                     dis = reg.get_district()
-                    if isinstance(dis, Housing):
+                    if isinstance(dis, HousingMid):
                         rating += 20
                     elif isinstance(dis, Market):
                         rating += 10
@@ -503,7 +512,7 @@ class Gate(District):
         return rating
 
 
-class Housing(District):
+class HousingMid(BasicDistrict):
 
     # Overrides District's determine Rating
     @staticmethod
@@ -535,7 +544,7 @@ class Housing(District):
                     dis = reg.get_district()
                     if isinstance(dis, Farmland):
                         rating += 10
-                    elif isinstance(dis, Housing):
+                    elif isinstance(dis, HousingMid):
                         rating -= 20
                     elif isinstance(dis, Smithing):
                         rating += 30
@@ -590,7 +599,7 @@ class Market(District):
             if region != reg:
                 if region.is_bordering(reg):
                     dis = reg.get_district()
-                    if isinstance(dis, Housing):
+                    if isinstance(dis, HousingMid):
                         rating += 20
                     elif isinstance(dis, Smithing):
                         rating += 20
@@ -647,7 +656,7 @@ class Precinct(District):
                     dis = reg.get_district()
                     if isinstance(dis, Farmland):
                         rating += -10
-                    elif isinstance(dis, Housing):
+                    elif isinstance(dis, HousingMid):
                         rating += 20
                     elif isinstance(dis, Smithing):
                         rating += 10
@@ -672,7 +681,7 @@ class Precinct(District):
         return rating
 
 
-class Slum(District):
+class Slum(BasicDistrict):
 
     # Overrides District's determine Rating
     @staticmethod
@@ -702,7 +711,7 @@ class Slum(District):
             if region != reg:
                 if region.is_bordering(reg):
                     dis = reg.get_district()
-                    if isinstance(dis, Housing):
+                    if isinstance(dis, HousingMid):
                         rating += -10
                     elif isinstance(dis, Smithing):
                         rating += -10
@@ -757,7 +766,7 @@ class Smithing(District):
             if region != reg:
                 if region.is_bordering(reg):
                     dis = reg.get_district()
-                    if isinstance(dis, Housing):
+                    if isinstance(dis, HousingMid):
                         rating += 30
                     elif isinstance(dis, Market):
                         rating += 20
@@ -808,7 +817,7 @@ class WarCamp(District):
             if region != reg:
                 if region.is_bordering(reg):
                     dis = reg.get_district()
-                    if isinstance(dis, Housing):
+                    if isinstance(dis, HousingMid):
                         rating += -40
                     elif isinstance(dis, Market):
                         rating += -50

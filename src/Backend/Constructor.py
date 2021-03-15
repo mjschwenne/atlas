@@ -74,7 +74,7 @@ class Constructor:
         docks_val = Docks.determine_rating(reg, regions, wall, city)
         farmland_val = Farmland.determine_rating(reg, regions, wall, city)
         gate_val = Gate.determine_rating(reg, regions, wall, city)
-        housing_val = Housing.determine_rating(reg, regions, wall, city)
+        housing_val = HousingMid.determine_rating(reg, regions, wall, city)
         market_val = Market.determine_rating(reg, regions, wall, city)
         precinct_val = Precinct.determine_rating(reg, regions, wall, city)
         slum_val = Slum.determine_rating(reg, regions, wall, city)
@@ -88,40 +88,40 @@ class Constructor:
         # checks to see if a district is valid, if so adds it to the lists
         if armory_val >= 0:
             values.append(armory_val + 10)
-            districts.append(Armory(0.5, 0.1, 8000))
+            districts.append(Armory(0.8, 0.8, 14000))
         if castle_val >= 0:
             values.append(castle_val + 10)
-            districts.append(Castle(0, 0, 0))
+            districts.append(Castle())
         if cathedral_val >= 0:
             values.append(cathedral_val + 10)
-            districts.append(Cathedral(0, 0, 0))
+            districts.append(Cathedral())
         if docks_val >= 0:
             values.append(docks_val + 10)
-            districts.append(Docks(0, 0, 0))
+            districts.append(Docks())
         if farmland_val >= 0:
             values.append(farmland_val + 10)
-            districts.append(Farmland(0, 0, 0))
+            districts.append(Farmland())
         if gate_val >= 0:
             values.append(gate_val + 10)
-            districts.append(Gate(0, 0, 0))
+            districts.append(Gate())
         if housing_val >= 0:
             values.append(housing_val + 10)
-            districts.append(Housing(0, 0, 0))
+            districts.append(HousingMid(0.5, 0.2, 8000))
         if market_val >= 0:
             values.append(market_val + 10)
-            districts.append(Market(0, 0, 0))
+            districts.append(Market())
         if precinct_val >= 0:
             values.append(precinct_val + 10)
-            districts.append(Precinct(0, 0, 0))
+            districts.append(Precinct())
         if slum_val >= 0:
             values.append(slum_val + 10)
-            districts.append(Slum(0, 0, 0))
+            districts.append(Slum(0.8, 0.01, 1000))
         if smithing_val >= 0:
             values.append(smithing_val + 10)
-            districts.append(Smithing(0, 0, 0))
+            districts.append(Smithing())
         if warcamp_val >= 0:
             values.append(warcamp_val + 10)
-            districts.append(WarCamp(0, 0, 0))
+            districts.append(WarCamp())
 
         # randomly selects a district based on the weights/ratings of the districts
         dist = random.choices(districts, k=1, weights=values)
