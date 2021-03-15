@@ -137,14 +137,14 @@ def main():
                 switch_val = 11
             verts = []
             for v in reg.get_vertices():
-                verts.append((v.get_x() + 9) * 10)
-                verts.append((v.get_y() + 4) * 10)
+                verts.append((v.get_x() + 900)/7.5)
+                verts.append((v.get_y() + 400)/7.5)
             draw_region(map_canvas, switch_val, verts)
             for build in reg.buildings:
                 verts = []
                 for v in build.get_vertices():
-                    verts.append((v.get_x() + 9) * 10)
-                    verts.append((v.get_y() + 4) * 10)
+                    verts.append((v.get_x() + 900)/7.5)
+                    verts.append((v.get_y() + 400)/7.5)
                 draw_region(map_canvas, 12, verts)
 
     def help_msg():

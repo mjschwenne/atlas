@@ -9,94 +9,94 @@ from src.Backend.Wall import Wall
 class DemoStuff:
     # 12Sided
     # =======
-    ver0 = [Point(0, 0), Point(-2, 1), Point(-4, 3), Point(-5, 5), Point(-4, 7), Point(-2, 9), Point(0, 10),
-            Point(2, 9), Point(4, 7), Point(5, 5), Point(4, 3), Point(2, 1)]
+    ver0 = [Point(0, 0), Point(-200, 100), Point(-400, 300), Point(-500, 500), Point(-400, 700), Point(-200, 900), Point(0, 1000),
+            Point(200, 900), Point(400, 700), Point(500, 500), Point(400, 300), Point(200, 100)]
     reg0 = Region(None, ver0, False, False)
 
     # others
     # ======
-    ver1 = [Point(-3.5, 12), Point(0, 12), Point(0, 10), Point(-2, 9)]
+    ver1 = [Point(-350, 1200), Point(0, 1200), Point(0, 1000), Point(-200, 900)]
     reg1 = Region(None, ver1, False, False)
 
-    ver2 = [Point(3.5, 12), Point(0, 12), Point(0, 10), Point(2, 9)]
+    ver2 = [Point(350, 1200), Point(0, 1200), Point(0, 1000), Point(200, 900)]
     reg2 = Region(None, ver2, False, False)
 
-    ver3 = [Point(-3.5, 12), Point(-6, 8), Point(-4, 7), Point(-2, 9)]
+    ver3 = [Point(-350, 1200), Point(-600, 800), Point(-400, 700), Point(-200, 900)]
     reg3 = Region(None, ver3, False, False)
 
-    ver4 = [Point(3.5, 12), Point(6, 8), Point(4, 7), Point(2, 9)]
+    ver4 = [Point(350, 1200), Point(600, 800), Point(400, 700), Point(200, 900)]
     reg4 = Region(None, ver4, True, False)
 
-    ver5 = [Point(-6, 5), Point(-6, 8), Point(-4, 7), Point(-5, 5)]
+    ver5 = [Point(-600, 500), Point(-600, 800), Point(-400, 700), Point(-500, 500)]
     reg5 = Region(None, ver5, False, False)
 
-    ver6 = [Point(6, 5), Point(6, 8), Point(4, 7), Point(5, 5)]
+    ver6 = [Point(600, 500), Point(600, 800), Point(400, 700), Point(500, 500)]
     reg6 = Region(None, ver6, False, False)
 
-    ver7 = [Point(-6, 5), Point(-6, 2), Point(-4, 3), Point(-5, 5)]
+    ver7 = [Point(-600, 500), Point(-600, 200), Point(-400, 300), Point(-500, 500)]
     reg7 = Region(None, ver7, False, False)
 
-    ver8 = [Point(6, 5), Point(6, 2), Point(4, 3), Point(5, 5)]
+    ver8 = [Point(600, 500), Point(600, 200), Point(400, 300), Point(500, 500)]
     reg8 = Region(None, ver8, False, False)
 
-    ver9 = [Point(-3.5, -2), Point(-6, 2), Point(-4, 3), Point(-2, 1)]
+    ver9 = [Point(-350, -200), Point(-600, 200), Point(-400, 300), Point(-200, 100)]
     reg9 = Region(None, ver9, False, False)
 
-    ver10 = [Point(3.5, -2), Point(6, 2), Point(4, 3), Point(2, 1)]
+    ver10 = [Point(350, -200), Point(600, 200), Point(400, 300), Point(200, 100)]
     reg10 = Region(None, ver10, False, False)
 
-    ver11 = [Point(-3.5, -2), Point(0, -2), Point(0, 0), Point(-2, 1)]
+    ver11 = [Point(-350, -200), Point(0, -200), Point(0, 0), Point(-200, 100)]
     reg11 = Region(None, ver11, False, False)
 
-    ver12 = [Point(3.5, -2), Point(0, -2), Point(0, 0), Point(2, 1)]
+    ver12 = [Point(350, -200), Point(0, -200), Point(0, 0), Point(200, 100)]
     reg12 = Region(None, ver12, False, False)
 
-    ver13 = [Point(-6, 8), Point(-6, 12), Point(-3.5, 12)]
+    ver13 = [Point(-600, 800), Point(-600, 1200), Point(-350, 1200)]
     reg13 = Region(None, ver13, False, False)
 
-    ver14 = [Point(6, 8), Point(6, 12), Point(3.5, 12)]
+    ver14 = [Point(600, 800), Point(600, 1200), Point(350, 1200)]
     reg14 = Region(None, ver14, False, False)
 
-    ver15 = [Point(-6, -2), Point(-6, 2), Point(-3.5, -2)]
+    ver15 = [Point(-600, -200), Point(-600, 200), Point(-350, -200)]
     reg15 = Region(None, ver15, False, False)
 
-    ver16 = [Point(6, -2), Point(6, 2), Point(3.5, -2)]
+    ver16 = [Point(600, -200), Point(600, 200), Point(350, -200)]
     reg16 = Region(None, ver16, False, False)
 
-    ver17 = [Point(-6, -2), Point(-6, 2), Point(-8, 2)]
+    ver17 = [Point(-600, -200), Point(-600, 200), Point(-800, 200)]
     reg17 = Region(None, ver17, False, False)
 
-    ver18 = [Point(6, -2), Point(6, 2), Point(8, 2)]
+    ver18 = [Point(600, -200), Point(600, 200), Point(800, 200)]
     reg18 = Region(None, ver18, False, False)
 
-    ver19 = [Point(-6, -2), Point(0, -2), Point(0, -4)]
+    ver19 = [Point(-600, -200), Point(0, -200), Point(0, -400)]
     reg19 = Region(None, ver19, False, False)
 
-    ver20 = [Point(6, -2), Point(0, -2), Point(0, -4)]
+    ver20 = [Point(600, -200), Point(0, -200), Point(0, -400)]
     reg20 = Region(None, ver20, False, False)
 
-    ver21 = [Point(6, 12), Point(0, 12), Point(0, 14)]
+    ver21 = [Point(600, 1200), Point(0, 1200), Point(0, 1400)]
     reg21 = Region(None, ver21, False, False)
 
-    ver22 = [Point(-6, 12), Point(0, 12), Point(0, 14)]
+    ver22 = [Point(-600, 1200), Point(0, 1200), Point(0, 1400)]
     reg22 = Region(None, ver22, False, False)
 
-    ver23 = [Point(-6, 8), Point(-6, 12), Point(-8, 8)]
+    ver23 = [Point(-600, 800), Point(-600, 1200), Point(-800, 800)]
     reg23 = Region(None, ver23, False, False)
 
-    ver24 = [Point(6, 8), Point(6, 12), Point(8, 8)]
+    ver24 = [Point(600, 800), Point(600, 1200), Point(800, 800)]
     reg24 = Region(None, ver24, False, False)
 
-    ver25 = [Point(-6, 2), Point(-6, 5), Point(-9, 5), Point(-8, 2)]
+    ver25 = [Point(-600, 200), Point(-600, 500), Point(-900, 500), Point(-800, 200)]
     reg25 = Region(None, ver25, False, False)
 
-    ver26 = [Point(6, 2), Point(6, 5), Point(9, 5), Point(8, 2)]
+    ver26 = [Point(600, 200), Point(600, 500), Point(900, 500), Point(800, 200)]
     reg26 = Region(None, ver26, False, False)
 
-    ver27 = [Point(-6, 8), Point(-6, 5), Point(-9, 5), Point(-8, 8)]
+    ver27 = [Point(-600, 800), Point(-600, 500), Point(-900, 500), Point(-800, 800)]
     reg27 = Region(None, ver27, False, False)
 
-    ver28 = [Point(6, 8), Point(6, 5), Point(9, 5), Point(8, 8)]
+    ver28 = [Point(600, 800), Point(600, 500), Point(900, 500), Point(800, 800)]
     reg28 = Region(None, ver28, False, False)
 
     # List of Regions
@@ -104,14 +104,14 @@ class DemoStuff:
                reg16, reg17, reg18, reg19, reg20, reg21, reg22, reg23, reg24, reg25, reg26, reg27, reg28]
 
     # wall
-    verWall = [Point(3.5, -2), Point(6, 2), Point(6, 8), Point(3.5, 12), Point(-3.5, 12), Point(-6, 8),
-               Point(-6, 2), Point(-3.5, -2)]
+    verWall = [Point(350, -200), Point(600, 200), Point(600, 800), Point(350, 1200), Point(-350, 1200), Point(-600, 800),
+               Point(-600, 200), Point(-350, -200)]
     wall = Wall([reg0])
     wall.set_vertices(verWall)
-    wall.set_gates([Point(-6, 4), Point(6, 4), Point(-2, -2)])
+    wall.set_gates([Point(-600, 400), Point(600, 400), Point(-200, -200)])
 
     # city
-    ver_city = [Point(-6, 12), Point(-6, -2), Point(6, -2), Point(6, 12)]
+    ver_city = [Point(-600, 1200), Point(-600, -200), Point(600, -200), Point(600, 1200)]
     poly_city = Polygon(ver_city)
 
     def assign_districts(self):
