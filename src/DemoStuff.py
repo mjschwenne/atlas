@@ -115,6 +115,8 @@ class DemoStuff:
     poly_city = Polygon(ver_city)
 
     def assign_districts(self):
+        for reg in self.regList:
+            reg.buildings = []
         Constructor.assign_districts(self.regList, self.wall, self.poly_city)
         for reg in self.regList:
             if isinstance(reg.get_district(), Armory):
