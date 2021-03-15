@@ -181,7 +181,7 @@ class BasicDistrict(District):
         ran_ang = (random.uniform(-self.chaos_level, self.chaos_level) * (math.pi / 12)) + cut_ang
 
         # Find the random gap width
-        gap = 2.5 + random.uniform(0, self.chaos_level) * 10
+        gap = 2.5 + random.uniform(0, self.chaos_level) * 5
 
         # Slit the region into two parts
         parts = section.split(ran_p, ran_ang, gap)
@@ -189,8 +189,9 @@ class BasicDistrict(District):
         for part in parts:
             if round(part.area(), 8) <= self.min_building_size + \
                     (random.uniform(0, self.chaos_level) * self.min_building_size):
-                if random.uniform(0, 1) >= self.probability_of_empty_space:
-                    region.buildings.append(part)
+                if random.uniform(0, 1) >= self.probability_of_empty_space and len(part.vertices) > 2:
+                    if part.area() > self.min_building_size * 0.2:
+                        region.buildings.append(part)
             else:
                 self.generate_buildings(region, part)
 
