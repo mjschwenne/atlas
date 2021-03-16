@@ -10,6 +10,20 @@ import numpy as np
 from scipy.spatial import Voronoi as Vor
 
 
+def print_list(list_name, points):
+    print(f"{list_name} = [", end=" ")
+    for i in points:
+        print(f"{i},", end=" ")
+    print("]")
+
+
+def print_dict(dict_name, points):
+    print(f"{dict_name} = [", end=" ")
+    for i in points.keys():
+        print(f"{i} : {points[i]}", end=" ")
+    print("]")
+
+
 def remove_vertices(G, vertices):
     """
     Remove all vertices in `vertices` from the graph `G`
@@ -52,7 +66,9 @@ def bfs_path(G, source, destination):
     vertex_dict = dict(nx.bfs_predecessors(G, source))
     queue = deque()
     queue.append(destination)
+    # print(f"Finding path from {source} to {destination} using {print_dict('vertex_dict', vertex_dict)}")
     while queue[-1] != source:
+        # print(f"Head of queue is {queue[-1]}")
         queue.append(vertex_dict[queue[-1]])
     queue.reverse()
     return queue
@@ -104,7 +120,7 @@ class Voronoi:
 
         The notes are more concentrated in the middle of the map.
         """
-        random.seed(37)
+        random.seed()
         delta_angle = random.random() * 2 * math.pi
 
         for p in range(self.num_district):
@@ -303,10 +319,14 @@ class Voronoi:
                 # Add the vertices on the graph boundary to the path, starting with the front end
                 bound_points = self.bounds.vertices
                 len_bound_points = len(bound_points)
+                # Skip if the region is completely outside of the bounding polygon
+                if len(path) == 0:
+                    continue
                 for v in self.graph[path[0]]:
                     for bound in range(len_bound_points):
                         bound_start = bound_points[bound]
                         bound_end = bound_points[(bound + 1) % len_bound_points]
+                        # print(f"Is {v} on the segment between {bound_start} and {bound_end}? {Polygon.in_segment(bound_start, bound_end, v)}")
                         if Polygon.in_segment(bound_start, bound_end, v):
                             path.appendleft(v)
                             break
@@ -316,17 +336,20 @@ class Voronoi:
                     else:
                         continue
                     break
+                # print_list("adj", list(self.graph[path[0]].keys()))
+                # print_list("path", path)
                 # Find the boundary vertex for the back end of the path
                 for v in self.graph[path[-1]]:
                     for bound in range(len_bound_points):
                         bound_start = bound_points[bound]
                         bound_end = bound_points[(bound + 1) % len_bound_points]
-                        if Polygon.in_segment(bound_start, bound_end, v):
+                        if Polygon.in_segment(bound_start, bound_end, v) and v not in path:
                             path.append(v)
                             break
                     else:
                         continue
                     break
+                # print_list("path", path)
                 # Next, find all of the internal vertices in the graph and remove them to have just the perimeter ones
                 internal_vertices = list(self.graph.adj.keys())
                 for v in range(len_bound_points):
@@ -346,6 +369,9 @@ class Voronoi:
                 self.polygons.add(polygon)
 
     def relax(self):
+        """
+        Finds the centroid of each polygons and sets that to be the seed point of the next generation of voronoi diagram
+        """
         centroids = []
         for p in self.polygons:
             centroids.append(p.get_center())

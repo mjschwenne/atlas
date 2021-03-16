@@ -6,13 +6,17 @@ from scipy.spatial import voronoi_plot_2d
 import matplotlib.pyplot as plt
 
 
-def vis_polygons(vor):
+def vis_polygons(vor, xbound, ybound):
     """
     Create a visual display of the voronoi diagram using matplotlib
     Parameters
     ----------
     vor : Voronoi
         A voronoi diagram
+    xbound : List of int
+        The x limits for the graph
+    ybound : List of int
+        The y limes for the graph
     """
     for v in vor.graph:
         for adj in vor.graph[v]:
@@ -27,8 +31,8 @@ def vis_polygons(vor):
             x_list.append(v.get_x())
             y_list.append(v.get_y())
         plt.fill(x_list, y_list)
-        plt.xlim([-225, 225])
-        plt.ylim([-225, 225])
+        plt.xlim(xbound)
+        plt.ylim(ybound)
     plt.show()
     vor.relax()
 
@@ -61,7 +65,7 @@ class TestVoronoi(unittest.TestCase):
         """
         bounding_box = Polygon([Point(-200, 200), Point(200, 200), Point(200, -200), Point(-200, -200)])
         vor = Voronoi(50, bounding_box)
-        vis_polygons(vor)
+        vis_polygons(vor, [-225, 225], [-225, 225])
 
     def test_relax(self):
         """
@@ -69,10 +73,10 @@ class TestVoronoi(unittest.TestCase):
         """
         bounding_box = Polygon([Point(-200, 200), Point(200, 200), Point(200, -200), Point(-200, -200)])
         vor = Voronoi(50, bounding_box)
-        vis_polygons(vor)
-        for i in range(5):
+        vis_polygons(vor, [-225, 225], [-225, 225])
+        for i in range(10):
             vor.relax()
-            vis_polygons(vor)
+            vis_polygons(vor, [-225, 225], [-225, 225])
 
 
 if __name__ == '__main__':

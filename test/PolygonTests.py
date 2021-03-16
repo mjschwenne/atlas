@@ -484,10 +484,14 @@ class TestPolygon(unittest.TestCase):
         a = poly.area()
         self.assertEqual(1, a)
 
-    def test_polygon_area_1(self):
+    def test_polygon_area_2(self):
         poly = Polygon([Point(5.0, 10.0), Point(10.0, 10.0), Point(10.0, 5.0), Point(5.0, 5.0)])
         a = poly.area()
         self.assertEqual(25, a)
+
+    def test_in_segment(self):
+        self.assertEqual(200.00000000, round(200.00000000000003, 8))
+        self.assertEqual(True, Polygon.in_segment(Point(-200, 200), Point(200, 200), Point(-179.9948605683313, 200.00000000000003)))
 
 
 if __name__ == '__main__':

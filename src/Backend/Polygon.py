@@ -1,6 +1,5 @@
 import math
 from src.Backend.Point import Point
-import numpy as np
 
 
 def _three_point_orientation(p1, p2, p3):
@@ -507,20 +506,19 @@ class Polygon:
         """
         # Case 1: Vertical Line.
         # If p3's y-coordinate is within the y-range of this line segment, return if they have the same x-coordinate
-        if p1.get_x() == p2.get_x() and min(p1.get_y(), p2.get_y()) <= p3.get_y() <= max(p1.get_y(), p2.get_y()):
-            return p1.get_x() == p3.get_x()
+        if round(p1.get_x(), 8) == round(p2.get_x(), 8) and min(p1.get_y(), p2.get_y()) <= p3.get_y() <= max(p1.get_y(), p2.get_y()):
+            return round(p1.get_x(), 8) == round(p3.get_x(), 8)
         # Case 2: Horizontal Line.
         # If p3's x-coordinate is within the x-range of this line segment, return if they have the same y-coordinate
-        elif p1.get_y() == p2.get_y() and min(p1.get_x(), p2.get_x()) <= p3.get_x() <= max(p1.get_x(), p2.get_x()):
-            return p1.get_y() == p3.get_y()
+        elif round(p1.get_y(), 8) == round(p2.get_y(), 8) and min(p1.get_x(), p2.get_x()) <= p3.get_x() <= max(p1.get_x(), p2.get_x()):
+            return round(p1.get_y(), 8) == round(p3.get_y(), 8)
         # Case 3:
         # If the distance from p1 -> p2 -> p3 == to the distance from p1 directly to p2 then they are on the same line
         # as the optimal path from p1 to p2 is a straight line. Any deviation from this line will increase the distance
         # required to go to p3 first.
         # Because the simple_distance() method returns a float value, I only consider to the eight decimal places to
         # avoid rounding errors.
-        elif float(int((p1.simple_distance(p3) + p3.simple_distance(p2)) * 100000000) / 100000000.0) == \
-                float(int(p1.simple_distance(p2) * 100000000) / 100000000.0):
+        elif round(p1.simple_distance(p2), 8) == round(p1.simple_distance(p3) + p3.simple_distance(p2), 8):
             return True
         else:
             return False
