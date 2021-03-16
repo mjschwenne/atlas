@@ -489,6 +489,12 @@ class TestPolygon(unittest.TestCase):
         a = poly.area()
         self.assertEqual(25, a)
 
+    def test_is_bordering_1(self):
+        bound = Polygon([Point(-50, 50), Point(50, 50), Point(50, -50), Point(-50, -50)])
+        inner = Polygon([Point(5.356, 11.586), Point(13.568, 23.317), Point(21.625, 50.0),
+                         Point(-43.232, 50.0), Point(-13.057, 13.892), Point(-4.688, 10.088)])
+        self.assertEqual(True, bound.is_bordering(inner))
+
     def test_in_segment(self):
         self.assertEqual(200.00000000, round(200.00000000000003, 8))
         self.assertEqual(True, Polygon.in_segment(Point(-200, 200), Point(200, 200), Point(-179.9948605683313, 200.00000000000003)))
