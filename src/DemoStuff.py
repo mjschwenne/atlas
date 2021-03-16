@@ -119,11 +119,7 @@ class DemoStuff:
             reg.buildings = []
         Constructor.assign_districts(self.regList, self.wall, self.poly_city)
         for reg in self.regList:
-            if isinstance(reg.get_district(), Armory):
-                reg.get_district().generate_district(reg)
-            elif isinstance(reg.get_district(), HousingMid):
-                reg.get_district().generate_district(reg)
-            elif isinstance(reg.get_district(), Slum):
+            if isinstance(reg.get_district(), BasicDistrict):
                 reg.get_district().generate_district(reg)
         return self.regList
 
