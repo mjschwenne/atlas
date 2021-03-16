@@ -38,7 +38,7 @@
 <dl class="py class">
 <dt id="District.Armory">
 <em class="property">class </em><code class="sig-prename descclassname">District.</code><code class="sig-name descname">Armory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">chaos_level</span></em>, <em class="sig-param"><span class="n">probability_of_empty_space</span></em>, <em class="sig-param"><span class="n">min_building_size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#District.Armory" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#District.District" title="District.District"><code class="xref py py-class docutils literal notranslate"><span class="pre">District.District</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#District.BasicDistrict" title="District.BasicDistrict"><code class="xref py py-class docutils literal notranslate"><span class="pre">District.BasicDistrict</span></code></a></p>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -49,22 +49,25 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#District.Armory.determine_rating" title="District.Armory.determine_rating"><code class="xref py py-obj docutils literal notranslate"><span class="pre">determine_rating</span></code></a>(region, other_regions, …)</p></td>
 <td><p>Determines the likely hood a given district will be in a region</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_chaos_level</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_buildings</span></code>(region, section)</p></td>
+<td><p>Splits a given region into buildings randomly</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_chaos_level</span></code>()</p></td>
 <td><p>Gets the ‘chaos_level’ of the district</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_min_building_size</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_min_building_size</span></code>()</p></td>
 <td><p>Gets the ‘min_building_size’ of the district</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_probability_of_empty_space</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_probability_of_empty_space</span></code>()</p></td>
 <td><p>Gets the ‘probability_of_empty_space’ of the district</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_chaos_level</span></code>(new_chaos_level)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_chaos_level</span></code>(new_chaos_level)</p></td>
 <td><p>Sets the value of ‘chaos_level’ for a district</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_min_building_size</span></code>(new_min_building_size)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_min_building_size</span></code>(new_min_building_size)</p></td>
 <td><p>Sets the value of ‘min_building_size’ for a district</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_probability_of_empty_space</span></code>(…)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_probability_of_empty_space</span></code>(…)</p></td>
 <td><p>Sets the value of ‘probability_of_empty_space’ for a district</p></td>
 </tr>
 </tbody>
@@ -109,8 +112,79 @@
 </dd></dl>
 
 <dl class="py class">
+<dt id="District.BasicDistrict">
+<em class="property">class </em><code class="sig-prename descclassname">District.</code><code class="sig-name descname">BasicDistrict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">chaos_level</span></em>, <em class="sig-param"><span class="n">probability_of_empty_space</span></em>, <em class="sig-param"><span class="n">min_building_size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#District.BasicDistrict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#District.District" title="District.District"><code class="xref py py-class docutils literal notranslate"><span class="pre">District.District</span></code></a></p>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">determine_rating</span></code>(region, other_regions, …)</p></td>
+<td><p>Determines the likely hood a given district will be in a region</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#District.BasicDistrict.generate_buildings" title="District.BasicDistrict.generate_buildings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_buildings</span></code></a>(region, section)</p></td>
+<td><p>Splits a given region into buildings randomly</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_chaos_level</span></code>()</p></td>
+<td><p>Gets the ‘chaos_level’ of the district</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_min_building_size</span></code>()</p></td>
+<td><p>Gets the ‘min_building_size’ of the district</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_probability_of_empty_space</span></code>()</p></td>
+<td><p>Gets the ‘probability_of_empty_space’ of the district</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_chaos_level</span></code>(new_chaos_level)</p></td>
+<td><p>Sets the value of ‘chaos_level’ for a district</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_min_building_size</span></code>(new_min_building_size)</p></td>
+<td><p>Sets the value of ‘min_building_size’ for a district</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_probability_of_empty_space</span></code>(…)</p></td>
+<td><p>Sets the value of ‘probability_of_empty_space’ for a district</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 68%" />
+<col style="width: 32%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>generate_district</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="District.BasicDistrict.generate_buildings">
+<code class="sig-name descname">generate_buildings</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">region</span></em>, <em class="sig-param"><span class="n">section</span></em><span class="sig-paren">)</span><a class="headerlink" href="#District.BasicDistrict.generate_buildings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Splits a given region into buildings randomly</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>region</strong><span class="classifier">Region</span></dt><dd><p>The Region to split into buildings that stores the buildings list</p>
+</dd>
+<dt><strong>section</strong><span class="classifier">Polygon</span></dt><dd><p>The possibly not Region Polygon that needs to be split</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="District.BasicDistrict.generate_district">
+<code class="sig-name descname">generate_district</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">region</span></em><span class="sig-paren">)</span><a class="headerlink" href="#District.BasicDistrict.generate_district" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt id="District.Castle">
-<em class="property">class </em><code class="sig-prename descclassname">District.</code><code class="sig-name descname">Castle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">chaos_level</span></em>, <em class="sig-param"><span class="n">probability_of_empty_space</span></em>, <em class="sig-param"><span class="n">min_building_size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#District.Castle" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">District.</code><code class="sig-name descname">Castle</code><a class="headerlink" href="#District.Castle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#District.District" title="District.District"><code class="xref py py-class docutils literal notranslate"><span class="pre">District.District</span></code></a></p>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
@@ -139,17 +213,6 @@
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_probability_of_empty_space</span></code>(…)</p></td>
 <td><p>Sets the value of ‘probability_of_empty_space’ for a district</p></td>
-</tr>
-</tbody>
-</table>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 68%" />
-<col style="width: 32%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><strong>generate_district</strong></p></td>
-<td></td>
 </tr>
 </tbody>
 </table>
@@ -183,7 +246,7 @@
 
 <dl class="py class">
 <dt id="District.Cathedral">
-<em class="property">class </em><code class="sig-prename descclassname">District.</code><code class="sig-name descname">Cathedral</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">chaos_level</span></em>, <em class="sig-param"><span class="n">probability_of_empty_space</span></em>, <em class="sig-param"><span class="n">min_building_size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#District.Cathedral" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">District.</code><code class="sig-name descname">Cathedral</code><a class="headerlink" href="#District.Cathedral" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#District.District" title="District.District"><code class="xref py py-class docutils literal notranslate"><span class="pre">District.District</span></code></a></p>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
@@ -212,17 +275,6 @@
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_probability_of_empty_space</span></code>(…)</p></td>
 <td><p>Sets the value of ‘probability_of_empty_space’ for a district</p></td>
-</tr>
-</tbody>
-</table>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 68%" />
-<col style="width: 32%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><strong>generate_district</strong></p></td>
-<td></td>
 </tr>
 </tbody>
 </table>
@@ -256,7 +308,7 @@
 
 <dl class="py class">
 <dt id="District.District">
-<em class="property">class </em><code class="sig-prename descclassname">District.</code><code class="sig-name descname">District</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">chaos_level</span></em>, <em class="sig-param"><span class="n">probability_of_empty_space</span></em>, <em class="sig-param"><span class="n">min_building_size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#District.District" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">District.</code><code class="sig-name descname">District</code><a class="headerlink" href="#District.District" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
@@ -288,17 +340,6 @@
 </tr>
 </tbody>
 </table>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 68%" />
-<col style="width: 32%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><strong>generate_district</strong></p></td>
-<td></td>
-</tr>
-</tbody>
-</table>
 <dl class="py method">
 <dt id="District.District.determine_rating">
 <em class="property">static </em><code class="sig-name descname">determine_rating</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">region</span></em>, <em class="sig-param"><span class="n">other_regions</span></em>, <em class="sig-param"><span class="n">wall</span></em>, <em class="sig-param"><span class="n">city</span></em><span class="sig-paren">)</span><a class="headerlink" href="#District.District.determine_rating" title="Permalink to this definition">¶</a></dt>
@@ -324,11 +365,6 @@
 </dd>
 </dl>
 </dd></dl>
-
-<dl class="py method">
-<dt id="District.District.generate_district">
-<code class="sig-name descname">generate_district</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#District.District.generate_district" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 <dl class="py method">
 <dt id="District.District.get_chaos_level">
@@ -418,7 +454,7 @@
 
 <dl class="py class">
 <dt id="District.Docks">
-<em class="property">class </em><code class="sig-prename descclassname">District.</code><code class="sig-name descname">Docks</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">chaos_level</span></em>, <em class="sig-param"><span class="n">probability_of_empty_space</span></em>, <em class="sig-param"><span class="n">min_building_size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#District.Docks" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">District.</code><code class="sig-name descname">Docks</code><a class="headerlink" href="#District.Docks" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#District.District" title="District.District"><code class="xref py py-class docutils literal notranslate"><span class="pre">District.District</span></code></a></p>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
@@ -447,17 +483,6 @@
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_probability_of_empty_space</span></code>(…)</p></td>
 <td><p>Sets the value of ‘probability_of_empty_space’ for a district</p></td>
-</tr>
-</tbody>
-</table>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 68%" />
-<col style="width: 32%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><strong>generate_district</strong></p></td>
-<td></td>
 </tr>
 </tbody>
 </table>
@@ -491,7 +516,7 @@
 
 <dl class="py class">
 <dt id="District.Farmland">
-<em class="property">class </em><code class="sig-prename descclassname">District.</code><code class="sig-name descname">Farmland</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">chaos_level</span></em>, <em class="sig-param"><span class="n">probability_of_empty_space</span></em>, <em class="sig-param"><span class="n">min_building_size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#District.Farmland" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">District.</code><code class="sig-name descname">Farmland</code><a class="headerlink" href="#District.Farmland" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#District.District" title="District.District"><code class="xref py py-class docutils literal notranslate"><span class="pre">District.District</span></code></a></p>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
@@ -520,17 +545,6 @@
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_probability_of_empty_space</span></code>(…)</p></td>
 <td><p>Sets the value of ‘probability_of_empty_space’ for a district</p></td>
-</tr>
-</tbody>
-</table>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 68%" />
-<col style="width: 32%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><strong>generate_district</strong></p></td>
-<td></td>
 </tr>
 </tbody>
 </table>
@@ -564,7 +578,7 @@
 
 <dl class="py class">
 <dt id="District.Gate">
-<em class="property">class </em><code class="sig-prename descclassname">District.</code><code class="sig-name descname">Gate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">chaos_level</span></em>, <em class="sig-param"><span class="n">probability_of_empty_space</span></em>, <em class="sig-param"><span class="n">min_building_size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#District.Gate" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">District.</code><code class="sig-name descname">Gate</code><a class="headerlink" href="#District.Gate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#District.District" title="District.District"><code class="xref py py-class docutils literal notranslate"><span class="pre">District.District</span></code></a></p>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
@@ -593,17 +607,6 @@
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_probability_of_empty_space</span></code>(…)</p></td>
 <td><p>Sets the value of ‘probability_of_empty_space’ for a district</p></td>
-</tr>
-</tbody>
-</table>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 68%" />
-<col style="width: 32%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><strong>generate_district</strong></p></td>
-<td></td>
 </tr>
 </tbody>
 </table>
@@ -636,9 +639,9 @@
 </dd></dl>
 
 <dl class="py class">
-<dt id="District.Housing">
-<em class="property">class </em><code class="sig-prename descclassname">District.</code><code class="sig-name descname">Housing</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">chaos_level</span></em>, <em class="sig-param"><span class="n">probability_of_empty_space</span></em>, <em class="sig-param"><span class="n">min_building_size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#District.Housing" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#District.District" title="District.District"><code class="xref py py-class docutils literal notranslate"><span class="pre">District.District</span></code></a></p>
+<dt id="District.HousingMid">
+<em class="property">class </em><code class="sig-prename descclassname">District.</code><code class="sig-name descname">HousingMid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">chaos_level</span></em>, <em class="sig-param"><span class="n">probability_of_empty_space</span></em>, <em class="sig-param"><span class="n">min_building_size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#District.HousingMid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#District.BasicDistrict" title="District.BasicDistrict"><code class="xref py py-class docutils literal notranslate"><span class="pre">District.BasicDistrict</span></code></a></p>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -646,25 +649,28 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#District.Housing.determine_rating" title="District.Housing.determine_rating"><code class="xref py py-obj docutils literal notranslate"><span class="pre">determine_rating</span></code></a>(region, other_regions, …)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#District.HousingMid.determine_rating" title="District.HousingMid.determine_rating"><code class="xref py py-obj docutils literal notranslate"><span class="pre">determine_rating</span></code></a>(region, other_regions, …)</p></td>
 <td><p>Determines the likely hood a given district will be in a region</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_chaos_level</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_buildings</span></code>(region, section)</p></td>
+<td><p>Splits a given region into buildings randomly</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_chaos_level</span></code>()</p></td>
 <td><p>Gets the ‘chaos_level’ of the district</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_min_building_size</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_min_building_size</span></code>()</p></td>
 <td><p>Gets the ‘min_building_size’ of the district</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_probability_of_empty_space</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_probability_of_empty_space</span></code>()</p></td>
 <td><p>Gets the ‘probability_of_empty_space’ of the district</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_chaos_level</span></code>(new_chaos_level)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_chaos_level</span></code>(new_chaos_level)</p></td>
 <td><p>Sets the value of ‘chaos_level’ for a district</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_min_building_size</span></code>(new_min_building_size)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_min_building_size</span></code>(new_min_building_size)</p></td>
 <td><p>Sets the value of ‘min_building_size’ for a district</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_probability_of_empty_space</span></code>(…)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_probability_of_empty_space</span></code>(…)</p></td>
 <td><p>Sets the value of ‘probability_of_empty_space’ for a district</p></td>
 </tr>
 </tbody>
@@ -681,8 +687,8 @@
 </tbody>
 </table>
 <dl class="py method">
-<dt id="District.Housing.determine_rating">
-<em class="property">static </em><code class="sig-name descname">determine_rating</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">region</span></em>, <em class="sig-param"><span class="n">other_regions</span></em>, <em class="sig-param"><span class="n">wall</span></em>, <em class="sig-param"><span class="n">city</span></em><span class="sig-paren">)</span><a class="headerlink" href="#District.Housing.determine_rating" title="Permalink to this definition">¶</a></dt>
+<dt id="District.HousingMid.determine_rating">
+<em class="property">static </em><code class="sig-name descname">determine_rating</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">region</span></em>, <em class="sig-param"><span class="n">other_regions</span></em>, <em class="sig-param"><span class="n">wall</span></em>, <em class="sig-param"><span class="n">city</span></em><span class="sig-paren">)</span><a class="headerlink" href="#District.HousingMid.determine_rating" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines the likely hood a given district will be in a region</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -710,7 +716,7 @@
 
 <dl class="py class">
 <dt id="District.Market">
-<em class="property">class </em><code class="sig-prename descclassname">District.</code><code class="sig-name descname">Market</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">chaos_level</span></em>, <em class="sig-param"><span class="n">probability_of_empty_space</span></em>, <em class="sig-param"><span class="n">min_building_size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#District.Market" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">District.</code><code class="sig-name descname">Market</code><a class="headerlink" href="#District.Market" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#District.District" title="District.District"><code class="xref py py-class docutils literal notranslate"><span class="pre">District.District</span></code></a></p>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
@@ -739,17 +745,6 @@
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_probability_of_empty_space</span></code>(…)</p></td>
 <td><p>Sets the value of ‘probability_of_empty_space’ for a district</p></td>
-</tr>
-</tbody>
-</table>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 68%" />
-<col style="width: 32%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><strong>generate_district</strong></p></td>
-<td></td>
 </tr>
 </tbody>
 </table>
@@ -783,7 +778,7 @@
 
 <dl class="py class">
 <dt id="District.Precinct">
-<em class="property">class </em><code class="sig-prename descclassname">District.</code><code class="sig-name descname">Precinct</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">chaos_level</span></em>, <em class="sig-param"><span class="n">probability_of_empty_space</span></em>, <em class="sig-param"><span class="n">min_building_size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#District.Precinct" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">District.</code><code class="sig-name descname">Precinct</code><a class="headerlink" href="#District.Precinct" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#District.District" title="District.District"><code class="xref py py-class docutils literal notranslate"><span class="pre">District.District</span></code></a></p>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
@@ -812,17 +807,6 @@
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_probability_of_empty_space</span></code>(…)</p></td>
 <td><p>Sets the value of ‘probability_of_empty_space’ for a district</p></td>
-</tr>
-</tbody>
-</table>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 68%" />
-<col style="width: 32%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><strong>generate_district</strong></p></td>
-<td></td>
 </tr>
 </tbody>
 </table>
@@ -857,7 +841,7 @@
 <dl class="py class">
 <dt id="District.Slum">
 <em class="property">class </em><code class="sig-prename descclassname">District.</code><code class="sig-name descname">Slum</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">chaos_level</span></em>, <em class="sig-param"><span class="n">probability_of_empty_space</span></em>, <em class="sig-param"><span class="n">min_building_size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#District.Slum" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#District.District" title="District.District"><code class="xref py py-class docutils literal notranslate"><span class="pre">District.District</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#District.BasicDistrict" title="District.BasicDistrict"><code class="xref py py-class docutils literal notranslate"><span class="pre">District.BasicDistrict</span></code></a></p>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -868,22 +852,25 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#District.Slum.determine_rating" title="District.Slum.determine_rating"><code class="xref py py-obj docutils literal notranslate"><span class="pre">determine_rating</span></code></a>(region, other_regions, …)</p></td>
 <td><p>Determines the likely hood a given district will be in a region</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_chaos_level</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_buildings</span></code>(region, section)</p></td>
+<td><p>Splits a given region into buildings randomly</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_chaos_level</span></code>()</p></td>
 <td><p>Gets the ‘chaos_level’ of the district</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_min_building_size</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_min_building_size</span></code>()</p></td>
 <td><p>Gets the ‘min_building_size’ of the district</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_probability_of_empty_space</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_probability_of_empty_space</span></code>()</p></td>
 <td><p>Gets the ‘probability_of_empty_space’ of the district</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_chaos_level</span></code>(new_chaos_level)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_chaos_level</span></code>(new_chaos_level)</p></td>
 <td><p>Sets the value of ‘chaos_level’ for a district</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_min_building_size</span></code>(new_min_building_size)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_min_building_size</span></code>(new_min_building_size)</p></td>
 <td><p>Sets the value of ‘min_building_size’ for a district</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_probability_of_empty_space</span></code>(…)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_probability_of_empty_space</span></code>(…)</p></td>
 <td><p>Sets the value of ‘probability_of_empty_space’ for a district</p></td>
 </tr>
 </tbody>
@@ -929,7 +916,7 @@
 
 <dl class="py class">
 <dt id="District.Smithing">
-<em class="property">class </em><code class="sig-prename descclassname">District.</code><code class="sig-name descname">Smithing</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">chaos_level</span></em>, <em class="sig-param"><span class="n">probability_of_empty_space</span></em>, <em class="sig-param"><span class="n">min_building_size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#District.Smithing" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">District.</code><code class="sig-name descname">Smithing</code><a class="headerlink" href="#District.Smithing" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#District.District" title="District.District"><code class="xref py py-class docutils literal notranslate"><span class="pre">District.District</span></code></a></p>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
@@ -958,17 +945,6 @@
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_probability_of_empty_space</span></code>(…)</p></td>
 <td><p>Sets the value of ‘probability_of_empty_space’ for a district</p></td>
-</tr>
-</tbody>
-</table>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 68%" />
-<col style="width: 32%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><strong>generate_district</strong></p></td>
-<td></td>
 </tr>
 </tbody>
 </table>
@@ -1002,7 +978,7 @@
 
 <dl class="py class">
 <dt id="District.WarCamp">
-<em class="property">class </em><code class="sig-prename descclassname">District.</code><code class="sig-name descname">WarCamp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">chaos_level</span></em>, <em class="sig-param"><span class="n">probability_of_empty_space</span></em>, <em class="sig-param"><span class="n">min_building_size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#District.WarCamp" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">District.</code><code class="sig-name descname">WarCamp</code><a class="headerlink" href="#District.WarCamp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#District.District" title="District.District"><code class="xref py py-class docutils literal notranslate"><span class="pre">District.District</span></code></a></p>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
@@ -1031,17 +1007,6 @@
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_probability_of_empty_space</span></code>(…)</p></td>
 <td><p>Sets the value of ‘probability_of_empty_space’ for a district</p></td>
-</tr>
-</tbody>
-</table>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 68%" />
-<col style="width: 32%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><strong>generate_district</strong></p></td>
-<td></td>
 </tr>
 </tbody>
 </table>

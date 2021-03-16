@@ -136,6 +136,52 @@ vector by that amount and then add it to the position of the known end of the ra
 
 </dd></dl>
 
+<dl class="py function">
+<dt id="Voronoi.bfs_path">
+<code class="sig-prename descclassname">Voronoi.</code><code class="sig-name descname">bfs_path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">G</span></em>, <em class="sig-param"><span class="n">source</span></em>, <em class="sig-param"><span class="n">destination</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Voronoi.bfs_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use a breadth first search to find the path from vertex <cite>source</cite> to vertex <cite>destination</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>G</strong><span class="classifier">nx.Graph</span></dt><dd><p>The graph to search</p>
+</dd>
+<dt><strong>source</strong><span class="classifier">Point</span></dt><dd><p>Origin point</p>
+</dd>
+<dt><strong>destination</strong><span class="classifier">Point</span></dt><dd><p>Destination point</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>deque</dt><dd><p>A queue with the path from <cite>source</cite> to <cite>destination</cite> already enqueued.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Voronoi.remove_vertices">
+<code class="sig-prename descclassname">Voronoi.</code><code class="sig-name descname">remove_vertices</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">G</span></em>, <em class="sig-param"><span class="n">vertices</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Voronoi.remove_vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all vertices in <cite>vertices</cite> from the graph <cite>G</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>G</strong><span class="classifier">nx.Graph</span></dt><dd><p>The graph from which vertices will be removed</p>
+</dd>
+<dt><strong>vertices</strong><span class="classifier">list</span></dt><dd><p>The list of vertices in G to be removed</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>nx.Graph</dt><dd><p>A copy of the graph <cite>G</cite> without the vertices listed in <cite>vertices</cite></p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 
 

@@ -39,30 +39,60 @@
 <dt id="Constructor.Constructor">
 <em class="property">class </em><code class="sig-prename descclassname">Constructor.</code><code class="sig-name descname">Constructor</code><a class="headerlink" href="#Constructor.Constructor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The constructor handles the compilation and processing of information from the backend and the transition of that
+information into something that the front end can handle</p>
 <p class="rubric">Methods</p>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 67%" />
-<col style="width: 33%" />
+<col style="width: 54%" />
+<col style="width: 46%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><strong>assign_district</strong></p></td>
-<td></td>
+<tr class="row-odd"><td><p><strong>assign_districts(regions, wall, city)</strong></p></td>
+<td><p>Assigns the provided regions a district</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>assign_districts</strong></p></td>
-<td></td>
+<tr class="row-even"><td><p><strong>assign_district(reg, regions, wall, city)</strong></p></td>
+<td><p>Assigns the region a district</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py method">
 <dt id="Constructor.Constructor.assign_district">
-<code class="sig-name descname">assign_district</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reg</span></em>, <em class="sig-param"><span class="n">regions</span></em>, <em class="sig-param"><span class="n">wall</span></em>, <em class="sig-param"><span class="n">city</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Constructor.Constructor.assign_district" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<em class="property">static </em><code class="sig-name descname">assign_district</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reg</span></em>, <em class="sig-param"><span class="n">regions</span></em>, <em class="sig-param"><span class="n">wall</span></em>, <em class="sig-param"><span class="n">city</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Constructor.Constructor.assign_district" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assigns a district to a region based on Ratings</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>reg</strong><span class="classifier">Region</span></dt><dd><p>Region to have a district assigned to it</p>
+</dd>
+<dt><strong>regions</strong><span class="classifier">List of Regions</span></dt><dd><p>All of the Regions on the map</p>
+</dd>
+<dt><strong>wall</strong><span class="classifier">Wall</span></dt><dd><p>The City wall</p>
+</dd>
+<dt><strong>city</strong><span class="classifier">Polygon</span></dt><dd><p>The polygon representing the city limits</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="Constructor.Constructor.assign_districts">
-<code class="sig-name descname">assign_districts</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">regions</span></em>, <em class="sig-param"><span class="n">wall</span></em>, <em class="sig-param"><span class="n">city</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Constructor.Constructor.assign_districts" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<em class="property">static </em><code class="sig-name descname">assign_districts</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">regions</span></em>, <em class="sig-param"><span class="n">wall</span></em>, <em class="sig-param"><span class="n">city</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Constructor.Constructor.assign_districts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assigns the provided regions a district at sudo-random order, taking into account the wall and city bounds</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>regions</strong><span class="classifier">List of regions</span></dt><dd><p>Regions to have districts assigned</p>
+</dd>
+<dt><strong>wall</strong><span class="classifier">Wall</span></dt><dd><p>The wall of the city</p>
+</dd>
+<dt><strong>city</strong><span class="classifier">Polygon</span></dt><dd><p>The polygon representing the city bounds</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 

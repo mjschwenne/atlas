@@ -39,6 +39,15 @@
 <dt id="Wall.Wall">
 <em class="property">class </em><code class="sig-prename descclassname">Wall.</code><code class="sig-name descname">Wall</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">regions</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Wall.Wall" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">src.Backend.Polygon.Polygon</span></code></p>
+<p>This class represents a Wall using a Polygon</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>gates</strong><span class="classifier">list of Points</span></dt><dd><p>The vertices in the polygon representing the wall that are gates.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -46,20 +55,32 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_center</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">area</span></code>()</p></td>
+<td><p>Finds the area of the polygon</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut</span></code>(p1, p2)</p></td>
+<td><p>Cuts a polygon along two points</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut_gap</span></code>(p1, p2, gap)</p></td>
+<td><p>Cuts a polygon along two points</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_center</span></code>()</p></td>
 <td><p>Finds the centroid of the polygon.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#Wall.Wall.get_gates" title="Wall.Wall.get_gates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_gates</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Wall.Wall.get_gates" title="Wall.Wall.get_gates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_gates</span></code></a>()</p></td>
 <td><p>Returns the List of Points that defines the Gates</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_perimeter</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_perimeter</span></code>()</p></td>
 <td><p>Finds the perimeter of the polygon</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertices</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertices</span></code>()</p></td>
 <td><p>Gets the vertices of the polygon</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">in_segment</span></code>(p1, p2, p3)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">in_segment</span></code>(p1, p2, p3)</p></td>
 <td><p>Returns true if p3 is in the line segment from p1 to p2.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersection</span></code>(p1, p2, p3, p4)</p></td>
+<td><p>Finds the point of intersection given twp line segments Parameters ———- p1 : Point     The first point in the first line segment p2 : Point     The second point in the first line segment p3 : Point     The first point in the second line segment p4 : Point     The second point in the second line segment</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_bordering</span></code>(other)</p></td>
 <td><p>Checks to see if a given polygon borders this polygon.</p></td>
@@ -76,10 +97,13 @@
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_vertices</span></code>(vertices)</p></td>
 <td><p>Sets the vertices of the polygon</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_points</span></code>(polygons)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code>(p, ang, gap)</p></td>
+<td><p>splits a polygon along a point and an angle relative to edge of p</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_points</span></code>(polygons)</p></td>
 <td><p>Takes a list of polygons and converts it to a list of points</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polygon</span></code>(vertices)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polygon</span></code>(vertices)</p></td>
 <td><p>Returns a polygon given a list of lists, i.e. [[1, 2], [3, 4], [5, 6]] =&gt; polygon with those vertices.</p></td>
 </tr>
 </tbody>

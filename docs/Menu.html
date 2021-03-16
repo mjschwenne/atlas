@@ -34,6 +34,41 @@
             
   <div class="section" id="module-Menu">
 <span id="menu-module"></span><h1>Menu module<a class="headerlink" href="#module-Menu" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="Menu.ResizingCanvas">
+<em class="property">class </em><code class="sig-prename descclassname">Menu.</code><code class="sig-name descname">ResizingCanvas</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Menu.ResizingCanvas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tkinter.Canvas</span></code></p>
+<p>This altered Canvas stores the current size and acts like a normal canvas.
+It also includes the trigger for scaling the map when resizing the window.</p>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 71%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>resize(self, event)</strong></p></td>
+<td><p>Handles the action of resizing the window appropriately</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="Menu.ResizingCanvas.resize">
+<code class="sig-name descname">resize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Menu.ResizingCanvas.resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes in the Canvas and the event and resizes the contents of the map accordingly.
+<em>Not Perfect, needs some work</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>self: Modified Canvas</strong></dt><dd></dd>
+<dt><strong>event: the resizing of the window</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py function">
 <dt id="Menu.main">
 <code class="sig-prename descclassname">Menu.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Menu.main" title="Permalink to this definition">¶</a></dt>

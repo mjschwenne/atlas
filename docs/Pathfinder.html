@@ -39,6 +39,17 @@
 <dt id="Pathfinder.Pathfinder">
 <em class="property">class </em><code class="sig-prename descclassname">Pathfinder.</code><code class="sig-name descname">Pathfinder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em>, <em class="sig-param"><span class="n">invalid_points</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Pathfinder.Pathfinder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class is used to find path between two points</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>g</strong><span class="classifier">graph (networkx)</span></dt><dd><p>The graph from Voronoi.py</p>
+</dd>
+<dt><strong>invalid_points</strong><span class="classifier">List of Points</span></dt><dd><p>Points that paths can’t go through</p>
+</dd>
+</dl>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -49,16 +60,8 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#Pathfinder.Pathfinder.dist" title="Pathfinder.Pathfinder.dist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dist</span></code></a>(a, b)</p></td>
 <td><p>Heuristic method for the astar_path method in find_path method</p></td>
 </tr>
-</tbody>
-</table>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 57%" />
-<col style="width: 43%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><strong>find_path</strong></p></td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#Pathfinder.Pathfinder.find_path" title="Pathfinder.Pathfinder.find_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_path</span></code></a>(origin, target)</p></td>
+<td><p>Given an origin find the shortest path to target</p></td>
 </tr>
 </tbody>
 </table>
@@ -87,7 +90,24 @@
 <dl class="py method">
 <dt id="Pathfinder.Pathfinder.find_path">
 <code class="sig-name descname">find_path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">origin</span></em>, <em class="sig-param"><span class="n">target</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Pathfinder.Pathfinder.find_path" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Given an origin find the shortest path to target</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>origin</strong><span class="classifier">Point</span></dt><dd><p>The first point in the path</p>
+</dd>
+<dt><strong>target</strong><span class="classifier">Point</span></dt><dd><p>The last point in the path</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>List of Points</dt><dd><p>The path from origin to target</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
