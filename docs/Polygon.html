@@ -1,0 +1,371 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Polygon module &#8212; Atlas 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Region module" href="Region.html" />
+    <link rel="prev" title="Point module" href="Point.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-Polygon">
+<span id="polygon-module"></span><h1>Polygon module<a class="headerlink" href="#module-Polygon" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="Polygon.Polygon">
+<em class="property">class </em><code class="sig-prename descclassname">Polygon.</code><code class="sig-name descname">Polygon</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vertices</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class represents a polygon as a list of vertex points ordered in clockwise order.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>vertices</strong><span class="classifier">List of Point</span></dt><dd><p>Store the vertices in a clockwise list</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Polygon.Polygon.get_center" title="Polygon.Polygon.get_center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_center</span></code></a>()</p></td>
+<td><p>Finds the centroid of the polygon.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Polygon.Polygon.get_perimeter" title="Polygon.Polygon.get_perimeter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_perimeter</span></code></a>()</p></td>
+<td><p>Finds the perimeter of the polygon</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Polygon.Polygon.get_vertices" title="Polygon.Polygon.get_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertices</span></code></a>()</p></td>
+<td><p>Gets the vertices of the polygon</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Polygon.Polygon.in_segment" title="Polygon.Polygon.in_segment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">in_segment</span></code></a>(p1, p2, p3)</p></td>
+<td><p>Returns true if p3 is in the line segment from p1 to p2.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Polygon.Polygon.is_bordering" title="Polygon.Polygon.is_bordering"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_bordering</span></code></a>(other)</p></td>
+<td><p>Checks to see if a given polygon borders this polygon.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Polygon.Polygon.is_contained" title="Polygon.Polygon.is_contained"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_contained</span></code></a>(point)</p></td>
+<td><p>Returns true if Point point is located on the edge of or in this Polygon.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Polygon.Polygon.is_convex" title="Polygon.Polygon.is_convex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_convex</span></code></a>()</p></td>
+<td><p>Returns true if the polygon is convex and has no intersecting lines.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Polygon.Polygon.set_vertices" title="Polygon.Polygon.set_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_vertices</span></code></a>(vertices)</p></td>
+<td><p>Sets the vertices of the polygon</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Polygon.Polygon.to_points" title="Polygon.Polygon.to_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_points</span></code></a>(polygons)</p></td>
+<td><p>Takes a list of polygons and converts it to a list of points</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Polygon.Polygon.to_polygon" title="Polygon.Polygon.to_polygon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polygon</span></code></a>(vertices)</p></td>
+<td><p>Returns a polygon given a list of lists, i.e. [[1, 2], [3, 4], [5, 6]] =&gt; polygon with those vertices.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="Polygon.Polygon.get_center">
+<code class="sig-name descname">get_center</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.get_center" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the centroid of the polygon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>Point</dt><dd><p>Point representing the centroid of the polygon</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>We are using the general formula for a centroid, expressed below.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}C_x = \frac{1}{6A} \sum_{i=0}^{n-1}\left(\left(x_i + x_{i+1}\right) \times
+\left(x_1 y_{i+1} - x_{i+1} y_i \right) \right) \\
+C_y = \frac{1}{6A} \sum_{i=0}^{n-1}\left(\left(y_i + y_{i+1}\right) \times
+\left(x_1 y_{i+1} - x_{i+1} y_i \right) \right)\end{split}\]</div>
+<p>Where <cite>A</cite> is defined as the area using the shoelace method.</p>
+<div class="math notranslate nohighlight">
+\[A = \frac{1}{2} \sum_{i=0}^{n-1}\left(x_i y_{i+1} - x_{i+1} y_i\right)\]</div>
+<p>More information can be found <a class="reference external" href="https://en.wikipedia.org/wiki/Centroid#Of_a_polygon">here</a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.get_perimeter">
+<code class="sig-name descname">get_perimeter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.get_perimeter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the perimeter of the polygon</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>float</dt><dd><p>The perimeter of the polygon</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.get_vertices">
+<code class="sig-name descname">get_vertices</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.get_vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the vertices of the polygon</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>List of Points</dt><dd><p>The vertices</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.in_segment">
+<em class="property">static </em><code class="sig-name descname">in_segment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p1</span></em>, <em class="sig-param"><span class="n">p2</span></em>, <em class="sig-param"><span class="n">p3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.in_segment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true if p3 is in the line segment from p1 to p2.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>p1</strong><span class="classifier">Point</span></dt><dd><p>First point of the line segment</p>
+</dd>
+<dt><strong>p2</strong><span class="classifier">Point</span></dt><dd><p>Second point of the line segment</p>
+</dd>
+<dt><strong>p3</strong><span class="classifier">Point</span></dt><dd><p>The point to see if it is in the line segment</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>bool</dt><dd><p>True if p3 is in the line segment from p1 to p2</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>After checking for vertical and horizontal lines, we know that the <cite>p3</cite> is only on the line segment between
+<cite>p1</cite> and <cite>p2</cite> if the distance from <cite>p1</cite> to <cite>p2</cite> thorough <cite>p3</cite> is the same as the distance from <cite>p1</cite> directly
+to <cite>p2</cite>.</p>
+<p>This method is only accurate to approximately eight decimal places, after which internal rounding can affect the
+result.
+&gt;&gt;&gt; print(in_segment(Point(0, 0), Point(5, 5), Point(1, 1.00000001)))
+True</p>
+<p>Example of an incorrect, but even close test.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.is_bordering">
+<code class="sig-name descname">is_bordering</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.is_bordering" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks to see if a given polygon borders this polygon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>other</strong><span class="classifier">Polygon</span></dt><dd><p>The polygon we need to check for a border</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>bool</dt><dd><p>True if the two share and edge, false otherwise.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>I have not been able to find a way to do this in less than <span class="math notranslate nohighlight">\(O(n^2)\)</span> complexity, which is acceptable
+so long as we do not compare every polygon to every other polygon in the city. That will tank performance.</p>
+<p>This will not catch intersecting polygons unless one vertex sits on an edge of the other.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.is_contained">
+<code class="sig-name descname">is_contained</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">point</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.is_contained" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true if Point point is located on the edge of or in this Polygon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>point</strong><span class="classifier">Point</span></dt><dd><p>The point to check if in this polygon</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>bool</dt><dd><p>True if contained in the polygon</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This method utilises the Ray-casting algorithm. A horizontal ray from point increasing to infinity will
+intersect with the polygon an odd number of times if it is located inside the polygon and an even number of
+times if point is located outside the polygon.</p>
+<p>You can find more information about the algorithm here: <a class="reference external" href="https://rosettacode.org/wiki/Ray-casting_algorithm">https://rosettacode.org/wiki/Ray-casting_algorithm</a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.is_convex">
+<code class="sig-name descname">is_convex</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.is_convex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true if the polygon is convex and has no intersecting lines.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>bool</dt><dd><p>Returns true if the polygon is convex and has no intersecting lines, or false if not.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This method will return false if the number of vertices in the polygon is less than 3 or if any of the vertices
+repeat.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.set_vertices">
+<code class="sig-name descname">set_vertices</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vertices</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.set_vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the vertices of the polygon</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>vertices</strong><span class="classifier">List of points</span></dt><dd><p>The new vertices</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.to_points">
+<em class="property">static </em><code class="sig-name descname">to_points</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">polygons</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.to_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a list of polygons and converts it to a list of points</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>polygons</strong><span class="classifier">List of Polygons</span></dt><dd><p>list of Polygons</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>List of Points</dt><dd><p>List of all vertices in the list of Polygons</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.to_polygon">
+<em class="property">static </em><code class="sig-name descname">to_polygon</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vertices</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.to_polygon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a polygon given a list of lists, i.e. [[1, 2], [3, 4], [5, 6]] =&gt; polygon with those vertices</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>vertices</strong><span class="classifier">list of lists</span></dt><dd><p>the vertices of the polygon in the form of a list of lists</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Atlas</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="District.html">District module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Pathfinder.html">Pathfinder module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Point.html">Point module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Polygon module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Region.html">Region module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Voronoi.html">Voronoi module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Wall.html">Wall module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Constructor.html">Constructor module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Menu.html">Menu module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Point.html" title="previous chapter">Point module</a></li>
+      <li>Next: <a href="Region.html" title="next chapter">Region module</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Thomas Grifka, Max Jorgensen, Matt Schwennesen, Emma Smith, Joe Teahen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/Polygon.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,329 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Region module &#8212; Atlas 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Voronoi module" href="Voronoi.html" />
+    <link rel="prev" title="Polygon module" href="Polygon.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-Region">
+<span id="region-module"></span><h1>Region module<a class="headerlink" href="#module-Region" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="Region.Region">
+<em class="property">class </em><code class="sig-prename descclassname">Region.</code><code class="sig-name descname">Region</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">district</span></em>, <em class="sig-param"><span class="n">vertices</span></em>, <em class="sig-param"><span class="n">is_water</span></em>, <em class="sig-param"><span class="n">has_river</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Region.Region" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">src.Backend.Polygon.Polygon</span></code></p>
+<p>Region storing a list of Vertices and a District with functions to determine what the Region is in</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>district</strong><span class="classifier">District</span></dt><dd><p>The district of the Region</p>
+</dd>
+<dt><strong>vertices</strong><span class="classifier">list of Points</span></dt><dd><p>The points that define the boarders of the Region</p>
+</dd>
+<dt><strong>is_water</strong><span class="classifier">bool</span></dt><dd><p>True if the Region is water, otherwise false</p>
+</dd>
+<dt><strong>has_river</strong><span class="classifier">bool</span></dt><dd><p>True if the region contains a river, otherwise false</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 37%" />
+<col style="width: 63%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>get_district()</strong></p></td>
+<td><p>Gets the district value of the Region</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>set_district(new_district)</strong></p></td>
+<td><p>Sets the district value of the Region</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>get_vertices()</strong></p></td>
+<td><p>Gets the vertices value of the Region</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>set_vertices(new_vertices)</strong></p></td>
+<td><p>Sets the vertices value of the Region</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>get_is_water()</strong></p></td>
+<td><p>Gets the is_water value of the Region</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>set_is_water(new_is_water)</strong></p></td>
+<td><p>Sets the is_water value of the Region</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>get_has_river()</strong></p></td>
+<td><p>Gets the has_river value of the Region</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>set_has_river()</strong></p></td>
+<td><p>Sets the has_river value of the Region</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>in_city(city)</strong></p></td>
+<td><p>Determines if the Region is inside the provided City</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>in_wall(wall)</strong></p></td>
+<td><p>Determines if the Region is inside the provided wall</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="Region.Region.get_district">
+<code class="sig-name descname">get_district</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Region.Region.get_district" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the ‘district’ of the region</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>district</dt><dd><p>The ‘district’ of the region</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Region.Region.get_has_river">
+<code class="sig-name descname">get_has_river</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Region.Region.get_has_river" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the value of ‘has_river’ of a Region</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>bool</dt><dd><p>Returns the value of ‘has_river’ of a Region</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Region.Region.get_is_water">
+<code class="sig-name descname">get_is_water</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Region.Region.get_is_water" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the value of ‘is_water’ of a Region</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>bool</dt><dd><p>Returns the value of ‘is_water’ of a Region</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Region.Region.get_vertices">
+<code class="sig-name descname">get_vertices</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Region.Region.get_vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the ‘vertices’ of a Region</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>list of Points</dt><dd><p>Returns the ‘vertices’ of the Region</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Region.Region.in_city">
+<code class="sig-name descname">in_city</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">city</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Region.Region.in_city" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines if a Region is inside of the given City</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>city</strong><span class="classifier">Polygon</span></dt><dd><p>The City to check if the Region is inside of</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>bool</dt><dd><p>True if the Region is inside the City, false otherwise</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Region.Region.in_walls">
+<code class="sig-name descname">in_walls</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wall</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Region.Region.in_walls" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines if a Region is inside of the given Wall</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>wall</strong><span class="classifier">Wall</span></dt><dd><p>The wall to check if the Region is inside of</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>bool</dt><dd><p>True if the Region is inside the wall, false otherwise</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Region.Region.set_district">
+<code class="sig-name descname">set_district</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_district</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Region.Region.set_district" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the value of ‘district’ for a region</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>new_district</strong><span class="classifier">district</span></dt><dd><p>The new value of ‘district’ of the region</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Region.Region.set_has_river">
+<code class="sig-name descname">set_has_river</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_has_river</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Region.Region.set_has_river" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the value of ‘has_river’ for a Region</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>new_has_river</strong><span class="classifier">bool</span></dt><dd><p>The new value of ‘has_river’</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Region.Region.set_is_water">
+<code class="sig-name descname">set_is_water</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_is_water</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Region.Region.set_is_water" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the value of ‘is_water’ for a Region</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>new_is_water</strong><span class="classifier">bool</span></dt><dd><p>The new value of ‘is_water’</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Region.Region.set_vertices">
+<code class="sig-name descname">set_vertices</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_vertices</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Region.Region.set_vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the value of ‘vertices’ for a Region</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>new_vertices</strong><span class="classifier">List of Points</span></dt><dd><p>The new value of ‘vertices’ for the Region</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Atlas</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="District.html">District module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Pathfinder.html">Pathfinder module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Point.html">Point module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Polygon.html">Polygon module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Region module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Voronoi.html">Voronoi module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Wall.html">Wall module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Constructor.html">Constructor module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Menu.html">Menu module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Polygon.html" title="previous chapter">Polygon module</a></li>
+      <li>Next: <a href="Voronoi.html" title="next chapter">Voronoi module</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Thomas Grifka, Max Jorgensen, Matt Schwennesen, Emma Smith, Joe Teahen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/Region.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

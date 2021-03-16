@@ -1,0 +1,353 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Point module &#8212; Atlas 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Polygon module" href="Polygon.html" />
+    <link rel="prev" title="Pathfinder module" href="Pathfinder.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-Point">
+<span id="point-module"></span><h1>Point module<a class="headerlink" href="#module-Point" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="Point.Point">
+<em class="property">class </em><code class="sig-prename descclassname">Point.</code><code class="sig-name descname">Point</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Point.Point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Point storing x and y coordinates with associated distance functions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>x</strong><span class="classifier">float</span></dt><dd><p>The point’s x value.</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">float</span></dt><dd><p>The point’s y value.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 69%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>set_x(x_new)</strong></p></td>
+<td><p>Sets the x value of the point.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>set_y(y_new)</strong></p></td>
+<td><p>Sets the y value of the point</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>get_x()</strong></p></td>
+<td><p>Gets the x value of the point</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>get_y()</strong></p></td>
+<td><p>Gets the y value of the point</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>simple_distance(point)</strong></p></td>
+<td><p>Finds the simple distance between this point and another point.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>manhattan_distance(point)</strong></p></td>
+<td><p>Finds the manhattan distance between this point and another point.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="Point.Point.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Point.Point.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the point coordinates in tuple form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>tuple</dt><dd><p>A tuple in the form (<cite>x</cite>, <cite>y</cite>)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Point.Point.get_x">
+<code class="sig-name descname">get_x</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Point.Point.get_x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the x value of the point</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>float</dt><dd><p>The x value of the point</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Point.Point.get_y">
+<code class="sig-name descname">get_y</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Point.Point.get_y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the y value of the point</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>float</dt><dd><p>The y value of the point</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Point.Point.manhattan_distance">
+<code class="sig-name descname">manhattan_distance</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">point</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Point.Point.manhattan_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the manhattan distance between this point and another point,
+which is the total displacement in x and y.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>point</strong><span class="classifier">Point</span></dt><dd><p>The point to find the distance between.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>The manhattan distance between this point and another point.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Point.Point.set">
+<code class="sig-name descname">set</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x_new</span></em>, <em class="sig-param"><span class="n">y_new</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Point.Point.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move the point by assigning a new <cite>x</cite> and <cite>y</cite> coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>x_new</strong><span class="classifier">float</span></dt><dd><p>The new <cite>x</cite> coordinate for this point</p>
+</dd>
+<dt><strong>y_new</strong><span class="classifier">float</span></dt><dd><p>Thew new <cite>y</cite> coordinate for this point</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Point.Point.set_x">
+<code class="sig-name descname">set_x</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x_new</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Point.Point.set_x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the value of <cite>x</cite> for a point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>x_new</strong><span class="classifier">float</span></dt><dd><p>The new <cite>x</cite> value of the point.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Point.Point.set_y">
+<code class="sig-name descname">set_y</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y_new</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Point.Point.set_y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the value of <cite>y</cite> for a point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>y_new</strong></dt><dd><p>The new <cite>y</cite> value of the point.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Point.Point.simple_distance">
+<code class="sig-name descname">simple_distance</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">point</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Point.Point.simple_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the distance between this point and another point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>point</strong><span class="classifier">Point</span></dt><dd><p>The point to find the distance between.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>The simple distance between this point and another point.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<div class="math notranslate nohighlight">
+\[d = \sqrt{(x_2 - x_1) + (y_2 - y_1)}\]</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Point.Point.to_list">
+<em class="property">static </em><code class="sig-name descname">to_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">points</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Point.Point.to_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of lists given a list of Points i.e. [Point(1, 2), Point(3, 4), Point(5, 6)] to
+[[1, 2], [3, 4], [5, 6]]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>points</strong><span class="classifier">list of Points</span></dt><dd><p>The points in list of Points form</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>List of lists</dt><dd><p>The list of lists</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Point.Point.to_point">
+<em class="property">static </em><code class="sig-name descname">to_point</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coordinate_list</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Point.Point.to_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a list [x, y], return the associated Point</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>coordinate_list</strong><span class="classifier">List of float</span></dt><dd><p>A list of the form [x, y]</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Point :</dt><dd><p>The Point with x-coordinate x and y-coordinate y</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Point.Point.to_points">
+<em class="property">static </em><code class="sig-name descname">to_points</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">points</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Point.Point.to_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of Points given a list of lists i.e. [[1, 2], [3, 4], [5, 6]] to
+[Point(1, 2), Point(3, 4), Point(5, 6)]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>points</strong><span class="classifier">list of lists</span></dt><dd><p>The points in list of list form</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>List of points</dt><dd><p>The list of points</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Atlas</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="District.html">District module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Pathfinder.html">Pathfinder module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Point module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Polygon.html">Polygon module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Region.html">Region module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Voronoi.html">Voronoi module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Wall.html">Wall module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Constructor.html">Constructor module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Menu.html">Menu module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Pathfinder.html" title="previous chapter">Pathfinder module</a></li>
+      <li>Next: <a href="Polygon.html" title="next chapter">Polygon module</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Thomas Grifka, Max Jorgensen, Matt Schwennesen, Emma Smith, Joe Teahen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/Point.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

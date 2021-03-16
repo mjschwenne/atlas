@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voronoi module &#8212; Atlas 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Wall module" href="Wall.html" />
+    <link rel="prev" title="Region module" href="Region.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-Voronoi">
+<span id="voronoi-module"></span><h1>Voronoi module<a class="headerlink" href="#module-Voronoi" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="Voronoi.Voronoi">
+<em class="property">class </em><code class="sig-prename descclassname">Voronoi.</code><code class="sig-name descname">Voronoi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">num_district</span></em>, <em class="sig-param"><span class="n">bounds</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Voronoi.Voronoi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Generates and stores a Voronoi diagram as a graph and list of polygons</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>seeds</strong><span class="classifier">List</span></dt><dd><p>List of points which are the seeds for the voronoi diagram</p>
+</dd>
+<dt><strong>polygons</strong><span class="classifier">List</span></dt><dd><p>List of polygons where each polygon is one voronoi cell</p>
+</dd>
+<dt><strong>graph</strong><span class="classifier">nx.Graph</span></dt><dd><p>The graph representation of the voronoi ridges</p>
+</dd>
+<dt><strong>num_district</strong><span class="classifier">int</span></dt><dd><p>The number of districts in the map, or the number of seed points</p>
+</dd>
+<dt><strong>bounds</strong><span class="classifier">Polygon</span></dt><dd><p>The bounding polygon</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Voronoi.Voronoi.generate_graph" title="Voronoi.Voronoi.generate_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_graph</span></code></a>()</p></td>
+<td><p>Uses scipy and QHull to generate a voronoi diagram based off the the seeds from generate_seeds, then build a NetworkX graph and list of polygons to match.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Voronoi.Voronoi.generate_polygons" title="Voronoi.Voronoi.generate_polygons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_polygons</span></code></a>()</p></td>
+<td><p>Take the graph of the Voronoi diagram and generate the polygon tesselation of the plane.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Voronoi.Voronoi.generate_seeds" title="Voronoi.Voronoi.generate_seeds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_seeds</span></code></a>()</p></td>
+<td><p>Generate random Points which are used as seeds in the construction of a voronoi diagram.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 47%" />
+<col style="width: 53%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>relax</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="Voronoi.Voronoi.generate_graph">
+<code class="sig-name descname">generate_graph</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Voronoi.Voronoi.generate_graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses scipy and QHull to generate a voronoi diagram based off the the seeds from generate_seeds, then build
+a NetworkX graph and list of polygons to match.</p>
+<p class="rubric">Notes</p>
+<p>For vertices with two defined endpoint, creating the graph is not hard. However, for vertices with an infinite
+end the process is more complex.</p>
+<p>From the definition of a voronoi ridge, it is the perpendicular bisector of the line segment between two voronoi
+points, and thus a tangent line. Model the tangent as a vector, using a Point object to store the end of the
+vector, assuming the other end is at the origin. Normalize it into a unit vector and find the normal vector,
+which has an x coordinate equal to the negative y of the tangent and a y coordinate equal to the x coordinate of
+the tangent.</p>
+<p>Now we have a vector which is perpendicular to the segment between the voronoi points, but because this is a
+ray, we need to account for which direction the infinite end extents. It can NEVER go towards the origin as that
+it where the center of the diagram is and the most other points. So we find the midpoint between the two
+voronoi points of interest, also modelling it as a vector like the tangent. Because the midpoint actually starts
+at the origin, unlike the tangent which originates from one of the voronoi points, the midpoint vector will
+always point away from the origin.</p>
+<p>The dot product of two vectors is <span class="math notranslate nohighlight">\(a \cdot b = ||a|| \times ||b|| \times \cos(\theta)\)</span> where
+<span class="math notranslate nohighlight">\(\theta\)</span> is the angle between the two vectors. We do not care about the product of the magnitudes, but we
+can use the cosine to our advantage. The cosine is positive if <span class="math notranslate nohighlight">\(\theta\)</span> is within
+<span class="math notranslate nohighlight">\(\pm\ \frac{\pi}{2}\)</span> radians. We need the direction of this ray to be no more than
+<span class="math notranslate nohighlight">\(\frac{\pi}{2}\)</span> radians from the midpoint vector or else it is closer to pointing at the origin and
+thus pointing in the wrong direction. If the dot product between the normal vector and the midpoint vector is
+negative, be multiply the normal vector by negative 1 to invert the direction it points.</p>
+<p>Finally we take a large value that is outside the display range of the map, scale the voronoi directional
+vector by that amount and then add it to the position of the known end of the ray.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Voronoi.Voronoi.generate_polygons">
+<code class="sig-name descname">generate_polygons</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Voronoi.Voronoi.generate_polygons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take the graph of the Voronoi diagram and generate the polygon tesselation of the plane.</p>
+<p>Stores the polygons in a class attribute list</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Voronoi.Voronoi.generate_seeds">
+<code class="sig-name descname">generate_seeds</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Voronoi.Voronoi.generate_seeds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate random Points which are used as seeds in the construction of a voronoi diagram.</p>
+<p>The notes are more concentrated in the middle of the map.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Voronoi.Voronoi.relax">
+<code class="sig-name descname">relax</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Voronoi.Voronoi.relax" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Atlas</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="District.html">District module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Pathfinder.html">Pathfinder module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Point.html">Point module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Polygon.html">Polygon module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Region.html">Region module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Voronoi module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Wall.html">Wall module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Constructor.html">Constructor module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Menu.html">Menu module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Region.html" title="previous chapter">Region module</a></li>
+      <li>Next: <a href="Wall.html" title="next chapter">Wall module</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Thomas Grifka, Max Jorgensen, Matt Schwennesen, Emma Smith, Joe Teahen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/Voronoi.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
