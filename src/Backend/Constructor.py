@@ -36,14 +36,14 @@ class Constructor:
             if reg != wall_reg:
                 if reg.is_bordering(wall_reg):
                     wall_regs.append(reg)
-        wall = Wall(wall_regs)
+        wall = Wall(regions, vor.graph, bounding_polygon)
         city_reg = wall_regs.copy()
         for reg in wall_regs:
             for reg2 in regions:
                 if reg2 != reg:
                     if reg.is_bordering(reg2):
                         city_reg.append(reg2)
-        wall2 = Wall(city_reg)
+        wall2 = Wall(city_reg, vor.graph, bounding_polygon)
         city = Polygon(wall2.get_vertices())
         self.assign_districts(regions, wall, city)
         for reg in regions:
