@@ -6,6 +6,33 @@ from scipy.spatial import voronoi_plot_2d
 import matplotlib.pyplot as plt
 
 
+def vis_polygons(vor):
+    """
+    Create a visual display of the voronoi diagram using matplotlib
+    Parameters
+    ----------
+    vor : Voronoi
+        A voronoi diagram
+    """
+    for v in vor.graph:
+        for adj in vor.graph[v]:
+            x_list = [v.get_x(), adj.get_x()]
+            y_list = [v.get_y(), adj.get_y()]
+            plt.plot(x_list, y_list, 'k-')
+    for p in vor.polygons:
+        vert_list = p.get_vertices()
+        x_list = []
+        y_list = []
+        for v in vert_list:
+            x_list.append(v.get_x())
+            y_list.append(v.get_y())
+        plt.fill(x_list, y_list)
+        plt.xlim([-225, 225])
+        plt.ylim([-225, 225])
+    plt.show()
+    vor.relax()
+
+
 class TestVoronoi(unittest.TestCase):
     def test_voronoi_graph_creation(self):
         """
@@ -31,42 +58,21 @@ class TestVoronoi(unittest.TestCase):
     def test_voronoi_generate_polygons(self):
         """
         Test the creation of polygons from the Voronoi graph, then visualize them
-
-        New method to generate polygons. Take self.voronoi.regions and if there are no -1's in the region, take pick the
-        first vertex and move in a clockwise direction to another vertex listed in the region. repeat.
-
-        If there is a -1, do mostly the same process as before except that we will generate the polyline 'in' the
-        voronoi diagram. For the end vertices of the polyline, find the adjacent vertex to that point which is on the
-        bounding polygon, then find the path between them only on the bounding polygon?? There are a few edge cases here
-
-        Check work be ensuring that the voronoi point is inside the polygon which has been constructed!
         """
-
         bounding_box = Polygon([Point(-200, 200), Point(200, 200), Point(200, -200), Point(-200, -200)])
         vor = Voronoi(50, bounding_box)
-        vor.generate_polygons()
-        # for v in vor.graph:
-        #     for adj in vor.graph[v]:
-        #         x_list = [v.get_x(), adj.get_x()]
-        #         y_list = [v.get_y(), adj.get_y()]
-        #         fig.plot(x_list, y_list, 'k-')
+        vis_polygons(vor)
 
-        for v in vor.graph:
-            for adj in vor.graph[v]:
-                x_list = [v.get_x(), adj.get_x()]
-                y_list = [v.get_y(), adj.get_y()]
-                plt.plot(x_list, y_list, 'k-')
-        for p in vor.polygons:
-            vert_list = p.get_vertices()
-            x_list = []
-            y_list = []
-            for v in vert_list:
-                x_list.append(v.get_x())
-                y_list.append(v.get_y())
-            plt.fill(x_list, y_list)
-            plt.xlim([-225, 225])
-            plt.ylim([-225, 225])
-        plt.show()
+    def test_relax(self):
+        """
+        Tests the relax method by repeatedly calling it
+        """
+        bounding_box = Polygon([Point(-200, 200), Point(200, 200), Point(200, -200), Point(-200, -200)])
+        vor = Voronoi(50, bounding_box)
+        vis_polygons(vor)
+        for i in range(5):
+            vor.relax()
+            vis_polygons(vor)
 
 
 if __name__ == '__main__':
