@@ -753,6 +753,16 @@ class Polygon:
             a += v1.get_x() * v2.get_y() - v1.get_y() * v2.get_x()
         return abs(a / 2.0)
 
+    def furthest_point(self, point):
+        max_point = self.vertices[0]
+        max_dist = self.vertices[0].simple_distance(point)
+        for v in self.vertices:
+            new_dist = v.simple_distance(point)
+            if new_dist > max_dist:
+                max_point = v
+                max_dist = new_dist
+        return max_point
+
     def __eq__(self, other):
         """
         Test to see if another Polygon is equal to this one.
