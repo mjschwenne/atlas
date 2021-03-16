@@ -85,6 +85,53 @@ def _intersect_segment(p1, p2, p3, p4):
         return True
     return False
 
+def clockwise_order(vertices):
+    """
+    Given a list of vertices, return them ordered in clockwise order
+
+    Parameters
+    ----------
+    vertices : List
+        The vertices of a polygon
+
+    Returns
+    -------
+    List
+        The vertices ordered in clockwise order.
+    """
+    # Calculate an approximate center of this polygon.
+    # We just need a point inside the shape.
+    # We cannot use Polygon.get_center() because that methods makes an assumption about the order of the vertices.
+    simple_center = Point(0, 0)
+    for v in vertices:
+        cx, cy = simple_center.get()
+        cx += v.get_x()
+        cy += v.get_y()
+        simple_center.set(cx, cy)
+    cx, cy = simple_center.get()
+    cx = cx / len(vertices)
+    cy = cy / len(vertices)
+    simple_center.set(cx, cy)
+
+    # Create a mapping between the original vertices and the translation of the polygons such that simple_center is the
+    # origin.
+    vert_map = {}
+    for v in vertices:
+        vert_map[Point(v.get_x() - simple_center.get_x(), v.get_y() - simple_center.get_y())] = v
+
+    # Create a list of angle such that each angle is the angle between the new point and the positive x-axis.
+    # Add pi so that the angle vary from 0 to 2pi rather than -pi to pi
+    angles = {}
+    for v in vert_map.keys():
+        angles[math.atan2(v.get_x(), v.get_y()) + math.pi] = vert_map[v]
+
+    # Rebuild the angles dictionary to be sorted from greatest to least
+    sorted_angles = {}
+    for a in sorted(angles, reverse=True):
+        sorted_angles[a] = angles[a]
+
+    return list(sorted_angles.values())
+
 
 class Polygon:
     """
@@ -96,7 +143,7 @@ class Polygon:
         Store the vertices in a clockwise list
     """
 
-    def __init__(self, vertices):
+    def __init__(self, vertices, reorder=False):
         """
         Represents a polygon in 2D space.
 
@@ -105,7 +152,10 @@ class Polygon:
         vertices : List of Point
             The vertices that define the boundaries of the Polygon. The vertices must be ordered clockwise.
         """
-        self.vertices = vertices
+        if not reorder:
+            self.vertices = vertices
+        else:
+            self.vertices = clockwise_order(vertices)
 
     def set_vertices(self, vertices):
         """

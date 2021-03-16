@@ -1,6 +1,7 @@
 import random
 import math
 from collections import deque
+from itertools import cycle
 
 from src.Backend.Polygon import Polygon
 from src.Backend.Point import Point
@@ -45,9 +46,9 @@ def remove_vertices(G, vertices):
     # for v in vertices:
     #     print(f"{v},", end=" ")
     # print("]")
-    H = G.copy()
-    H.remove_nodes_from(vertices)
-    return H
+    h = G.copy()
+    h.remove_nodes_from(vertices)
+    return h
 
 
 def remove_edge(G, u, v):
@@ -68,9 +69,9 @@ def remove_edge(G, u, v):
     nx.Graph
         A copy of the graph `G` without the `u``v` edge
     """
-    H = G.copy()
-    H.remove_edge(u, v)
-    return H
+    h = G.copy()
+    h.remove_edge(u, v)
+    return h
 
 
 def bfs_path(G, source, destination):
@@ -270,54 +271,6 @@ def chordless_path(G, t, Q, P, master_Q):
     chordless_path(remove_vertices(G, vertices_to_remove), t, Q, P, master_Q)
 
 
-def clockwise_order(vertices):
-    """
-    Given a list of vertices, return them ordered in clockwise order
-
-    Parameters
-    ----------
-    vertices : List
-        The vertices of a polygon
-
-    Returns
-    -------
-    List
-        The vertices ordered in clockwise order.
-    """
-    # Calculate an approximate center of this polygon.
-    # We just need a point inside the shape.
-    # We cannot use Polygon.get_center() because that methods makes an assumption about the order of the vertices.
-    simple_center = Point(0, 0)
-    for v in vertices:
-        cx, cy = simple_center.get()
-        cx += v.get_x()
-        cy += v.get_y()
-        simple_center.set(cx, cy)
-    cx, cy = simple_center.get()
-    cx = cx / len(vertices)
-    cy = cy / len(vertices)
-    simple_center.set(cx, cy)
-
-    # Create a mapping between the original vertices and the translation of the polygons such that simple_center is the
-    # origin.
-    vert_map = {}
-    for v in vertices:
-        vert_map[Point(v.get_x() - simple_center.get_x(), v.get_y() - simple_center.get_y())] = v
-
-    # Create a list of angle such that each angle is the angle between the new point and the positive x-axis.
-    # Add pi so that the angle vary from 0 to 2pi rather than -pi to pi
-    angles = {}
-    for v in vert_map.keys():
-        angles[math.atan2(v.get_x(), v.get_y()) + math.pi] = vert_map[v]
-
-    # Rebuild the angles dictionary to be sorted from greatest to least
-    sorted_angles = {}
-    for a in sorted(angles, reverse=True):
-        sorted_angles[a] = angles[a]
-
-    return list(sorted_angles.values())
-
-
 class Voronoi:
     """
     Generates and stores a Voronoi diagram as a graph and list of polygons
@@ -353,7 +306,7 @@ class Voronoi:
 
         The notes are more concentrated in the middle of the map.
         """
-        random.seed(37)
+        random.seed()
         delta_angle = random.random() * 2 * math.pi
 
         for p in range(self.num_district):
@@ -421,7 +374,6 @@ class Voronoi:
                 self.graph.add_edge(v1, v2, weight=v1.simple_distance(v2))
             else:
                 # Find which endpoint goes to infinity
-                known_end = None
                 if v1 is None and v2 is not None:
                     known_end = v2
                 elif v2 is None and v1 is not None:
@@ -473,7 +425,7 @@ class Voronoi:
             for vert in self.graph:
                 if Polygon.in_segment(bound_start, bound_end, vert):
                     edge_vertices.append(vert)
-            # Thanks to python magic methods, these are sorted from min y t0 max y and from min to max x if y is equal
+            # Thanks to python magic methods, these are sorted from min y to max y and from min to max x if y is equal
             edge_vertices.sort()
             # Add the edges
             # print("edge_vertices = [", end=" ")
@@ -492,21 +444,125 @@ class Voronoi:
 
         Stores the polygons in a class attribute list
         """
+        # print(self.voronoi.vertices)
         for r in self.voronoi.regions:
             # If the region is not complete according to QHull and SciPy
+            border = False
             if -1 in r:
-                pass
-            elif len(r) > 0:
+                border = True
+            else:
+                for v in r:
+                    point = self.voronoi.vertices[v]
+                    if not self.bounds.is_contained(Point(point[0], point[1])):
+                        border = True
+                        del point
+                        break
+                    del point
+
+            if not border and len(r) > 0:
                 vertices = []
                 for p in r:
                     point = self.voronoi.vertices[p]
                     vertices.append(Point(point[0], point[1]))
-                print("vertices = [", end=" ")
-                for v in vertices:
-                    print(f"{v},", end=" ")
-                print("]")
-                self.polygons.add(Polygon(clockwise_order(vertices)))
-
+                # print("vertices = [", end=" ")
+                # for v in vertices:
+                #    print(f"{v},", end=" ")
+                # print("]")
+                self.polygons.add(Polygon(vertices, reorder=True))
+            elif len(r) > 0:
+                # Use a deque object to build a path along the inside of the graph. From here, connect to the
+                # boundary vertices adjacent to the endpoints. The path will always have a length of r - 1 as we
+                # either have a -1 in the vertex list somewhere or there is one vertex outside the bounding box.
+                # Assuming a reasonable bounding polygon which is large enough to encapsulate all of the seed points
+                # is not possible to have multiple vertices because they MUST converge to create an enclosed polygon.
+                path = deque()
+                vertex_origin = r.copy()
+                vertices = cycle(vertex_origin)
+                path_length = len(r)
+                while len(path) < path_length:
+                    v = next(vertices)
+                    # Remove a -1 vertex, or a ray to infinity
+                    if v == -1:
+                        path_length -= 1
+                        vertex_origin.remove(v)
+                        vertices = cycle(vertex_origin)
+                        continue
+                    point = self.voronoi.vertices[v]
+                    vertex = Point(point[0], point[1])
+                    # Remove one from the path length for a vertex outside of the bounding polygon
+                    # Also remove the vertex from the cycle list
+                    if not self.bounds.is_contained(vertex):
+                        path_length -= 1
+                        vertex_origin.remove(v)
+                        vertices = cycle(vertex_origin)
+                        continue
+                    # Case 1: empty path
+                    if len(path) == 0:
+                        path.append(vertex)
+                        continue
+                    # Case 2: non-empty path, and vertex is adjacent to the first endpoint
+                    if vertex in self.graph[path[0]] and vertex not in path:
+                        path.appendleft(vertex)
+                        continue
+                    # Case 3: non-empty path and vertex is adjacent to the second endpoint
+                    if vertex in self.graph[path[-1]] and vertex not in path:
+                        path.append(vertex)
+                    # Case 4: non-empty path and vertex is not adjacent to either endpoint
+                    # Move to the next iteration of the while loop, which will be done passively
+                del vertices
+                # print(f"r: {r}, path_length: {path_length} count: {count}")
+                # print("Path = [", end=" ")
+                # for p in path:
+                #     print(f"{p},", end=" ")
+                # print("]")
+                # Add the vertices on the graph boundary to the path, starting with the front end
+                bound_points = self.bounds.vertices
+                len_bound_points = len(bound_points)
+                for v in self.graph[path[0]]:
+                    for bound in range(len_bound_points):
+                        bound_start = bound_points[bound]
+                        bound_end = bound_points[(bound + 1) % len_bound_points]
+                        if Polygon.in_segment(bound_start, bound_end, v):
+                            path.appendleft(v)
+                            break
+                    # I think that this will break the outer loop. If the inner loop finishes, it will call the else and
+                    # that will keep the outer loop going. If it is broken, it will skip the else and then break the
+                    # outer loop...?
+                    else:
+                        continue
+                    break
+                # Find the boundary vertex for the back end of the path
+                for v in self.graph[path[-1]]:
+                    for bound in range(len_bound_points):
+                        bound_start = bound_points[bound]
+                        bound_end = bound_points[(bound + 1) % len_bound_points]
+                        if Polygon.in_segment(bound_start, bound_end, v):
+                            path.append(v)
+                            break
+                    else:
+                        continue
+                    break
+                # Next, find all of the internal vertices in the graph and remove them to have just the perimeter ones
+                internal_vertices = list(self.graph.adj.keys())
+                for v in range(len_bound_points):
+                    bound_start = bound_points[v]
+                    bound_end = bound_points[(v + 1) % len_bound_points]
+                    for vert in self.graph:
+                        if Polygon.in_segment(bound_start, bound_end, vert) and vert in internal_vertices:
+                            internal_vertices.remove(vert)
+                perimeter_graph = remove_vertices(self.graph, internal_vertices)
+                # BFS from the end points of the path, then add it to the path
+                # Start at route[1] because route[0] is already in path
+                # print("Complete Path = [", end=" ")
+                # for p in path:
+                #     print(f"{p},", end=" ")
+                # print("]")
+                route = bfs_path(perimeter_graph, path[0], path[-1])
+                for v in range(1, len(route)):
+                    path.appendleft(route[v])
+                # path is now the vertex list of the polygon
+                polygon = Polygon(path, reorder=True)
+                self.polygons.add(polygon)
 
     def relax(self):
         pass
