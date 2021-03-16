@@ -54,7 +54,6 @@ class Wall(Polygon):
 
         # Reformat Polygons cut by Wall
 
-
         # Finds the Roads and Gates
         center_poly = None
         for p in regions:
@@ -113,8 +112,6 @@ class Wall(Polygon):
                 in_city_points.append(p)
         for p in self.vertices:
             in_city_points.remove(p)
-
-        print(border_points)
 
         for v in self.gates:
             pathfinder = Pathfinder(graph, in_city_points)

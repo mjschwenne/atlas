@@ -25,6 +25,7 @@ class Constructor:
         vor = Voronoi(num_district, bounding_polygon)
         vor.relax()
         vor.relax()
+
         polygons = vor.polygons
         regions = []
         for poly in polygons:
