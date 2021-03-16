@@ -190,7 +190,7 @@ class BasicDistrict(District):
         ran_ang = (random.uniform(-self.chaos_level, self.chaos_level) * (math.pi / 12)) + cut_ang
 
         # Find the random gap width
-        gap = 2.5 + random.uniform(0, self.chaos_level) * 5
+        gap = max_distance * 0.01 + random.uniform(0, self.chaos_level) * (max_distance * 0.01)
 
         # Slit the region into two parts
         parts = section.split(ran_p, ran_ang, gap)
