@@ -3,7 +3,6 @@ from tkinter.filedialog import asksaveasfile
 from tkinter import *
 
 from src.Backend.Constructor import Constructor
-from src.DemoStuff import DemoStuff
 from src.Backend.District import *
 
 from PIL import Image
