@@ -74,24 +74,28 @@ def main():
         Region encoding:
         0 = Farmland - Green
         1 = HousingMid - Sandy Orangy
-        2 = Docks - Dark Blue
-        3 = Smithing - Black
+        2 = HousingLow - Dark Blue
+        3 = HousingHigh - Black
         4 = Slum - Brown
         5 = Market - Teal
         6 = Castle - Grey
         7 = Cathedral - Purple
         8 = Armory - Pale Red
-        9 = Warcamp - Light Limy Green
+        9 = Shops - Light Limy Green
         10 = Gate - Tan/Gray Wall Paint like
         11 = Precinct - Yellow
-        12 = Building - Black
+        12 = Building - White
+        13 = Industrial - Pink
+        14 = Openland - Light Purple
+        15 = Courtyard - Dark Blue
+        16 = Park - Dark Green
         """
 
         # https://www.colorcombos.com/combotester.html?color0=4aa75d&color1=ffac58&color2=003399&color3=020101&color4=ac6024&color5=6ab0b0&color6=a3a3a3&color7=952e85&color8=a93939&color9=7ba74c&color10=e5e5be&color11=eaea02&show_text=
         switcher = {
             0: "#4aa75d",  # Green
             1: "#ffac58",  # Sandy Orangy
-            2: "#003399",  # Dark Blue
+            2: "#003399",  # Blue
             3: "#020101",  # Black
             4: "#ac6024",  # Brown
             5: "#6ab0b0",  # Teal
@@ -101,7 +105,11 @@ def main():
             9: "#7ba74c",  # Light Limy Green
             10: "#e5e5be",  # Tan/Gray Wall Paint like
             11: "#eaea02",  # Yellow
-            12: "#000000"  # Black - Building
+            12: "#FFFFFF",  # Black - Building
+            13: "#fc2fff",   # Pink - Industrial
+            14: "#a192fb",   # Light Purple - Openland
+            15: "#003378",  # Dark Blue - Courtyard
+            16: "#046113"  # Dark Green - Park
         }
         map_canvas.create_polygon(*points, fill=switcher.get(region_type, "#ebd5b3"))
 
@@ -115,9 +123,9 @@ def main():
                 switch_val = 0
             if isinstance(dis, HousingMid):
                 switch_val = 1
-            if isinstance(dis, Docks):
+            if isinstance(dis, HousingLow):
                 switch_val = 2
-            if isinstance(dis, Smithing):
+            if isinstance(dis, HousingHigh):
                 switch_val = 3
             if isinstance(dis, Slum):
                 switch_val = 4
@@ -129,12 +137,20 @@ def main():
                 switch_val = 7
             if isinstance(dis, Armory):
                 switch_val = 8
-            if isinstance(dis, WarCamp):
+            if isinstance(dis, Shops):
                 switch_val = 9
             if isinstance(dis, Gate):
                 switch_val = 10
             if isinstance(dis, Precinct):
                 switch_val = 11
+            if isinstance(dis, Industrial):
+                switch_val = 13
+            if isinstance(dis, Openland):
+                switch_val = 14
+            if isinstance(dis, Courtyard):
+                switch_val = 15
+            if isinstance(dis, Park):
+                switch_val = 16
             verts = []
             for v in reg.get_vertices():
                 verts.append((v.get_x() + 900)/7.5)

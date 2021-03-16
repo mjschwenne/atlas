@@ -125,10 +125,10 @@ class Constructor:
             districts.append(Slum(0.8, 0.01, 1000))
         if industrial_val >= 0:
             values.append(industrial_val + 10)
-            districts.append(Industrial(0, 0, 0))
+            districts.append(Industrial(0.1, 0.1, 16000))
         if shops_val >= 0:
             values.append(shops_val + 10)
-            districts.append(Shops(0, 0, 0))
+            districts.append(Shops(0.2, 0.2, 10000))
         if courtyard_val >= 0:
             values.append(courtyard_val + 10)
             districts.append(Courtyard())
