@@ -29,21 +29,8 @@ class Constructor:
         regions = []
         for poly in polygons:
             regions.append(Region(None, poly.get_vertices(), False, False))
-        wall_reg_selected = random.choices(regions, k=1)
-        wall_reg = wall_reg_selected[0]
-        wall_regs = [wall_reg]
-        for reg in regions:
-            if reg != wall_reg:
-                if reg.is_bordering(wall_reg):
-                    wall_regs.append(reg)
         wall = Wall(regions, vor.graph, bounding_polygon)
-        city_reg = wall_regs.copy()
-        for reg in wall_regs:
-            for reg2 in regions:
-                if reg2 != reg:
-                    if reg.is_bordering(reg2):
-                        city_reg.append(reg2)
-        wall2 = Wall(city_reg, vor.graph, bounding_polygon)
+        wall2 = Wall(regions, vor.graph, bounding_polygon)
         city = Polygon(wall2.get_vertices())
         self.assign_districts(regions, wall, city)
         for reg in regions:
