@@ -1,6 +1,8 @@
 import random
 
 from src.Backend.District import *
+from src.Backend.Voronoi import Voronoi
+from src.Backend.Wall import Wall
 
 
 class Constructor:
@@ -16,6 +18,39 @@ class Constructor:
         Assigns the region a district
 
     """
+
+    def generate_map(self):
+        bounding_polygon = Polygon([Point(250, 250), Point(250, -250), Point(-250, -250), Point(-250, 250)])
+        num_district = 50
+        vor = Voronoi(num_district, bounding_polygon)
+        vor.relax()
+        vor.relax()
+        polygons = vor.polygons
+        regions = []
+        for poly in polygons:
+            regions.append(Region(None, poly.get_vertices(), False, False))
+        wall_reg_selected = random.choices(regions, k=1)
+        wall_reg = wall_reg_selected[0]
+        wall_regs = [wall_reg]
+        for reg in regions:
+            if reg != wall_reg:
+                if reg.is_bordering(wall_reg):
+                    wall_regs.append(reg)
+        wall = Wall(wall_regs)
+        city_reg = wall_regs.copy()
+        for reg in wall_regs:
+            for reg2 in regions:
+                if reg2 != reg:
+                    if reg.is_bordering(reg2):
+                        city_reg.append(reg2)
+        wall2 = Wall(city_reg)
+        city = Polygon(wall2.get_vertices())
+        self.assign_districts(regions, wall, city)
+        for reg in regions:
+            if isinstance(reg.get_district(), BasicDistrict):
+                reg.get_district().generate_district(reg)
+        return regions
+
 
     @staticmethod
     def assign_districts(regions, wall, city):

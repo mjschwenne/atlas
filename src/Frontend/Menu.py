@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter.filedialog import asksaveasfile
 from tkinter import *
 
+from src.Backend.Constructor import Constructor
 from src.DemoStuff import DemoStuff
 from src.Backend.District import *
 
@@ -115,7 +116,7 @@ def main():
 
     def draw_map(map_canvas):
         map_canvas.delete("all")
-        reg_list = DemoStuff().assign_districts()
+        reg_list = Constructor().generate_map()
         switch_val = 0
         for reg in reg_list:
             dis = reg.get_district()
@@ -153,14 +154,14 @@ def main():
                 switch_val = 16
             verts = []
             for v in reg.get_vertices():
-                verts.append((v.get_x() + 900)/7.5)
-                verts.append((v.get_y() + 400)/7.5)
+                verts.append((v.get_x() + 250)/2)
+                verts.append((v.get_y() + 250)/2)
             draw_region(map_canvas, switch_val, verts)
             for build in reg.buildings:
                 verts = []
                 for v in build.get_vertices():
-                    verts.append((v.get_x() + 900)/7.5)
-                    verts.append((v.get_y() + 400)/7.5)
+                    verts.append((v.get_x() + 250) /2)
+                    verts.append((v.get_y() + 250) / 2)
                 draw_region(map_canvas, 12, verts)
 
     def help_msg():
