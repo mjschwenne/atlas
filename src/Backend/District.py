@@ -355,20 +355,24 @@ class Cathedral(District):
                         rating += 10
                     elif isinstance(dis, Industrial):
                         rating += -50
-                    elif isinstance(dis, Castle):
+                    elif isinstance(dis, Shops):
                         rating += 30
                     elif isinstance(dis, Slum):
                         rating += -10
-                    elif isinstance(dis, Armory):
-                        rating += -10
-                    elif isinstance(dis, Precinct):
-                        rating += -10
-                    elif isinstance(dis, WarCamp):
-                        rating += -10
+                    elif isinstance(dis, Market):
+                        rating += 10
+                    elif isinstance(dis, Cathedral):
+                        rating += -50
+                    elif isinstance(dis, Castle):
+                        rating += 30
+                    elif isinstance(dis, Courtyard):
+                        rating += 10
+                    elif isinstance(dis, Park):
+                        rating += 10
         if region.in_city(city):
-            rating += 20
+            rating += 10
         if region.in_walls(wall):
-            rating += 100
+            rating += 20
         return rating
 
 
@@ -402,30 +406,26 @@ class Courtyard(District):
             if region != reg:
                 if region.is_bordering(reg):
                     dis = reg.get_district()
-                    if isinstance(dis, Farmland):
-                        rating += 10
-                    elif isinstance(dis, HousingMid):
-                        rating -= 20
-                    elif isinstance(dis, Smithing):
-                        rating += 30
-                    elif isinstance(dis, Market):
-                        rating += 20
-                    elif isinstance(dis, Docks):
-                        rating += 20
-                    elif isinstance(dis, Cathedral):
-                        rating += 20
-                    elif isinstance(dis, Castle):
-                        rating += 20
-                    elif isinstance(dis, Gate):
-                        rating += 20
-                    elif isinstance(dis, Slum):
+                    if isinstance(dis, HousingLow):
                         rating += -10
-                    elif isinstance(dis, Armory):
-                        rating += -20
-                    elif isinstance(dis, Precinct):
-                        rating += 20
-                    elif isinstance(dis, WarCamp):
-                        rating += -40
+                    elif isinstance(dis, Industrial):
+                        rating += 30
+                    elif isinstance(dis, Shops):
+                        rating += 10
+                    elif isinstance(dis, Slum):
+                        rating += -30
+                    elif isinstance(dis, Market):
+                        rating += 10
+                    elif isinstance(dis, Cathedral):
+                        rating += 10
+                    elif isinstance(dis, Castle):
+                        rating += 10
+                    elif isinstance(dis, Park):
+                        rating += 10
+        if region.in_city(city):
+            rating += 10
+        if region.in_walls(wall):
+            rating += 20
         return rating
 
 
@@ -459,18 +459,22 @@ class Farmland(District):
             if region != reg:
                 if region.is_bordering(reg):
                     dis = reg.get_district()
-                    if isinstance(dis, Farmland):
-                        rating += 50
-                    elif isinstance(dis, HousingMid):
+                    if isinstance(dis, HousingLow):
                         rating += 10
+                    elif isinstance(dis, Industrial):
+                        rating += 10
+                    elif isinstance(dis, Slum):
+                        rating += 10
+                    elif isinstance(dis, Farmland):
+                        rating += 20
                     elif isinstance(dis, Market):
                         rating += 10
-                    elif isinstance(dis, Precinct):
-                        rating -= 10
+                    elif isinstance(dis, Park):
+                        rating += 10
         if region.in_city(city):
-            rating -= 100
+            rating -= 20
         if region.in_walls(wall):
-            return -1000
+            return -10
         return rating
 
 
@@ -499,27 +503,14 @@ class Gate(District):
             The rating of the region for the district
 
         """
-        rating = 0
         on_gate = False
         for ver in wall.get_gates():
             if region.is_contained(ver):
                 on_gate = True
                 break
         if not on_gate:
-            return -1000
-        for reg in other_regions:
-            if region != reg:
-                if region.is_bordering(reg):
-                    dis = reg.get_district()
-                    if isinstance(dis, HousingMid):
-                        rating += 20
-                    elif isinstance(dis, Market):
-                        rating += 10
-                    elif isinstance(dis, Castle):
-                        rating += 10
-                    elif isinstance(dis, WarCamp):
-                        rating += 20
-        return rating
+            return -10
+        return 100
 
 
 class HousingHigh(BasicDistrict):
@@ -552,30 +543,34 @@ class HousingHigh(BasicDistrict):
             if region != reg:
                 if region.is_bordering(reg):
                     dis = reg.get_district()
-                    if isinstance(dis, Farmland):
-                        rating += 10
-                    elif isinstance(dis, HousingMid):
-                        rating -= 20
-                    elif isinstance(dis, Smithing):
+                    if isinstance(dis, HousingHigh):
                         rating += 30
-                    elif isinstance(dis, Market):
+                    elif isinstance(dis, HousingMid):
                         rating += 20
-                    elif isinstance(dis, Docks):
-                        rating += 20
-                    elif isinstance(dis, Cathedral):
-                        rating += 20
-                    elif isinstance(dis, Castle):
-                        rating += 20
-                    elif isinstance(dis, Gate):
+                    elif isinstance(dis, HousingLow):
+                        rating += -10
+                    elif isinstance(dis, Industrial):
+                        rating += -20
+                    elif isinstance(dis, Shops):
                         rating += 20
                     elif isinstance(dis, Slum):
-                        rating += -10
+                        rating += -100
                     elif isinstance(dis, Armory):
-                        rating += -20
-                    elif isinstance(dis, Precinct):
-                        rating += 20
-                    elif isinstance(dis, WarCamp):
-                        rating += -40
+                        rating += -10
+                    elif isinstance(dis, Market):
+                        rating += 10
+                    elif isinstance(dis, Cathedral):
+                        rating += 10
+                    elif isinstance(dis, Castle):
+                        rating += 10
+                    elif isinstance(dis, Openland):
+                        rating += -10
+                    elif isinstance(dis, Park):
+                        rating += 10
+        if region.in_city(city):
+            rating += 30
+        if region.in_walls(wall):
+            rating += 50
         return rating
 
 
@@ -609,30 +604,28 @@ class HousingMid(BasicDistrict):
             if region != reg:
                 if region.is_bordering(reg):
                     dis = reg.get_district()
-                    if isinstance(dis, Farmland):
-                        rating += 10
+                    if isinstance(dis, HousingHigh):
+                        rating += 20
                     elif isinstance(dis, HousingMid):
-                        rating -= 20
-                    elif isinstance(dis, Smithing):
-                        rating += 30
-                    elif isinstance(dis, Market):
                         rating += 20
-                    elif isinstance(dis, Docks):
-                        rating += 20
-                    elif isinstance(dis, Cathedral):
-                        rating += 20
-                    elif isinstance(dis, Castle):
-                        rating += 20
-                    elif isinstance(dis, Gate):
+                    elif isinstance(dis, Industrial):
+                        rating += -10
+                    elif isinstance(dis, Shops):
                         rating += 20
                     elif isinstance(dis, Slum):
+                        rating += -50
+                    elif isinstance(dis, Market):
+                        rating += 10
+                    elif isinstance(dis, Cathedral):
+                        rating += 10
+                    elif isinstance(dis, Openland):
                         rating += -10
-                    elif isinstance(dis, Armory):
-                        rating += -20
-                    elif isinstance(dis, Precinct):
-                        rating += 20
-                    elif isinstance(dis, WarCamp):
-                        rating += -40
+                    elif isinstance(dis, Park):
+                        rating += 10
+        if region.in_city(city):
+            rating += 30
+        if region.in_walls(wall):
+            rating += 20
         return rating
 
 
@@ -666,30 +659,24 @@ class HousingLow(BasicDistrict):
             if region != reg:
                 if region.is_bordering(reg):
                     dis = reg.get_district()
-                    if isinstance(dis, Farmland):
-                        rating += 10
-                    elif isinstance(dis, HousingMid):
-                        rating -= 20
-                    elif isinstance(dis, Smithing):
-                        rating += 30
-                    elif isinstance(dis, Market):
-                        rating += 20
-                    elif isinstance(dis, Docks):
-                        rating += 20
-                    elif isinstance(dis, Cathedral):
-                        rating += 20
-                    elif isinstance(dis, Castle):
-                        rating += 20
-                    elif isinstance(dis, Gate):
-                        rating += 20
-                    elif isinstance(dis, Slum):
+                    if isinstance(dis, HousingHigh):
                         rating += -10
-                    elif isinstance(dis, Armory):
+                    elif isinstance(dis, HousingLow):
+                        rating += 20
+                    elif isinstance(dis, Industrial):
+                        rating += 10
+                    elif isinstance(dis, Farmland):
+                        rating += 10
+                    elif isinstance(dis, Cathedral):
+                        rating += 10
+                    elif isinstance(dis, Castle):
+                        rating += -20
+                    elif isinstance(dis, Openland):
                         rating += -20
                     elif isinstance(dis, Precinct):
-                        rating += 20
-                    elif isinstance(dis, WarCamp):
-                        rating += -40
+                        rating += 10
+        if region.in_city(city):
+            rating += 30
         return rating
 
 
@@ -723,30 +710,35 @@ class Industrial(BasicDistrict):
             if region != reg:
                 if region.is_bordering(reg):
                     dis = reg.get_district()
-                    if isinstance(dis, Farmland):
-                        rating += 10
-                    elif isinstance(dis, HousingMid):
-                        rating -= 20
-                    elif isinstance(dis, Smithing):
-                        rating += 30
-                    elif isinstance(dis, Market):
-                        rating += 20
-                    elif isinstance(dis, Docks):
-                        rating += 20
-                    elif isinstance(dis, Cathedral):
-                        rating += 20
-                    elif isinstance(dis, Castle):
-                        rating += 20
-                    elif isinstance(dis, Gate):
-                        rating += 20
-                    elif isinstance(dis, Slum):
-                        rating += -10
-                    elif isinstance(dis, Armory):
+                    if isinstance(dis, HousingHigh):
                         rating += -20
-                    elif isinstance(dis, Precinct):
+                    elif isinstance(dis, HousingMid):
+                        rating += -10
+                    elif isinstance(dis, HousingLow):
+                        rating += 10
+                    elif isinstance(dis, Slum):
+                        rating += 30
+                    elif isinstance(dis, Armory):
                         rating += 20
-                    elif isinstance(dis, WarCamp):
-                        rating += -40
+                    elif isinstance(dis, Farmland):
+                        rating += 10
+                    elif isinstance(dis, Market):
+                        rating += -10
+                    elif isinstance(dis, Cathedral):
+                        rating += -50
+                    elif isinstance(dis, Castle):
+                        rating += -100
+                    elif isinstance(dis, Precinct):
+                        rating += 10
+                    elif isinstance(dis, Courtyard):
+                        rating += -30
+                    elif isinstance(dis, Openland):
+                        rating += 20
+                    elif isinstance(dis, Park):
+                        rating += -30
+
+        if region.in_walls(wall):
+            rating += -30
         return rating
 
 
@@ -780,28 +772,28 @@ class Market(District):
             if region != reg:
                 if region.is_bordering(reg):
                     dis = reg.get_district()
-                    if isinstance(dis, HousingMid):
-                        rating += 20
-                    elif isinstance(dis, Smithing):
-                        rating += 20
+                    if isinstance(dis, HousingHigh):
+                        rating += 10
+                    elif isinstance(dis, HousingLow):
+                        rating += 10
                     elif isinstance(dis, Market):
                         rating += 20
-                    elif isinstance(dis, Docks):
-                        rating += 30
+                    elif isinstance(dis, Industrial):
+                        rating += -10
+                    elif isinstance(dis, Shops):
+                        rating += 20
+                    elif isinstance(dis, Farmland):
+                        rating += 10
                     elif isinstance(dis, Cathedral):
                         rating += 10
                     elif isinstance(dis, Castle):
                         rating += 10
+                    elif isinstance(dis, Precinct):
+                        rating += 10
+                    elif isinstance(dis, Openland):
+                        rating += 10
                     elif isinstance(dis, Gate):
                         rating += 10
-                    elif isinstance(dis, Slum):
-                        rating += -10
-                    elif isinstance(dis, WarCamp):
-                        rating += -50
-        if region.in_city(city):
-            rating += 10
-        if region.in_walls(wall):
-            rating += 30
         return rating
 
 
@@ -835,30 +827,26 @@ class Openland(District):
             if region != reg:
                 if region.is_bordering(reg):
                     dis = reg.get_district()
-                    if isinstance(dis, Farmland):
-                        rating += 10
+                    if isinstance(dis, HousingHigh):
+                        rating += -10
                     elif isinstance(dis, HousingMid):
-                        rating -= 20
-                    elif isinstance(dis, Smithing):
-                        rating += 30
-                    elif isinstance(dis, Market):
-                        rating += 20
-                    elif isinstance(dis, Docks):
-                        rating += 20
-                    elif isinstance(dis, Cathedral):
-                        rating += 20
-                    elif isinstance(dis, Castle):
-                        rating += 20
-                    elif isinstance(dis, Gate):
+                        rating += -10
+                    elif isinstance(dis, HousingLow):
+                        rating += -10
+                    elif isinstance(dis, Industrial):
                         rating += 20
                     elif isinstance(dis, Slum):
-                        rating += -10
-                    elif isinstance(dis, Armory):
-                        rating += -20
-                    elif isinstance(dis, Precinct):
-                        rating += 20
-                    elif isinstance(dis, WarCamp):
                         rating += -40
+                    elif isinstance(dis, Market):
+                        rating += 10
+                    elif isinstance(dis, Openland):
+                        rating += 10
+                    elif isinstance(dis, Park):
+                        rating += 10
+        if region.in_city(city):
+            rating += -40
+        if region.in_walls(wall):
+            rating += -100
         return rating
 
 
@@ -892,30 +880,32 @@ class Park(District):
             if region != reg:
                 if region.is_bordering(reg):
                     dis = reg.get_district()
-                    if isinstance(dis, Farmland):
+                    if isinstance(dis, HousingHigh):
                         rating += 10
                     elif isinstance(dis, HousingMid):
-                        rating -= 20
-                    elif isinstance(dis, Smithing):
-                        rating += 30
-                    elif isinstance(dis, Market):
-                        rating += 20
-                    elif isinstance(dis, Docks):
-                        rating += 20
-                    elif isinstance(dis, Cathedral):
-                        rating += 20
-                    elif isinstance(dis, Castle):
-                        rating += 20
-                    elif isinstance(dis, Gate):
-                        rating += 20
+                        rating += 10
+                    elif isinstance(dis, Industrial):
+                        rating += -30
+                    elif isinstance(dis, Shops):
+                        rating += 10
                     elif isinstance(dis, Slum):
                         rating += -10
-                    elif isinstance(dis, Armory):
-                        rating += -20
-                    elif isinstance(dis, Precinct):
-                        rating += 20
-                    elif isinstance(dis, WarCamp):
-                        rating += -40
+                    elif isinstance(dis, Farmland):
+                        rating += 10
+                    elif isinstance(dis, Market):
+                        rating += 10
+                    elif isinstance(dis, Cathedral):
+                        rating += 10
+                    elif isinstance(dis, Castle):
+                        rating += 10
+                    elif isinstance(dis, Openland):
+                        rating += 10
+                    elif isinstance(dis, Park):
+                        rating += 10
+        if region.in_city(city):
+            rating += 10
+        if region.in_walls(wall):
+            rating += -50
         return rating
 
 
@@ -949,30 +939,24 @@ class Precinct(District):
             if region != reg:
                 if region.is_bordering(reg):
                     dis = reg.get_district()
-                    if isinstance(dis, Farmland):
-                        rating += -10
-                    elif isinstance(dis, HousingMid):
-                        rating += 20
-                    elif isinstance(dis, Smithing):
+                    if isinstance(dis, HousingLow):
                         rating += 10
-                    elif isinstance(dis, Docks):
-                        rating += 10
-                    elif isinstance(dis, Cathedral):
-                        rating += -10
-                    elif isinstance(dis, Castle):
+                    elif isinstance(dis, Shops):
                         rating += 10
                     elif isinstance(dis, Slum):
-                        rating += 30
+                        rating += 20
                     elif isinstance(dis, Armory):
                         rating += 10
+                    elif isinstance(dis, Market):
+                        rating += 10
+                    elif isinstance(dis, Castle):
+                        rating += 10
                     elif isinstance(dis, Precinct):
-                        rating += -50
-                    elif isinstance(dis, WarCamp):
-                        rating += -20
+                        rating += -10
         if region.in_city(city):
-            rating += 20
+            rating += 10
         if region.in_walls(wall):
-            rating += 40
+            rating += 10
         return rating
 
 
@@ -1006,30 +990,32 @@ class Shops(BasicDistrict):
             if region != reg:
                 if region.is_bordering(reg):
                     dis = reg.get_district()
-                    if isinstance(dis, Farmland):
-                        rating += 10
+                    if isinstance(dis, HousingHigh):
+                        rating += 20
                     elif isinstance(dis, HousingMid):
-                        rating -= 20
-                    elif isinstance(dis, Smithing):
-                        rating += 30
-                    elif isinstance(dis, Market):
                         rating += 20
-                    elif isinstance(dis, Docks):
-                        rating += 20
-                    elif isinstance(dis, Cathedral):
-                        rating += 20
-                    elif isinstance(dis, Castle):
-                        rating += 20
-                    elif isinstance(dis, Gate):
+                    elif isinstance(dis, Shops):
                         rating += 20
                     elif isinstance(dis, Slum):
-                        rating += -10
-                    elif isinstance(dis, Armory):
                         rating += -20
-                    elif isinstance(dis, Precinct):
+                    elif isinstance(dis, Armory):
+                        rating += 10
+                    elif isinstance(dis, Market):
                         rating += 20
-                    elif isinstance(dis, WarCamp):
-                        rating += -40
+                    elif isinstance(dis, Cathedral):
+                        rating += 30
+                    elif isinstance(dis, Castle):
+                        rating += 20
+                    elif isinstance(dis, Courtyard):
+                        rating += 10
+                    elif isinstance(dis, Park):
+                        rating += 10
+        if region.in_city(city):
+            rating += 20
+        if region.in_walls(wall):
+            rating += 30
+        return rating
+
         return rating
 
 
@@ -1063,27 +1049,31 @@ class Slum(BasicDistrict):
             if region != reg:
                 if region.is_bordering(reg):
                     dis = reg.get_district()
-                    if isinstance(dis, HousingMid):
-                        rating += -10
-                    elif isinstance(dis, Smithing):
-                        rating += -10
-                    elif isinstance(dis, Market):
-                        rating += -10
-                    elif isinstance(dis, Docks):
+                    if isinstance(dis, HousingHigh):
+                        rating += -100
+                    elif isinstance(dis, HousingMid):
+                        rating += -50
+                    elif isinstance(dis, Industrial):
+                        rating += 30
+                    elif isinstance(dis, Shops):
+                        rating += -20
+                    elif isinstance(dis, Slum):
+                        rating += 20
+                    elif isinstance(dis, Farmland):
                         rating += 10
                     elif isinstance(dis, Cathedral):
                         rating += -10
                     elif isinstance(dis, Castle):
-                        rating += -1000
-                    elif isinstance(dis, Slum):
-                        rating += 40
-                    elif isinstance(dis, Armory):
-                        rating += 20
+                        rating += -100
                     elif isinstance(dis, Precinct):
-                        rating += 30
-                    elif isinstance(dis, WarCamp):
-                        rating += 30
+                        rating += 20
+                    elif isinstance(dis, Courtyard):
+                        rating += -30
+                    elif isinstance(dis, Openland):
+                        rating += -40
+                    elif isinstance(dis, Park):
+                        rating += -10
         if region.in_walls(wall):
-            rating += -100
+            rating += -40
         return rating
 
