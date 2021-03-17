@@ -17,8 +17,8 @@ Add new classes to the documentation by running the following command in the ter
 Then add the name of the new `.rst` file to `index.rst` in alphabetic order.
 Build the documentation
 ```
-/atlas/docs> make clean
-/atlas/docs> make html
+/atlas/documentation> make clean
+/atlas/documentation> make html
 ```
 This will put the new webpages in `/documentation/build/html/`.
 
