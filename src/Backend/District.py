@@ -258,12 +258,14 @@ class Castle(District):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, other_regions, wall, city):
+    def determine_rating(region, neighbors, other_regions, wall, city):
         """
         Determines the likely hood a given district will be in a region
 
         Parameters
         ----------
+        neighbors : list of Regions
+            the neighboring regions
         region : Region
             The region that we are determining the likely hood the district will be in
         other_regions : List of Regions
@@ -284,30 +286,30 @@ class Castle(District):
             if region != reg:
                 if isinstance(reg.get_district(), Castle):
                     return -1000
-                if region.is_bordering(reg):
-                    dis = reg.get_district()
-                    if isinstance(dis, HousingHigh):
-                        rating += 10
-                    elif isinstance(dis, HousingLow):
-                        rating += -10
-                    elif isinstance(dis, Industrial):
-                        rating += -100
-                    elif isinstance(dis, Shops):
-                        rating += 20
-                    elif isinstance(dis, Slum):
-                        rating += -100
-                    elif isinstance(dis, Armory):
-                        rating += 20
-                    elif isinstance(dis, Market):
-                        rating += 10
-                    elif isinstance(dis, Cathedral):
-                        rating += 30
-                    elif isinstance(dis, Precinct):
-                        rating += 10
-                    elif isinstance(dis, Courtyard):
-                        rating += 10
-                    elif isinstance(dis, Park):
-                        rating += 10
+        for reg in neighbors:
+            dis = reg.get_district()
+            if isinstance(dis, HousingHigh):
+                rating += 10
+            elif isinstance(dis, HousingLow):
+                rating += -10
+            elif isinstance(dis, Industrial):
+                rating += -100
+            elif isinstance(dis, Shops):
+                rating += 20
+            elif isinstance(dis, Slum):
+                rating += -100
+            elif isinstance(dis, Armory):
+                rating += 20
+            elif isinstance(dis, Market):
+                rating += 10
+            elif isinstance(dis, Cathedral):
+                rating += 30
+            elif isinstance(dis, Precinct):
+                rating += 10
+            elif isinstance(dis, Courtyard):
+                rating += 10
+            elif isinstance(dis, Park):
+                rating += 10
         if region.in_walls(wall):
             rating += 200
         return rating

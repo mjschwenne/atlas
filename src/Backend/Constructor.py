@@ -23,7 +23,7 @@ class Constructor:
     def generate_map(self):
         print(datetime.now())
         bounding_polygon = Polygon([Point(250, 250), Point(250, -250), Point(-250, -250), Point(-250, 250)])
-        num_district = 25
+        num_district = 50
         vor = Voronoi(num_district, bounding_polygon)
         vor.relax()
         vor.relax()
@@ -72,7 +72,11 @@ class Constructor:
         while change:
             change = False
             for reg in regions:
-                rating = reg.get_district().determine_rating(reg, regions, wall, city)
+                neighbors = reg.find_neighbors(regions)
+                if isinstance(reg.get_district(), Castle):
+                    rating = reg.get_district().determine_rating(reg, neighbors, regions, wall, city)
+                else:
+                    rating = reg.get_district().determine_rating(reg, neighbors, wall, city)
                 if rating < 0:
                     Constructor.assign_district(reg, regions, wall, city)
                     change = True
@@ -97,8 +101,8 @@ class Constructor:
         # Gets the rating for every District
         neighbors = reg.find_neighbors(regions)
         armory_val = Armory.determine_rating(reg, neighbors, wall, city)
-        castle_val = Castle.determine_rating(reg, regions, wall, city)  # special case, needs all regions not just
-        # neighbors
+        castle_val = Castle.determine_rating(reg, neighbors, regions, wall, city)  # special case, needs all regions not
+        # just neighbors
         cathedral_val = Cathedral.determine_rating(reg, neighbors, wall, city)
         farmland_val = Farmland.determine_rating(reg, neighbors, wall, city)
         gate_val = Gate.determine_rating(reg, neighbors, wall, city)
