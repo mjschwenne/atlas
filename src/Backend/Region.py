@@ -191,3 +191,24 @@ class Region(Polygon):
             if not wall.is_contained(point):
                 return False
         return True
+
+    def find_neighbors(self, regions):
+        """
+        Finds the neighboring regions of the polygon
+
+        Parameters
+        ----------
+        regions : list of Regions
+            All other regions on the map
+
+        Returns
+        -------
+        neighbors:
+            A list of neighboring regions
+        """
+        neighbors = []
+        for reg in regions:
+            if reg != self:
+                if self.is_bordering(reg):
+                    neighbors.append(reg)
+        return neighbors
