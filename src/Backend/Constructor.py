@@ -1,4 +1,5 @@
 import random
+from datetime import datetime
 
 from src.Backend.District import *
 from src.Backend.Voronoi import Voronoi
@@ -20,6 +21,7 @@ class Constructor:
     """
 
     def generate_map(self):
+        print(datetime.now())
         bounding_polygon = Polygon([Point(250, 250), Point(250, -250), Point(-250, -250), Point(-250, 250)])
         num_district = 25
         vor = Voronoi(num_district, bounding_polygon)
@@ -37,6 +39,8 @@ class Constructor:
         for reg in regions:
             if isinstance(reg.get_district(), BasicDistrict):
                 reg.get_district().generate_district(reg)
+
+        print(datetime.now())
         return regions
 
 
@@ -91,22 +95,24 @@ class Constructor:
         """
 
         # Gets the rating for every District
-        armory_val = Armory.determine_rating(reg, regions, wall, city)
-        castle_val = Castle.determine_rating(reg, regions, wall, city)
-        cathedral_val = Cathedral.determine_rating(reg, regions, wall, city)
-        farmland_val = Farmland.determine_rating(reg, regions, wall, city)
-        gate_val = Gate.determine_rating(reg, regions, wall, city)
-        housinghigh_val = HousingHigh.determine_rating(reg, regions, wall, city)
-        housingmid_val = HousingMid.determine_rating(reg, regions, wall, city)
-        housinglow_val = HousingLow.determine_rating(reg, regions, wall, city)
-        market_val = Market.determine_rating(reg, regions, wall, city)
-        precinct_val = Precinct.determine_rating(reg, regions, wall, city)
-        slum_val = Slum.determine_rating(reg, regions, wall, city)
-        industrial_val = Industrial.determine_rating(reg, regions, wall, city)
-        shops_val = Shops.determine_rating(reg, regions, wall, city)
-        courtyard_val = Courtyard.determine_rating(reg, regions, wall, city)
-        openland_val = Openland.determine_rating(reg, regions, wall, city)
-        park_val = Park.determine_rating(reg, regions, wall, city)
+        neighbors = reg.find_neighbors(regions)
+        armory_val = Armory.determine_rating(reg, neighbors, wall, city)
+        castle_val = Castle.determine_rating(reg, regions, wall, city)  # special case, needs all regions not just
+        # neighbors
+        cathedral_val = Cathedral.determine_rating(reg, neighbors, wall, city)
+        farmland_val = Farmland.determine_rating(reg, neighbors, wall, city)
+        gate_val = Gate.determine_rating(reg, neighbors, wall, city)
+        housinghigh_val = HousingHigh.determine_rating(reg, neighbors, wall, city)
+        housingmid_val = HousingMid.determine_rating(reg, neighbors, wall, city)
+        housinglow_val = HousingLow.determine_rating(reg, neighbors, wall, city)
+        market_val = Market.determine_rating(reg, neighbors, wall, city)
+        precinct_val = Precinct.determine_rating(reg, neighbors, wall, city)
+        slum_val = Slum.determine_rating(reg, neighbors, wall, city)
+        industrial_val = Industrial.determine_rating(reg, neighbors, wall, city)
+        shops_val = Shops.determine_rating(reg, neighbors, wall, city)
+        courtyard_val = Courtyard.determine_rating(reg, neighbors, wall, city)
+        openland_val = Openland.determine_rating(reg, neighbors, wall, city)
+        park_val = Park.determine_rating(reg, neighbors, wall, city)
 
         # creates lists of valid Districts and Weights
         values = []
@@ -161,7 +167,6 @@ class Constructor:
         if park_val >= 0:
             values.append(park_val + 10)
             districts.append(Park())
-
 
         # randomly selects a district based on the weights/ratings of the districts
         dist = random.choices(districts, k=1, weights=values)

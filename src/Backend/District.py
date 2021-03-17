@@ -85,7 +85,7 @@ class District:
         return self.min_building_size
 
     @staticmethod
-    def determine_rating(region, other_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall, city):
         """
         Determines the likely hood a given district will be in a region
 
@@ -93,7 +93,7 @@ class District:
         ----------
         region : Region
             The region that we are determining the likely hood the district will be in
-        other_regions : List of Regions
+        neighbor_regions : List of Regions
             Every other region
         wall : Wall
             The wall of the city
@@ -107,11 +107,9 @@ class District:
 
         """
         rating = 0
-        for reg in other_regions:
-            if region != reg:
-                if region.is_bordering(reg):
-                    if isinstance(reg.get_district(), District):
-                        rating += 1
+        for reg in neighbor_regions:
+            if isinstance(reg.get_district(), District):
+                rating += 1
         if region.in_city(city):
             rating -= 100
         if region.in_walls(wall):
@@ -209,7 +207,7 @@ class Armory(BasicDistrict):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, other_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall, city):
         """
         Determines the likely hood a given district will be in a region
 
@@ -217,7 +215,7 @@ class Armory(BasicDistrict):
         ----------
         region : Region
             The region that we are determining the likely hood the district will be in
-        other_regions : List of Regions
+        neighbor_regions : List of Regions
             Every other region
         wall : Wall
             The wall of the city
@@ -231,24 +229,22 @@ class Armory(BasicDistrict):
 
         """
         rating = 0
-        for reg in other_regions:
-            if region != reg:
-                if region.is_bordering(reg):
-                    dis = reg.get_district()
-                    if isinstance(dis, HousingHigh):
-                        rating += -10
-                    elif isinstance(dis, Industrial):
-                        rating += 20
-                    elif isinstance(dis, Shops):
-                        rating += 10
-                    elif isinstance(dis, Armory):
-                        rating += -10
-                    elif isinstance(dis, Cathedral):
-                        rating += -10
-                    elif isinstance(dis, Castle):
-                        rating += 20
-                    elif isinstance(dis, Precinct):
-                        rating += 10
+        for reg in neighbor_regions:
+            dis = reg.get_district()
+            if isinstance(dis, HousingHigh):
+                rating += -10
+            elif isinstance(dis, Industrial):
+                rating += 20
+            elif isinstance(dis, Shops):
+                rating += 10
+            elif isinstance(dis, Armory):
+                rating += -10
+            elif isinstance(dis, Cathedral):
+                rating += -10
+            elif isinstance(dis, Castle):
+                rating += 20
+            elif isinstance(dis, Precinct):
+                rating += 10
 
         if region.in_walls(wall):
             rating += 10
@@ -321,7 +317,7 @@ class Cathedral(District):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, other_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall, city):
         """
         Determines the likely hood a given district will be in a region
 
@@ -329,7 +325,7 @@ class Cathedral(District):
         ----------
         region : Region
             The region that we are determining the likely hood the district will be in
-        other_regions : List of Regions
+        neighbor_regions : List of Regions
             Every other region
         wall : Wall
             The wall of the city
@@ -343,32 +339,30 @@ class Cathedral(District):
 
         """
         rating = 0
-        for reg in other_regions:
-            if region != reg:
-                if region.is_bordering(reg):
-                    dis = reg.get_district()
-                    if isinstance(dis, HousingHigh):
-                        rating += 10
-                    elif isinstance(dis, HousingMid):
-                        rating += 10
-                    elif isinstance(dis, Market):
-                        rating += 10
-                    elif isinstance(dis, Industrial):
-                        rating += -50
-                    elif isinstance(dis, Shops):
-                        rating += 30
-                    elif isinstance(dis, Slum):
-                        rating += -10
-                    elif isinstance(dis, Market):
-                        rating += 10
-                    elif isinstance(dis, Cathedral):
-                        rating += -50
-                    elif isinstance(dis, Castle):
-                        rating += 30
-                    elif isinstance(dis, Courtyard):
-                        rating += 10
-                    elif isinstance(dis, Park):
-                        rating += 10
+        for reg in neighbor_regions:
+            dis = reg.get_district()
+            if isinstance(dis, HousingHigh):
+                rating += 10
+            elif isinstance(dis, HousingMid):
+                rating += 10
+            elif isinstance(dis, Market):
+                rating += 10
+            elif isinstance(dis, Industrial):
+                rating += -50
+            elif isinstance(dis, Shops):
+                rating += 30
+            elif isinstance(dis, Slum):
+                rating += -10
+            elif isinstance(dis, Market):
+                rating += 10
+            elif isinstance(dis, Cathedral):
+                rating += -50
+            elif isinstance(dis, Castle):
+                rating += 30
+            elif isinstance(dis, Courtyard):
+                rating += 10
+            elif isinstance(dis, Park):
+                rating += 10
         if region.in_city(city):
             rating += 10
         if region.in_walls(wall):
@@ -380,7 +374,7 @@ class Courtyard(District):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, other_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall, city):
         """
         Determines the likely hood a given district will be in a region
 
@@ -388,7 +382,7 @@ class Courtyard(District):
         ----------
         region : Region
             The region that we are determining the likely hood the district will be in
-        other_regions : List of Regions
+        neighbor_regions : List of Regions
             Every other region
         wall : Wall
             The wall of the city
@@ -402,26 +396,24 @@ class Courtyard(District):
 
         """
         rating = 0
-        for reg in other_regions:
-            if region != reg:
-                if region.is_bordering(reg):
-                    dis = reg.get_district()
-                    if isinstance(dis, HousingLow):
-                        rating += -10
-                    elif isinstance(dis, Industrial):
-                        rating += 30
-                    elif isinstance(dis, Shops):
-                        rating += 10
-                    elif isinstance(dis, Slum):
-                        rating += -30
-                    elif isinstance(dis, Market):
-                        rating += 10
-                    elif isinstance(dis, Cathedral):
-                        rating += 10
-                    elif isinstance(dis, Castle):
-                        rating += 10
-                    elif isinstance(dis, Park):
-                        rating += 10
+        for reg in neighbor_regions:
+            dis = reg.get_district()
+            if isinstance(dis, HousingLow):
+                rating += -10
+            elif isinstance(dis, Industrial):
+                rating += 30
+            elif isinstance(dis, Shops):
+                rating += 10
+            elif isinstance(dis, Slum):
+                rating += -30
+            elif isinstance(dis, Market):
+                rating += 10
+            elif isinstance(dis, Cathedral):
+                rating += 10
+            elif isinstance(dis, Castle):
+                rating += 10
+            elif isinstance(dis, Park):
+                rating += 10
         if region.in_city(city):
             rating += 10
         if region.in_walls(wall):
@@ -433,7 +425,7 @@ class Farmland(District):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, other_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall, city):
         """
         Determines the likely hood a given district will be in a region
 
@@ -441,7 +433,7 @@ class Farmland(District):
         ----------
         region : Region
             The region that we are determining the likely hood the district will be in
-        other_regions : List of Regions
+        neighbor_regions : List of Regions
             Every other region
         wall : Wall
             The wall of the city
@@ -455,22 +447,20 @@ class Farmland(District):
 
         """
         rating = 0
-        for reg in other_regions:
-            if region != reg:
-                if region.is_bordering(reg):
-                    dis = reg.get_district()
-                    if isinstance(dis, HousingLow):
-                        rating += 10
-                    elif isinstance(dis, Industrial):
-                        rating += 10
-                    elif isinstance(dis, Slum):
-                        rating += 10
-                    elif isinstance(dis, Farmland):
-                        rating += 20
-                    elif isinstance(dis, Market):
-                        rating += 10
-                    elif isinstance(dis, Park):
-                        rating += 10
+        for reg in neighbor_regions:
+            dis = reg.get_district()
+            if isinstance(dis, HousingLow):
+                rating += 10
+            elif isinstance(dis, Industrial):
+                rating += 10
+            elif isinstance(dis, Slum):
+                rating += 10
+            elif isinstance(dis, Farmland):
+                rating += 20
+            elif isinstance(dis, Market):
+                rating += 10
+            elif isinstance(dis, Park):
+                rating += 10
         if region.in_city(city):
             rating -= 20
         if region.in_walls(wall):
@@ -482,7 +472,7 @@ class Gate(District):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, other_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall, city):
         """
         Determines the likely hood a given district will be in a region
 
@@ -490,7 +480,7 @@ class Gate(District):
         ----------
         region : Region
             The region that we are determining the likely hood the district will be in
-        other_regions : List of Regions
+        neighbor_regions : List of Regions
             Every other region
         wall : Wall
             The wall of the city
@@ -517,7 +507,7 @@ class HousingHigh(BasicDistrict):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, other_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall, city):
         """
         Determines the likely hood a given district will be in a region
 
@@ -525,7 +515,7 @@ class HousingHigh(BasicDistrict):
         ----------
         region : Region
             The region that we are determining the likely hood the district will be in
-        other_regions : List of Regions
+        neighbor_regions : List of Regions
             Every other region
         wall : Wall
             The wall of the city
@@ -539,34 +529,32 @@ class HousingHigh(BasicDistrict):
 
         """
         rating = 0
-        for reg in other_regions:
-            if region != reg:
-                if region.is_bordering(reg):
-                    dis = reg.get_district()
-                    if isinstance(dis, HousingHigh):
-                        rating += 30
-                    elif isinstance(dis, HousingMid):
-                        rating += 20
-                    elif isinstance(dis, HousingLow):
-                        rating += -10
-                    elif isinstance(dis, Industrial):
-                        rating += -20
-                    elif isinstance(dis, Shops):
-                        rating += 20
-                    elif isinstance(dis, Slum):
-                        rating += -100
-                    elif isinstance(dis, Armory):
-                        rating += -10
-                    elif isinstance(dis, Market):
-                        rating += 10
-                    elif isinstance(dis, Cathedral):
-                        rating += 10
-                    elif isinstance(dis, Castle):
-                        rating += 10
-                    elif isinstance(dis, Openland):
-                        rating += -10
-                    elif isinstance(dis, Park):
-                        rating += 10
+        for reg in neighbor_regions:
+            dis = reg.get_district()
+            if isinstance(dis, HousingHigh):
+                rating += 30
+            elif isinstance(dis, HousingMid):
+                rating += 20
+            elif isinstance(dis, HousingLow):
+                rating += -10
+            elif isinstance(dis, Industrial):
+                rating += -20
+            elif isinstance(dis, Shops):
+                rating += 20
+            elif isinstance(dis, Slum):
+                rating += -100
+            elif isinstance(dis, Armory):
+                rating += -10
+            elif isinstance(dis, Market):
+                rating += 10
+            elif isinstance(dis, Cathedral):
+                rating += 10
+            elif isinstance(dis, Castle):
+                rating += 10
+            elif isinstance(dis, Openland):
+                rating += -10
+            elif isinstance(dis, Park):
+                rating += 10
         if region.in_city(city):
             rating += 30
         if region.in_walls(wall):
@@ -578,7 +566,7 @@ class HousingMid(BasicDistrict):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, other_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall, city):
         """
         Determines the likely hood a given district will be in a region
 
@@ -586,7 +574,7 @@ class HousingMid(BasicDistrict):
         ----------
         region : Region
             The region that we are determining the likely hood the district will be in
-        other_regions : List of Regions
+        neighbor_regions : List of Regions
             Every other region
         wall : Wall
             The wall of the city
@@ -600,28 +588,26 @@ class HousingMid(BasicDistrict):
 
         """
         rating = 0
-        for reg in other_regions:
-            if region != reg:
-                if region.is_bordering(reg):
-                    dis = reg.get_district()
-                    if isinstance(dis, HousingHigh):
-                        rating += 20
-                    elif isinstance(dis, HousingMid):
-                        rating += 20
-                    elif isinstance(dis, Industrial):
-                        rating += -10
-                    elif isinstance(dis, Shops):
-                        rating += 20
-                    elif isinstance(dis, Slum):
-                        rating += -50
-                    elif isinstance(dis, Market):
-                        rating += 10
-                    elif isinstance(dis, Cathedral):
-                        rating += 10
-                    elif isinstance(dis, Openland):
-                        rating += -10
-                    elif isinstance(dis, Park):
-                        rating += 10
+        for reg in neighbor_regions:
+            dis = reg.get_district()
+            if isinstance(dis, HousingHigh):
+                rating += 20
+            elif isinstance(dis, HousingMid):
+                rating += 20
+            elif isinstance(dis, Industrial):
+                rating += -10
+            elif isinstance(dis, Shops):
+                rating += 20
+            elif isinstance(dis, Slum):
+                rating += -50
+            elif isinstance(dis, Market):
+                rating += 10
+            elif isinstance(dis, Cathedral):
+                rating += 10
+            elif isinstance(dis, Openland):
+                rating += -10
+            elif isinstance(dis, Park):
+                rating += 10
         if region.in_city(city):
             rating += 30
         if region.in_walls(wall):
@@ -633,7 +619,7 @@ class HousingLow(BasicDistrict):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, other_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall, city):
         """
         Determines the likely hood a given district will be in a region
 
@@ -641,7 +627,7 @@ class HousingLow(BasicDistrict):
         ----------
         region : Region
             The region that we are determining the likely hood the district will be in
-        other_regions : List of Regions
+        neighbor_regions : List of Regions
             Every other region
         wall : Wall
             The wall of the city
@@ -655,26 +641,24 @@ class HousingLow(BasicDistrict):
 
         """
         rating = 0
-        for reg in other_regions:
-            if region != reg:
-                if region.is_bordering(reg):
-                    dis = reg.get_district()
-                    if isinstance(dis, HousingHigh):
-                        rating += -10
-                    elif isinstance(dis, HousingLow):
-                        rating += 20
-                    elif isinstance(dis, Industrial):
-                        rating += 10
-                    elif isinstance(dis, Farmland):
-                        rating += 10
-                    elif isinstance(dis, Cathedral):
-                        rating += 10
-                    elif isinstance(dis, Castle):
-                        rating += -20
-                    elif isinstance(dis, Openland):
-                        rating += -20
-                    elif isinstance(dis, Precinct):
-                        rating += 10
+        for reg in neighbor_regions:
+            dis = reg.get_district()
+            if isinstance(dis, HousingHigh):
+                rating += -10
+            elif isinstance(dis, HousingLow):
+                rating += 20
+            elif isinstance(dis, Industrial):
+                rating += 10
+            elif isinstance(dis, Farmland):
+                rating += 10
+            elif isinstance(dis, Cathedral):
+                rating += 10
+            elif isinstance(dis, Castle):
+                rating += -20
+            elif isinstance(dis, Openland):
+                rating += -20
+            elif isinstance(dis, Precinct):
+                rating += 10
         if region.in_city(city):
             rating += 30
         return rating
@@ -684,7 +668,7 @@ class Industrial(BasicDistrict):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, other_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall, city):
         """
         Determines the likely hood a given district will be in a region
 
@@ -692,7 +676,7 @@ class Industrial(BasicDistrict):
         ----------
         region : Region
             The region that we are determining the likely hood the district will be in
-        other_regions : List of Regions
+        neighbor_regions : List of Regions
             Every other region
         wall : Wall
             The wall of the city
@@ -706,37 +690,34 @@ class Industrial(BasicDistrict):
 
         """
         rating = 0
-        for reg in other_regions:
-            if region != reg:
-                if region.is_bordering(reg):
-                    dis = reg.get_district()
-                    if isinstance(dis, HousingHigh):
-                        rating += -20
-                    elif isinstance(dis, HousingMid):
-                        rating += -10
-                    elif isinstance(dis, HousingLow):
-                        rating += 10
-                    elif isinstance(dis, Slum):
-                        rating += 30
-                    elif isinstance(dis, Armory):
-                        rating += 20
-                    elif isinstance(dis, Farmland):
-                        rating += 10
-                    elif isinstance(dis, Market):
-                        rating += -10
-                    elif isinstance(dis, Cathedral):
-                        rating += -50
-                    elif isinstance(dis, Castle):
-                        rating += -100
-                    elif isinstance(dis, Precinct):
-                        rating += 10
-                    elif isinstance(dis, Courtyard):
-                        rating += -30
-                    elif isinstance(dis, Openland):
-                        rating += 20
-                    elif isinstance(dis, Park):
-                        rating += -30
-
+        for reg in neighbor_regions:
+            dis = reg.get_district()
+            if isinstance(dis, HousingHigh):
+                rating += -20
+            elif isinstance(dis, HousingMid):
+                rating += -10
+            elif isinstance(dis, HousingLow):
+                rating += 10
+            elif isinstance(dis, Slum):
+                rating += 30
+            elif isinstance(dis, Armory):
+                rating += 20
+            elif isinstance(dis, Farmland):
+                rating += 10
+            elif isinstance(dis, Market):
+                rating += -10
+            elif isinstance(dis, Cathedral):
+                rating += -50
+            elif isinstance(dis, Castle):
+                rating += -100
+            elif isinstance(dis, Precinct):
+                rating += 10
+            elif isinstance(dis, Courtyard):
+                rating += -30
+            elif isinstance(dis, Openland):
+                rating += 20
+            elif isinstance(dis, Park):
+                rating += -30
         if region.in_walls(wall):
             rating += -30
         return rating
@@ -746,7 +727,7 @@ class Market(District):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, other_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall, city):
         """
         Determines the likely hood a given district will be in a region
 
@@ -754,7 +735,7 @@ class Market(District):
         ----------
         region : Region
             The region that we are determining the likely hood the district will be in
-        other_regions : List of Regions
+        neighbor_regions : List of Regions
             Every other region
         wall : Wall
             The wall of the city
@@ -768,32 +749,30 @@ class Market(District):
 
         """
         rating = 0
-        for reg in other_regions:
-            if region != reg:
-                if region.is_bordering(reg):
-                    dis = reg.get_district()
-                    if isinstance(dis, HousingHigh):
-                        rating += 10
-                    elif isinstance(dis, HousingLow):
-                        rating += 10
-                    elif isinstance(dis, Market):
-                        rating += 20
-                    elif isinstance(dis, Industrial):
-                        rating += -10
-                    elif isinstance(dis, Shops):
-                        rating += 20
-                    elif isinstance(dis, Farmland):
-                        rating += 10
-                    elif isinstance(dis, Cathedral):
-                        rating += 10
-                    elif isinstance(dis, Castle):
-                        rating += 10
-                    elif isinstance(dis, Precinct):
-                        rating += 10
-                    elif isinstance(dis, Openland):
-                        rating += 10
-                    elif isinstance(dis, Gate):
-                        rating += 10
+        for reg in neighbor_regions:
+            dis = reg.get_district()
+            if isinstance(dis, HousingHigh):
+                rating += 10
+            elif isinstance(dis, HousingLow):
+                rating += 10
+            elif isinstance(dis, Market):
+                rating += 20
+            elif isinstance(dis, Industrial):
+                rating += -10
+            elif isinstance(dis, Shops):
+                rating += 20
+            elif isinstance(dis, Farmland):
+                rating += 10
+            elif isinstance(dis, Cathedral):
+                rating += 10
+            elif isinstance(dis, Castle):
+                rating += 10
+            elif isinstance(dis, Precinct):
+                rating += 10
+            elif isinstance(dis, Openland):
+                rating += 10
+            elif isinstance(dis, Gate):
+                rating += 10
         return rating
 
 
@@ -801,7 +780,7 @@ class Openland(District):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, other_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall, city):
         """
         Determines the likely hood a given district will be in a region
 
@@ -809,7 +788,7 @@ class Openland(District):
         ----------
         region : Region
             The region that we are determining the likely hood the district will be in
-        other_regions : List of Regions
+        neighbor_regions : List of Regions
             Every other region
         wall : Wall
             The wall of the city
@@ -823,26 +802,24 @@ class Openland(District):
 
         """
         rating = 0
-        for reg in other_regions:
-            if region != reg:
-                if region.is_bordering(reg):
-                    dis = reg.get_district()
-                    if isinstance(dis, HousingHigh):
-                        rating += -10
-                    elif isinstance(dis, HousingMid):
-                        rating += -10
-                    elif isinstance(dis, HousingLow):
-                        rating += -10
-                    elif isinstance(dis, Industrial):
-                        rating += 20
-                    elif isinstance(dis, Slum):
-                        rating += -40
-                    elif isinstance(dis, Market):
-                        rating += 10
-                    elif isinstance(dis, Openland):
-                        rating += 10
-                    elif isinstance(dis, Park):
-                        rating += 10
+        for reg in neighbor_regions:
+            dis = reg.get_district()
+            if isinstance(dis, HousingHigh):
+                rating += -10
+            elif isinstance(dis, HousingMid):
+                rating += -10
+            elif isinstance(dis, HousingLow):
+                rating += -10
+            elif isinstance(dis, Industrial):
+                rating += 20
+            elif isinstance(dis, Slum):
+                rating += -40
+            elif isinstance(dis, Market):
+                rating += 10
+            elif isinstance(dis, Openland):
+                rating += 10
+            elif isinstance(dis, Park):
+                rating += 10
         if region.in_city(city):
             rating += -40
         if region.in_walls(wall):
@@ -854,7 +831,7 @@ class Park(District):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, other_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall, city):
         """
         Determines the likely hood a given district will be in a region
 
@@ -862,7 +839,7 @@ class Park(District):
         ----------
         region : Region
             The region that we are determining the likely hood the district will be in
-        other_regions : List of Regions
+        neighbor_regions : List of Regions
             Every other region
         wall : Wall
             The wall of the city
@@ -876,32 +853,30 @@ class Park(District):
 
         """
         rating = 0
-        for reg in other_regions:
-            if region != reg:
-                if region.is_bordering(reg):
-                    dis = reg.get_district()
-                    if isinstance(dis, HousingHigh):
-                        rating += 10
-                    elif isinstance(dis, HousingMid):
-                        rating += 10
-                    elif isinstance(dis, Industrial):
-                        rating += -30
-                    elif isinstance(dis, Shops):
-                        rating += 10
-                    elif isinstance(dis, Slum):
-                        rating += -10
-                    elif isinstance(dis, Farmland):
-                        rating += 10
-                    elif isinstance(dis, Market):
-                        rating += 10
-                    elif isinstance(dis, Cathedral):
-                        rating += 10
-                    elif isinstance(dis, Castle):
-                        rating += 10
-                    elif isinstance(dis, Openland):
-                        rating += 10
-                    elif isinstance(dis, Park):
-                        rating += 10
+        for reg in neighbor_regions:
+            dis = reg.get_district()
+            if isinstance(dis, HousingHigh):
+                rating += 10
+            elif isinstance(dis, HousingMid):
+                rating += 10
+            elif isinstance(dis, Industrial):
+                rating += -30
+            elif isinstance(dis, Shops):
+                rating += 10
+            elif isinstance(dis, Slum):
+                rating += -10
+            elif isinstance(dis, Farmland):
+                rating += 10
+            elif isinstance(dis, Market):
+                rating += 10
+            elif isinstance(dis, Cathedral):
+                rating += 10
+            elif isinstance(dis, Castle):
+                rating += 10
+            elif isinstance(dis, Openland):
+                rating += 10
+            elif isinstance(dis, Park):
+                rating += 10
         if region.in_city(city):
             rating += 10
         if region.in_walls(wall):
@@ -913,7 +888,7 @@ class Precinct(District):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, other_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall, city):
         """
         Determines the likely hood a given district will be in a region
 
@@ -921,7 +896,7 @@ class Precinct(District):
         ----------
         region : Region
             The region that we are determining the likely hood the district will be in
-        other_regions : List of Regions
+        neighbor_regions : List of Regions
             Every other region
         wall : Wall
             The wall of the city
@@ -935,24 +910,22 @@ class Precinct(District):
 
         """
         rating = 0
-        for reg in other_regions:
-            if region != reg:
-                if region.is_bordering(reg):
-                    dis = reg.get_district()
-                    if isinstance(dis, HousingLow):
-                        rating += 10
-                    elif isinstance(dis, Shops):
-                        rating += 10
-                    elif isinstance(dis, Slum):
-                        rating += 20
-                    elif isinstance(dis, Armory):
-                        rating += 10
-                    elif isinstance(dis, Market):
-                        rating += 10
-                    elif isinstance(dis, Castle):
-                        rating += 10
-                    elif isinstance(dis, Precinct):
-                        rating += -10
+        for reg in neighbor_regions:
+            dis = reg.get_district()
+            if isinstance(dis, HousingLow):
+                rating += 10
+            elif isinstance(dis, Shops):
+                rating += 10
+            elif isinstance(dis, Slum):
+                rating += 20
+            elif isinstance(dis, Armory):
+                rating += 10
+            elif isinstance(dis, Market):
+                rating += 10
+            elif isinstance(dis, Castle):
+                rating += 10
+            elif isinstance(dis, Precinct):
+                rating += -10
         if region.in_city(city):
             rating += 10
         if region.in_walls(wall):
@@ -964,7 +937,7 @@ class Shops(BasicDistrict):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, other_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall, city):
         """
         Determines the likely hood a given district will be in a region
 
@@ -972,7 +945,7 @@ class Shops(BasicDistrict):
         ----------
         region : Region
             The region that we are determining the likely hood the district will be in
-        other_regions : List of Regions
+        neighbor_regions : List of Regions
             Every other region
         wall : Wall
             The wall of the city
@@ -986,36 +959,32 @@ class Shops(BasicDistrict):
 
         """
         rating = 0
-        for reg in other_regions:
-            if region != reg:
-                if region.is_bordering(reg):
-                    dis = reg.get_district()
-                    if isinstance(dis, HousingHigh):
-                        rating += 20
-                    elif isinstance(dis, HousingMid):
-                        rating += 20
-                    elif isinstance(dis, Shops):
-                        rating += 20
-                    elif isinstance(dis, Slum):
-                        rating += -20
-                    elif isinstance(dis, Armory):
-                        rating += 10
-                    elif isinstance(dis, Market):
-                        rating += 20
-                    elif isinstance(dis, Cathedral):
-                        rating += 30
-                    elif isinstance(dis, Castle):
-                        rating += 20
-                    elif isinstance(dis, Courtyard):
-                        rating += 10
-                    elif isinstance(dis, Park):
-                        rating += 10
+        for reg in neighbor_regions:
+            dis = reg.get_district()
+            if isinstance(dis, HousingHigh):
+                rating += 20
+            elif isinstance(dis, HousingMid):
+                rating += 20
+            elif isinstance(dis, Shops):
+                rating += 20
+            elif isinstance(dis, Slum):
+                rating += -20
+            elif isinstance(dis, Armory):
+                rating += 10
+            elif isinstance(dis, Market):
+                rating += 20
+            elif isinstance(dis, Cathedral):
+                rating += 30
+            elif isinstance(dis, Castle):
+                rating += 20
+            elif isinstance(dis, Courtyard):
+                rating += 10
+            elif isinstance(dis, Park):
+                rating += 10
         if region.in_city(city):
             rating += 20
         if region.in_walls(wall):
             rating += 30
-        return rating
-
         return rating
 
 
@@ -1023,7 +992,7 @@ class Slum(BasicDistrict):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, other_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall, city):
         """
         Determines the likely hood a given district will be in a region
 
@@ -1031,7 +1000,7 @@ class Slum(BasicDistrict):
         ----------
         region : Region
             The region that we are determining the likely hood the district will be in
-        other_regions : List of Regions
+        neighbor_regions : List of Regions
             Every other region
         wall : Wall
             The wall of the city
@@ -1045,34 +1014,32 @@ class Slum(BasicDistrict):
 
         """
         rating = 0
-        for reg in other_regions:
-            if region != reg:
-                if region.is_bordering(reg):
-                    dis = reg.get_district()
-                    if isinstance(dis, HousingHigh):
-                        rating += -100
-                    elif isinstance(dis, HousingMid):
-                        rating += -50
-                    elif isinstance(dis, Industrial):
-                        rating += 30
-                    elif isinstance(dis, Shops):
-                        rating += -20
-                    elif isinstance(dis, Slum):
-                        rating += 20
-                    elif isinstance(dis, Farmland):
-                        rating += 10
-                    elif isinstance(dis, Cathedral):
-                        rating += -10
-                    elif isinstance(dis, Castle):
-                        rating += -100
-                    elif isinstance(dis, Precinct):
-                        rating += 20
-                    elif isinstance(dis, Courtyard):
-                        rating += -30
-                    elif isinstance(dis, Openland):
-                        rating += -40
-                    elif isinstance(dis, Park):
-                        rating += -10
+        for reg in neighbor_regions:
+            dis = reg.get_district()
+            if isinstance(dis, HousingHigh):
+                rating += -100
+            elif isinstance(dis, HousingMid):
+                rating += -50
+            elif isinstance(dis, Industrial):
+                rating += 30
+            elif isinstance(dis, Shops):
+                rating += -20
+            elif isinstance(dis, Slum):
+                rating += 20
+            elif isinstance(dis, Farmland):
+                rating += 10
+            elif isinstance(dis, Cathedral):
+                rating += -10
+            elif isinstance(dis, Castle):
+                rating += -100
+            elif isinstance(dis, Precinct):
+                rating += 20
+            elif isinstance(dis, Courtyard):
+                rating += -30
+            elif isinstance(dis, Openland):
+                rating += -40
+            elif isinstance(dis, Park):
+                rating += -10
         if region.in_walls(wall):
             rating += -40
         return rating
