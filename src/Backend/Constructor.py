@@ -21,7 +21,7 @@ class Constructor:
 
     def generate_map(self):
         bounding_polygon = Polygon([Point(250, 250), Point(250, -250), Point(-250, -250), Point(-250, 250)])
-        num_district = 50
+        num_district = 25
         vor = Voronoi(num_district, bounding_polygon)
         vor.relax()
         vor.relax()
