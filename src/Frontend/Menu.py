@@ -106,8 +106,8 @@ def main():
             10: "#e5e5be",  # Tan/Gray Wall Paint like
             11: "#eaea02",  # Yellow
             12: "#FFFFFF",  # Black - Building
-            13: "#fc2fff",   # Pink - Industrial
-            14: "#a192fb",   # Light Purple - Openland
+            13: "#fc2fff",  # Pink - Industrial
+            14: "#a192fb",  # Light Purple - Openland
             15: "#003378",  # Dark Blue - Courtyard
             16: "#046113"  # Dark Green - Park
         }
@@ -153,13 +153,13 @@ def main():
                 switch_val = 16
             verts = []
             for v in reg.get_vertices():
-                verts.append((v.get_x() + 250)/2)
-                verts.append((v.get_y() + 250)/2)
+                verts.append((v.get_x() + 250) / 2)
+                verts.append((v.get_y() + 250) / 2)
             draw_region(map_canvas, switch_val, verts)
             for build in reg.buildings:
                 verts = []
                 for v in build.get_vertices():
-                    verts.append((v.get_x() + 250) /2)
+                    verts.append((v.get_x() + 250) / 2)
                     verts.append((v.get_y() + 250) / 2)
                 draw_region(map_canvas, 12, verts)
 
@@ -170,9 +170,81 @@ def main():
         info = Toplevel()
         info.title('Help Window')
         info.iconbitmap('../../images/Atlas.ico')
-        Label(info, text="ATLAS help", font="Helvetica 16 bold", bg="#a3a3a3").pack(side=TOP)
+        Label(info, text="ATLAS Help Window", font="Helvetica 16 bold", bg="#a3a3a3").pack(side=TOP)
         Label(info, text="This is filler text till I know what to write here").pack()
         Button(info, text="Close", command=info.destroy).pack()
+
+    def edit_msg():
+        """
+        command for the help message
+        """
+        edit = Toplevel()
+        edit.title('Edit Window')
+        edit.geometry('250x700')
+        edit.iconbitmap('../../images/Atlas.ico')
+        edit.rowconfigure(25, weight=2)
+
+        def var_states():
+            print("N 10:%d,\n25:%d,\n50:%d,\n75:%d,\n100:%d" % (var1.get(), var2.get(), var3.get(), var4.get(),
+                                                                var5.get()))
+            print("T Armory:%d,\nBuilding:%d,\nCastle:%d,\nCathedral:%d,\nCourtyard:%d,\nFarmland:%d,\nGate:%d,"
+                  "\nHousingHigh:%d,\nHousingLow:%d,\nHousingMid:%d,\nIndustrial:%d,\nMarket:%d,\nOpenland:%d,"
+                  "\nPark:%d,\nPrecinct:%d,\nShops:%d,\nSlum:%d" % (var6.get(), var7.get(), var8.get(), var9.get(),
+                                                                    var10.get(), var11.get(), var12.get(), var13.get(),
+                                                                    var14.get(), var15.get(), var16.get(),
+                                                                    var17.get(), var18.get(), var19.get(), var20.get(),
+                                                                    var21.get(), var22.get()))
+            
+        Label(edit, text="How Many Districts?", font="Helvetica 16 bold", bg="#a3a3a3").grid(row=0, sticky=W)
+        var1 = IntVar()
+        Checkbutton(edit, text="10", variable=var1).grid(row=1, sticky=W)
+        var2 = IntVar()
+        Checkbutton(edit, text="25", variable=var2).grid(row=2, sticky=W)
+        var3 = IntVar()
+        Checkbutton(edit, text="50", variable=var3).grid(row=3, sticky=W)
+        var4 = IntVar()
+        Checkbutton(edit, text="75", variable=var4).grid(row=4, sticky=W)
+        var5 = IntVar()
+        Checkbutton(edit, text="100", variable=var5).grid(row=5, sticky=W)
+
+        Label(edit, text="What Type of Districts?", font="Helvetica 16 bold", bg="#a3a3a3").grid(row=6, sticky=W)
+        var6 = IntVar()
+        Checkbutton(edit, text="Armory", variable=var6).grid(row=7, sticky=W)
+        var7 = IntVar()
+        Checkbutton(edit, text="Building", variable=var7).grid(row=8, sticky=W)
+        var8 = IntVar()
+        Checkbutton(edit, text="Castle", variable=var8).grid(row=9, sticky=W)
+        var9 = IntVar()
+        Checkbutton(edit, text="Cathedral", variable=var9).grid(row=10, sticky=W)
+        var10 = IntVar()
+        Checkbutton(edit, text="Courtyard", variable=var10).grid(row=11, sticky=W)
+        var11 = IntVar()
+        Checkbutton(edit, text="Farmland", variable=var11).grid(row=12, sticky=W)
+        var12 = IntVar()
+        Checkbutton(edit, text="Gate", variable=var12).grid(row=13, sticky=W)
+        var13 = IntVar()
+        Checkbutton(edit, text="Housing High ", variable=var13).grid(row=14, sticky=W)
+        var14 = IntVar()
+        Checkbutton(edit, text="Housing Low", variable=var14).grid(row=15, sticky=W)
+        var15 = IntVar()
+        Checkbutton(edit, text="Housing Mid", variable=var15).grid(row=16, sticky=W)
+        var16 = IntVar()
+        Checkbutton(edit, text="Industrial", variable=var16).grid(row=17, sticky=W)
+        var17 = IntVar()
+        Checkbutton(edit, text="Market", variable=var17).grid(row=18, sticky=W)
+        var18 = IntVar()
+        Checkbutton(edit, text="Open Land", variable=var18).grid(row=19, sticky=W)
+        var19 = IntVar()
+        Checkbutton(edit, text="Park", variable=var19).grid(row=20, sticky=W)
+        var20 = IntVar()
+        Checkbutton(edit, text="Precinct", variable=var20).grid(row=21, sticky=W)
+        var21 = IntVar()
+        Checkbutton(edit, text="Shops", variable=var21).grid(row=22, sticky=W)
+        var22 = IntVar()
+        Checkbutton(edit, text="Slums", variable=var22).grid(row=23, sticky=W)
+
+        Button(edit, text='Go', command=var_states).grid(row=25, sticky=W, pady=4, padx=4)
+        Button(edit, text='Quit', command=edit.destroy).grid(row=25, sticky=E, pady=4, padx=4)
 
     def save_file():
         """
@@ -212,7 +284,7 @@ def main():
     # Creates the button frame
     button_frame = tk.Frame(background="#CCCCCC", relief='raised', width=8)
     button_frame.grid(column=0, row=0, sticky=('n', 's', 'e', 'w'))
-    button_frame.rowconfigure(4, weight=2)
+    button_frame.rowconfigure(5, weight=2)
 
     # Create the canvas that the picture will be rendered on
     canvas = ResizingCanvas(window, background="#ebd5b3")
@@ -230,13 +302,16 @@ def main():
                          command=lambda: save_file())
     save_btn.grid(column=0, row=2, sticky='w', padx=5, pady=5)
 
+    edit_btn = tk.Button(button_frame, text="Edit", background="#a3a3a3", foreground="black", command=edit_msg)
+    edit_btn.grid(column=0, row=3, sticky='w', padx=5, pady=5)
+
     help_btn = tk.Button(button_frame, text="Help", background="#a3a3a3", foreground="black", command=help_msg)
-    help_btn.grid(column=0, row=3, sticky='w', padx=5)
+    help_btn.grid(column=0, row=4, sticky='w', padx=5, pady=5)
 
     # Sets up and puts the image of the cardinal directions on the screen 
     img = tk.PhotoImage(file='../../images/compass.png')
     mylabel = tk.Label(button_frame, image=img, background="#CCCCCC")
-    mylabel.grid(column=0, row=4, sticky='s', padx=10, pady=10)
+    mylabel.grid(column=0, row=5, sticky='s', padx=10, pady=10)
 
     window.mainloop()
 
