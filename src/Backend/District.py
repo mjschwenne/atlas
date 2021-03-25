@@ -317,6 +317,24 @@ class Castle(District):
 
 class Cathedral(District):
 
+    def generate_district(self, region):
+        average_side_length = region.get_perimeter()/len(region.vertices)
+        center = region.get_center()
+        points = []
+        for point in region.vertices:
+            if center.get_x() - point.get_x() > 0:
+                new_x = point.get_x() + average_side_length*0.25
+            else:
+                new_x = point.get_x() - average_side_length*0.25
+            if center.get_y() - point.get_y() > 0:
+                new_y = point.get_y() + average_side_length*0.25
+            else:
+                new_y = point.get_y() - average_side_length*0.25
+            points.append(Point(new_x, new_y))
+
+        polys = []
+
+
     # Overrides District's determine Rating
     @staticmethod
     def determine_rating(region, neighbor_regions, wall, city):
@@ -373,6 +391,23 @@ class Cathedral(District):
 
 
 class Courtyard(District):
+
+    def generate_district(self, region):
+            center = region.get_center()
+            points = []
+            for point in region.vertices:
+                length = center.simple_distance(point)
+                if center.get_x() - point.get_x() > 0:
+                   new_x = center.get_x() - (length * 0.25)
+                else:
+                    new_x = center.get_x() + (length * 0.2)
+                if center.get_y() - point.get_y() > 0:
+                    new_y = center.get_y() - (length * 0.25)
+                else:
+                    new_y = center.get_y() + (length * 0.25)
+                points.append(Point(new_x, new_y))
+
+            region.buildings.append(Polygon(points))
 
     # Overrides District's determine Rating
     @staticmethod
