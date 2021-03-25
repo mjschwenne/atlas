@@ -41,6 +41,8 @@ class Constructor:
                 reg.get_district().generate_district(reg)
             elif isinstance(reg.get_district(), Courtyard):
                 reg.get_district().generate_district(reg)
+            elif isinstance(reg.get_district(), Market):
+                reg.get_district().generate_district(reg)
         print(datetime.now())
         return regions
 
