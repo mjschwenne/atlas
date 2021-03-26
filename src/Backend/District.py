@@ -426,7 +426,7 @@ class Cathedral(District):
                   "(", cut_points[1].get_x(), ", ", cut_points[1].get_y(), ")")
 
             # cuts the poly and determines which poly needs to get cut again
-            polys = to_cut.cut(cut_points[0], cut_points[1])
+            polys = to_cut.cut_gap(cut_points[0], cut_points[1], 0.1)
             contained = True
             for p in points:
                 if not polys[0].is_contained(p):
