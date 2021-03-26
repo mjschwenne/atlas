@@ -409,13 +409,13 @@ class Cathedral(District):
         # generates buildings around cathedral
         new_poly = []
         to_cut = region
-        verts = region.vertices
+
 
         # iterates over each edge to cut the outer polygon into pieces
         for j in range(0, 4):
             print(j)
             cut_points = []
-
+            verts = to_cut.vertices
             # finds edge of outer poly to intersect with
             for i in range(0, (len(verts))):
                 point1 = verts[i]
