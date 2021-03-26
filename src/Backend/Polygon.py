@@ -78,11 +78,7 @@ def _intersects(p1, q1, p2, q2):
     return False
 
 
-def _intersect_segment(p1, p2, p3, p4):
-    inter = Polygon.intersection(p1, p2, p3, p4)
-    if inter is not None and Polygon.in_segment(p1, p2, inter):
-        return True
-    return False
+
 
 def clockwise_order(vertices):
     """
@@ -565,7 +561,7 @@ class Polygon:
             v1 = self.vertices[i]
             v2 = self.vertices[(i + 1) % len(self.vertices)]
 
-            if _intersect_segment(v1, v2, p, ext_p) and not self.in_segment(v1, v2, p):
+            if Polygon.intersect_segment(v1, v2, p, ext_p) and not self.in_segment(v1, v2, p):
                 edge = (v1, v2)
 
         inter_p = self.intersection(edge[0], edge[1], p, ext_p)
@@ -760,6 +756,13 @@ class Polygon:
                 max_point = v
                 max_dist = new_dist
         return max_point
+
+    @staticmethod
+    def intersect_segment(p1, p2, p3, p4):
+        inter = Polygon.intersection(p1, p2, p3, p4)
+        if inter is not None and Polygon.in_segment(p1, p2, inter):
+            return True
+        return False
 
     def __eq__(self, other):
         """

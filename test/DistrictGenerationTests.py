@@ -2,7 +2,7 @@ import unittest
 
 from src.Backend.Point import Point
 from src.Backend.Region import Region
-from src.Backend.District import Armory
+from src.Backend.District import Armory, Cathedral
 import matplotlib.pyplot as plt
 
 
@@ -139,3 +139,9 @@ class DistrictGenerationTests(unittest.TestCase):
             plt.plot(x_list, y_list, 'k-')
         plt.show()
         self.assertEqual(True, True)
+
+    def test_square_cathedral_district_generation(self):
+        region = Region(Cathedral(), [Point(0, 0), Point(5, 0), Point(5, 5), Point(0, 5)], False, False)
+        region.get_district().generate_district(region)
+
+        self.assertTrue(True)

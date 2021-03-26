@@ -386,22 +386,58 @@ class Castle(District):
 class Cathedral(District):
 
     def generate_district(self, region):
-        average_side_length = region.get_perimeter()/len(region.vertices)
+        #finding the 4 corners of the cathedral
         center = region.get_center()
-        points = []
+        x = center.get_x()
+        y = center.get_y()
+        point = region.vertices[0]
+        min_x = abs(x-point.get_x())
+        min_y = abs(y-point.get_y())
         for point in region.vertices:
-            if center.get_x() - point.get_x() > 0:
-                new_x = point.get_x() + average_side_length*0.25
-            else:
-                new_x = point.get_x() - average_side_length*0.25
-            if center.get_y() - point.get_y() > 0:
-                new_y = point.get_y() + average_side_length*0.25
-            else:
-                new_y = point.get_y() - average_side_length*0.25
-            points.append(Point(new_x, new_y))
+            new_x = abs(x-point.get_x())
+            new_y = abs(y - point.get_y())
+            if new_x < min_x:
+                min_x = new_x
+            if new_y < min_y:
+                min_y = new_y
+        # creates cathedral
+        points = [Point(x + 0.25*min_x, y + 0.25*min_y), Point(x - 0.25*min_x, y + 0.25*min_y),
+                  Point(x - 0.25*min_x, y - 0.25*min_y), Point(x + 0.25*min_x, y - 0.25*min_y)]
+        region.buildings.append(Polygon(points))
 
-        polys = []
+        #generates buildings around cathedral
+        new_poly = []
+        to_cut = region
+        verts = region.vertices
 
+        # iterates over each edge to cut the outer polygon into pieces
+        for j in range(0, 4):
+            print(j)
+            cut_points = []
+
+            # finds edge of outer poly to intersect with
+            for i in range(0, (len(verts))):
+                point1 = verts[i]
+                point2 = verts[(i+1) % (len(verts))]
+                if Polygon.intersect_segment(point1, point2, points[j], points[(j+1) % 4]):
+                    cut_points.append(Polygon.intersection(point1, point2, points[j], points[(j+1) % 4]))
+            print(cut_points)
+
+            #cuts the poly and determines which poly needs to get cut again
+            polys = to_cut.cut(cut_points[0], cut_points[1])
+            contained = True
+            for p in points:
+                if not polys[0].is_contained(p):
+                    contained = False
+                    break
+            if contained:
+                to_cut = polys[0]
+                new_poly.append(polys[1])
+            else:
+                to_cut = polys[1]
+                new_poly.append(polys[0])
+        for p in new_poly:
+            self.generate_buildings(region, p, 0.5, 0.4, 8000)
 
     # Overrides District's determine Rating
     @staticmethod
