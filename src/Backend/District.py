@@ -185,6 +185,7 @@ class District:
             else:
                 self.generate_buildings(region, part, chaos_level, probability_of_empty_space, min_building_size)
 
+
 class BasicDistrict(District):
 
     def __init__(self, chaos_level, probability_of_empty_space, min_building_size):
@@ -386,26 +387,26 @@ class Castle(District):
 class Cathedral(District):
 
     def generate_district(self, region):
-        #finding the 4 corners of the cathedral
+        # finding the 4 corners of the cathedral
         center = region.get_center()
         x = center.get_x()
         y = center.get_y()
         point = region.vertices[0]
-        min_x = abs(x-point.get_x())
-        min_y = abs(y-point.get_y())
+        min_x = abs(x - point.get_x())
+        min_y = abs(y - point.get_y())
         for point in region.vertices:
-            new_x = abs(x-point.get_x())
+            new_x = abs(x - point.get_x())
             new_y = abs(y - point.get_y())
             if new_x < min_x:
                 min_x = new_x
             if new_y < min_y:
                 min_y = new_y
         # creates cathedral
-        points = [Point(x + 0.25*min_x, y + 0.25*min_y), Point(x - 0.25*min_x, y + 0.25*min_y),
-                  Point(x - 0.25*min_x, y - 0.25*min_y), Point(x + 0.25*min_x, y - 0.25*min_y)]
+        points = [Point(x + 0.25 * min_x, y + 0.25 * min_y), Point(x - 0.25 * min_x, y + 0.25 * min_y),
+                  Point(x - 0.25 * min_x, y - 0.25 * min_y), Point(x + 0.25 * min_x, y - 0.25 * min_y)]
         region.buildings.append(Polygon(points))
 
-        #generates buildings around cathedral
+        # generates buildings around cathedral
         new_poly = []
         to_cut = region
         verts = region.vertices
@@ -418,12 +419,13 @@ class Cathedral(District):
             # finds edge of outer poly to intersect with
             for i in range(0, (len(verts))):
                 point1 = verts[i]
-                point2 = verts[(i+1) % (len(verts))]
-                if Polygon.intersect_segment(point1, point2, points[j], points[(j+1) % 4]):
-                    cut_points.append(Polygon.intersection(point1, point2, points[j], points[(j+1) % 4]))
-            print(cut_points)
+                point2 = verts[(i + 1) % (len(verts))]
+                if Polygon.intersect_segment(point1, point2, points[j], points[(j + 1) % 4]):
+                    cut_points.append(Polygon.intersection(point1, point2, points[j], points[(j + 1) % 4]))
+            print("(", cut_points[0].get_x(), ", ", cut_points[0].get_y(), "), ",
+                  "(", cut_points[1].get_x(), ", ", cut_points[1].get_y(), ")")
 
-            #cuts the poly and determines which poly needs to get cut again
+            # cuts the poly and determines which poly needs to get cut again
             polys = to_cut.cut(cut_points[0], cut_points[1])
             contained = True
             for p in points:
@@ -497,22 +499,22 @@ class Cathedral(District):
 class Courtyard(District):
 
     def generate_district(self, region):
-            center = region.get_center()
-            points = []
-            for point in region.vertices:
-                length = center.get_x() - point.get_x()
-                if length > 0:
-                    new_x = center.get_x() - abs((length * 0.25))
-                else:
-                    new_x = center.get_x() + abs((length * 0.25))
-                length = center.get_y() - point.get_y()
-                if length > 0:
-                    new_y = center.get_y() - abs((length * 0.25))
-                else:
-                    new_y = center.get_y() + abs((length * 0.25))
-                points.append(Point(new_x, new_y))
+        center = region.get_center()
+        points = []
+        for point in region.vertices:
+            length = center.get_x() - point.get_x()
+            if length > 0:
+                new_x = center.get_x() - abs((length * 0.25))
+            else:
+                new_x = center.get_x() + abs((length * 0.25))
+            length = center.get_y() - point.get_y()
+            if length > 0:
+                new_y = center.get_y() - abs((length * 0.25))
+            else:
+                new_y = center.get_y() + abs((length * 0.25))
+            points.append(Point(new_x, new_y))
 
-            region.buildings.append(Polygon(points))
+        region.buildings.append(Polygon(points))
 
     # Overrides District's determine Rating
     @staticmethod
@@ -886,7 +888,6 @@ class Market(District):
         new_poly = Polygon(points)
         self.generate_buildings(region, new_poly, 0.5, 0.05, 100)
 
-
     # Overrides District's determine Rating
     @staticmethod
     def determine_rating(region, neighbor_regions, wall, city):
@@ -1205,4 +1206,3 @@ class Slum(BasicDistrict):
         if region.in_walls(wall):
             rating += -40
         return rating
-
