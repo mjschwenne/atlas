@@ -2,6 +2,8 @@ from src.Backend.Polygon import Polygon
 from src.Backend.Point import Point
 from src.Backend.Pathfinder import Pathfinder
 from scipy.spatial import ConvexHull
+import networkx as nx
+import Voronoi
 
 
 class Wall(Polygon):
@@ -22,14 +24,15 @@ class Wall(Polygon):
         ----------
         regions : List of Regions
             A list of Regions of the city
-        graph : Graph
+        graph : nx.Graph
             Networkx Graph of regions
         bounding_box : Polygon
             The max polygon of the city (the bounding box of the city)
         """
+        self.regions = regions
         in_city_list = []
 
-        for p in regions:
+        for p in self.regions:
             furthest_dist_from_center = p.furthest_point(Point(0.0, 0.0)).simple_distance(Point(0.0, 0.0))
             if furthest_dist_from_center < bounding_box.get_perimeter() * 0.1:
                 in_city_list.append(p)
@@ -48,11 +51,21 @@ class Wall(Polygon):
         # Makes this wall a Polygon
         super().__init__(vertices)
 
-        # Reformat Polygons cut by Wall
+        # TODO Reformat Polygons cut by Wall
+        # Clip the graph so that it is only vertices on or inside of the wall.
+        clipped_graph = graph.copy()
+        for v in graph:
+            if not self.is_contained(v):
+                clipped_graph.remove_node(v)
+        # For each edge, adjust the polygons if needed
+        for v in range(len(self.vertices)):
+            start = vertices[v]
+            end = vertices[(v + 1) % len(self.vertices)]
+            self.__push_polygons(clipped_graph, start, end)
 
         # Finds the Roads and Gates
         center_poly = None
-        for p in regions:
+        for p in self.regions:
             if p.is_contained(Point(0.0, 0.0)):
                 center_poly = p
 
@@ -147,3 +160,61 @@ class Wall(Polygon):
             The new List of Points that defines the Gates of the Wall
         """
         self.gates = new_gates
+
+    # PRIVATE HELPER METHODS
+    def __push_polygons(self, graph, u, v):
+        """
+        Edit the graph and polygons so that bisected polygons align with the edge of the city wall
+
+        Used a clipped version of the Voronoi graph, use a BFS to find the shortest path from the start of the wall
+        edge to the end of the wall edge. From here, find the midpoint of each edge and determine which side of the if
+        pointing away from the center using the sign of the dot product to determine if the angle between them is more
+        or less than 180 degree.
+
+        Parameters
+        ----------
+        graph : nx.Graph
+            The Voronoi graph of the city, clipped so that it only contains the vertices on or inside of the wall
+        u : Point
+            The starting point of the wall edge
+        v : Point
+            The ending point of the wall edge
+        """
+        # Here we assume that the edge of the wall is not in the graph, otherwise there is no adjustment needed
+        # Find the shortest path from start to end
+        path = Voronoi.bfs_path(graph, u, v)
+        # Use this path to check which polygons are on the side of the path away from the origin
+        # Find the midpoint of the edge
+        push_polygons = set()
+        edge_start = path.pop()
+        while len(path) > 0:
+            edge_end = path.pop()
+            # The midpoint will be treated as the endpoint of a vector from the origin and used to determine which
+            # normal vector is pointing away from the origin
+            midpoint = Point(edge_start.get_x() + edge_end.get_x() / 2,
+                             edge_start.get_y() + edge_end.get_y() / 2)
+            # Create <edge_start, edge_end> as an edge vector, normalize it
+            edge_vector = Point(edge_start.get_x() - edge_end.get_x(),
+                                edge_start.get_y() - edge_end.get_y())
+            norm = edge_vector.simple_distance(Point(0, 0))
+            edge_vector.set(edge_vector.get_x() / norm, edge_vector.get_y() / norm)
+            del norm
+            # Find the normal vector in relation to edge_vector
+            normal = Point(-edge_vector.get_y(), edge_vector.get_x())
+            # Find the dot product between the midpoint vector and the normal vector
+            dot_product = midpoint.get_x() * normal.get_x() + midpoint.get_y() * normal.get_y()
+            if dot_product > 0:
+                # This is the point going away from the origin, find the polygon containing this midpoint + normal
+                point = Point(midpoint.get_x() + normal.get_x(), midpoint.get_y() + normal.get_y())
+                for r in self.regions:
+                    if r.is_contained(point):
+                        push_polygons.add(r)
+                        break
+            elif dot_product < 0:
+                point = Point(midpoint.get_x() - normal.get_x(), midpoint.get_y() - normal.get_y())
+                for r in self.regions:
+                    if r.is_contained(point):
+                        push_polygons.add(r)
+                        break
+            # The end of this edge is by definition the start of the next edge
+            edge_start = edge_end
