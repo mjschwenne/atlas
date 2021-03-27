@@ -499,6 +499,37 @@ class TestPolygon(unittest.TestCase):
         self.assertEqual(200.00000000, round(200.00000000000003, 8))
         self.assertEqual(True, Polygon.in_segment(Point(-200, 200), Point(200, 200), Point(-179.9948605683313, 200.00000000000003)))
 
+    def test_rectangle_in_1(self):
+        poly = Polygon(self.s1ver)
+        rect = poly.rectangle_inside(Point(0.0, 0.0), Point(0.0, 1.0))
+        self.assertEqual(True, True)
+
+    def test_rectangle_in_2(self):
+        poly = Polygon([Point(2, 8), Point(8, 5), Point(8, 1), Point(7, -2), Point(4, -5), Point(-3, -3), Point(-3, 4)])
+        rect = poly.rectangle_inside(Point(2.0, 8.0), Point(8.0, 5.0))
+        vx_list = []
+        vy_list = []
+        for v in poly.vertices:
+            vx_list.append(v.get_x())
+            vy_list.append(v.get_y())
+        vx_list.append(poly.vertices[0].get_x())
+        vy_list.append(poly.vertices[0].get_y())
+        plt.plot(vx_list, vy_list, 'b-')
+
+        vx_list = []
+        vy_list = []
+        for v in rect.vertices:
+            if v is None:
+                break
+            vx_list.append(v.get_x())
+            vy_list.append(v.get_y())
+        vx_list.append(rect.vertices[0].get_x())
+        vy_list.append(rect.vertices[0].get_y())
+        plt.plot(vx_list, vy_list, 'k-')
+
+        plt.show()
+        self.assertEqual(True, True)
+
 
 if __name__ == '__main__':
     unittest.main()
