@@ -116,6 +116,75 @@ class District:
             rating -= 100
         return rating
 
+    def generate_buildings(self, region, section, chaos_level, probability_of_empty_space, min_building_size):
+        """
+        Splits a given region into buildings randomly
+
+        Parameters
+        ----------
+        chaos_level : float
+            The chaos_value for how chaotic the buildings are
+        probability_of_empty_space : float
+            The amount of empty space to be made
+        min_building_size : float
+            The minimum building size
+        region : Region
+            The Region to split into buildings that stores the buildings list
+        section : Polygon
+            The possibly not Region Polygon that needs to be split
+        """
+        max_p1 = section.vertices[0]
+        max_p2 = section.vertices[1]
+        max_distance = max_p1.simple_distance(max_p2)
+
+        # finds the longest length on an edge of the section
+        for i in range(0, (len(section.vertices) - 1)):
+            p1 = section.vertices[i]
+            p2 = section.vertices[i + 1]
+            distance = p1.simple_distance(p2)
+            if max_distance < distance:
+                max_distance = distance
+                max_p1 = p1
+                max_p2 = p2
+
+        # find the angle of the edge
+        edge_angle = math.atan2((max_p2.get_y() - max_p1.get_y()), (max_p2.get_x() - max_p1.get_x()))
+
+        random.seed()
+        ran_p = Point(0, 0)
+
+        # Finds a random value informed by chaos_level (when chaos is 0 it will always be half)
+        cut_rand = random.uniform((1 - (0.5 * chaos_level + 0.5)), (0.5 * chaos_level + 0.5))
+
+        # Finds a random point on the edge (using cut_rand) to cut the edge at.
+        if max_p1.get_x() != max_p2.get_x():
+            ran_p.set_x((max_p2.get_x() - max_p1.get_x()) * cut_rand + max_p1.get_x())
+            ran_p.set_y(((max_p2.get_y() - max_p1.get_y()) / (max_p2.get_x() - max_p1.get_x())) *
+                        (ran_p.get_x() - max_p1.get_x()) + max_p1.get_y())
+        # If the line is vertical
+        else:
+            ran_p.set_x(max_p1.get_x())
+            ran_p.set_y((max_p2.get_y() - max_p1.get_y()) * cut_rand + max_p1.get_y())
+
+        # Find the random angle of the division from the angle of the edge
+        cut_ang = edge_angle + math.pi / 2
+        ran_ang = (random.uniform(-chaos_level, chaos_level) * (math.pi / 12)) + cut_ang
+
+        # Find the random gap width
+        gap = max_distance * 0.01 + random.uniform(0, chaos_level) * (max_distance * 0.01)
+
+        # Slit the region into two parts
+        parts = section.split(ran_p, ran_ang, gap)
+
+        for part in parts:
+            if round(part.area(), 8) <= min_building_size + \
+                    (random.uniform(0, chaos_level) * min_building_size):
+                if random.uniform(0, 1) >= probability_of_empty_space and len(part.vertices) > 2:
+                    if part.area() > min_building_size * 0.2:
+                        region.buildings.append(part)
+            else:
+                self.generate_buildings(region, part, chaos_level, probability_of_empty_space, min_building_size)
+
 
 class BasicDistrict(District):
 
@@ -317,6 +386,61 @@ class Castle(District):
 
 class Cathedral(District):
 
+    def generate_district(self, region):
+        # finding the 4 corners of the cathedral
+        center = region.get_center()
+        x = center.get_x()
+        y = center.get_y()
+        point = region.vertices[0]
+        min_x = abs(x - point.get_x())
+        min_y = abs(y - point.get_y())
+        for point in region.vertices:
+            new_x = abs(x - point.get_x())
+            new_y = abs(y - point.get_y())
+            if new_x < min_x:
+                min_x = new_x
+            if new_y < min_y:
+                min_y = new_y
+        # creates cathedral
+        points = [Point(x + 0.25 * min_x, y + 0.25 * min_y), Point(x - 0.25 * min_x, y + 0.25 * min_y),
+                  Point(x - 0.25 * min_x, y - 0.25 * min_y), Point(x + 0.25 * min_x, y - 0.25 * min_y)]
+        region.buildings.append(Polygon(points))
+
+        # generates buildings around cathedral
+        new_poly = []
+        to_cut = region
+
+
+        # iterates over each edge to cut the outer polygon into pieces
+        for j in range(0, 4):
+            print(j)
+            cut_points = []
+            verts = to_cut.vertices
+            # finds edge of outer poly to intersect with
+            for i in range(0, (len(verts))):
+                point1 = verts[i]
+                point2 = verts[(i + 1) % (len(verts))]
+                if Polygon.intersect_segment(point1, point2, points[j], points[(j + 1) % 4]):
+                    cut_points.append(Polygon.intersection(point1, point2, points[j], points[(j + 1) % 4]))
+            print("(", cut_points[0].get_x(), ", ", cut_points[0].get_y(), "), ",
+                  "(", cut_points[1].get_x(), ", ", cut_points[1].get_y(), ")")
+
+            # cuts the poly and determines which poly needs to get cut again
+            polys = to_cut.cut_gap(cut_points[0], cut_points[1], 0.1)
+            contained = True
+            for p in points:
+                if not polys[0].is_contained(p):
+                    contained = False
+                    break
+            if contained:
+                to_cut = polys[0]
+                new_poly.append(polys[1])
+            else:
+                to_cut = polys[1]
+                new_poly.append(polys[0])
+        for p in new_poly:
+            self.generate_buildings(region, p, 0.5, 0.4, 8000)
+
     # Overrides District's determine Rating
     @staticmethod
     def determine_rating(region, neighbor_regions, wall, city):
@@ -373,6 +497,24 @@ class Cathedral(District):
 
 
 class Courtyard(District):
+
+    def generate_district(self, region):
+        center = region.get_center()
+        points = []
+        for point in region.vertices:
+            length = center.get_x() - point.get_x()
+            if length > 0:
+                new_x = center.get_x() - abs((length * 0.25))
+            else:
+                new_x = center.get_x() + abs((length * 0.25))
+            length = center.get_y() - point.get_y()
+            if length > 0:
+                new_y = center.get_y() - abs((length * 0.25))
+            else:
+                new_y = center.get_y() + abs((length * 0.25))
+            points.append(Point(new_x, new_y))
+
+        region.buildings.append(Polygon(points))
 
     # Overrides District's determine Rating
     @staticmethod
@@ -727,6 +869,25 @@ class Industrial(BasicDistrict):
 
 class Market(District):
 
+    def generate_district(self, region):
+        center = region.get_center()
+        points = []
+        for point in region.vertices:
+            length = center.get_x() - point.get_x()
+            if length > 0:
+                new_x = center.get_x() - abs((length * 0.65))
+            else:
+                new_x = center.get_x() + abs((length * 0.65))
+            length = center.get_y() - point.get_y()
+            if length > 0:
+                new_y = center.get_y() - abs((length * 0.65))
+            else:
+                new_y = center.get_y() + abs((length * 0.65))
+            points.append(Point(new_x, new_y))
+
+        new_poly = Polygon(points)
+        self.generate_buildings(region, new_poly, 0.5, 0.05, 100)
+
     # Overrides District's determine Rating
     @staticmethod
     def determine_rating(region, neighbor_regions, wall, city):
@@ -1045,4 +1206,3 @@ class Slum(BasicDistrict):
         if region.in_walls(wall):
             rating += -40
         return rating
-

@@ -23,7 +23,7 @@ class Constructor:
     def generate_map(self):
         print(datetime.now())
         bounding_polygon = Polygon([Point(250, 250), Point(250, -250), Point(-250, -250), Point(-250, 250)])
-        num_district = 50
+        num_district = 25
         vor = Voronoi(num_district, bounding_polygon)
         vor.relax()
         vor.relax()
@@ -39,7 +39,12 @@ class Constructor:
         for reg in regions:
             if isinstance(reg.get_district(), BasicDistrict):
                 reg.get_district().generate_district(reg)
-
+            elif isinstance(reg.get_district(), Courtyard):
+                reg.get_district().generate_district(reg)
+            elif isinstance(reg.get_district(), Market):
+                reg.get_district().generate_district(reg)
+            # elif isinstance(reg.get_district(), Cathedral):
+            #    reg.get_district().generate_district(reg)
         print(datetime.now())
         return regions
 
