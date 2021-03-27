@@ -1,7 +1,3 @@
-import random
-
-import math
-
 from src.Backend.Polygon import Polygon
 from src.Backend.Point import Point
 from src.Backend.Pathfinder import Pathfinder

@@ -228,6 +228,7 @@ class Voronoi:
                     self.graph.add_edge(known_end, other_end, weight=known_end.simple_distance(other_end))
         # Add the perimeter to the graph
         bound_points = self.bounds.vertices
+        new_bound_polygon = set()
         len_bound_points = len(bound_points)
         for v in bound_points:
             self.graph.add_node(v)
@@ -245,8 +246,10 @@ class Voronoi:
             for vert in range(len(edge_vertices) - 1):
                 start = edge_vertices[vert]
                 end = edge_vertices[vert + 1]
-                # print(f"Adding perimeter edge between {start} and {end}")
+                new_bound_polygon.add(start)
+                new_bound_polygon.add(end)
                 self.graph.add_edge(start, end, weight=start.simple_distance(end))
+        self.bounds = Polygon(list(new_bound_polygon), reorder=True)
 
     def generate_polygons(self):
         """
@@ -322,42 +325,21 @@ class Voronoi:
                 # Skip if the region is completely outside of the bounding polygon
                 if len(path) == 0:
                     continue
+                # Find the boundary vertex for the front end of the path
                 for v in self.graph[path[0]]:
-                    for bound in range(len_bound_points):
-                        bound_start = bound_points[bound]
-                        bound_end = bound_points[(bound + 1) % len_bound_points]
-                        # print(f"Is {v} on the segment between {bound_start} and {bound_end}? {Polygon.in_segment(bound_start, bound_end, v)}")
-                        if Polygon.in_segment(bound_start, bound_end, v):
-                            path.appendleft(v)
-                            break
-                    # I think that this will break the outer loop. If the inner loop finishes, it will call the else and
-                    # that will keep the outer loop going. If it is broken, it will skip the else and then break the
-                    # outer loop...?
-                    else:
-                        continue
-                    break
-                # print_list("adj", list(self.graph[path[0]].keys()))
-                # print_list("path", path)
+                    if v in bound_points:
+                        path.appendleft(v)
+                        break
                 # Find the boundary vertex for the back end of the path
                 for v in self.graph[path[-1]]:
-                    for bound in range(len_bound_points):
-                        bound_start = bound_points[bound]
-                        bound_end = bound_points[(bound + 1) % len_bound_points]
-                        if Polygon.in_segment(bound_start, bound_end, v) and v not in path:
-                            path.append(v)
-                            break
-                    else:
-                        continue
-                    break
-                # print_list("path", path)
+                    if v in bound_points:
+                        path.append(v)
+                        break
                 # Next, find all of the internal vertices in the graph and remove them to have just the perimeter ones
                 internal_vertices = list(self.graph.adj.keys())
-                for v in range(len_bound_points):
-                    bound_start = bound_points[v]
-                    bound_end = bound_points[(v + 1) % len_bound_points]
-                    for vert in self.graph:
-                        if Polygon.in_segment(bound_start, bound_end, vert) and vert in internal_vertices:
-                            internal_vertices.remove(vert)
+                for vert in self.graph:
+                    if vert in bound_points and vert in internal_vertices:
+                        internal_vertices.remove(vert)
                 perimeter_graph = remove_vertices(self.graph, internal_vertices)
                 # BFS from the end points of the path, then add it to the path
                 # Start at route[1] because route[0] is already in path
