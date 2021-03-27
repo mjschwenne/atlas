@@ -32,6 +32,8 @@ class Constructor:
         regions = []
         for poly in polygons:
             regions.append(Region(None, poly.get_vertices(), False, False))
+        for reg in regions:
+            reg.find_neighbors(regions)
         wall = Infrastructure(regions, vor.graph, bounding_polygon)
         wall2 = Infrastructure(regions, vor.graph, bounding_polygon)
         city = Polygon(wall2.get_vertices())
@@ -77,7 +79,7 @@ class Constructor:
         while change:
             change = False
             for reg in regions:
-                neighbors = reg.find_neighbors(regions)
+                neighbors = reg.get_neighbors()
                 if isinstance(reg.get_district(), Castle):
                     rating = reg.get_district().determine_rating(reg, neighbors, regions, wall, city)
                 else:
