@@ -6,23 +6,25 @@ import networkx as nx
 import Voronoi
 
 
-class Wall(Polygon):
+class Infrastructure(Polygon):
     """
-    This class represents a Wall using a Polygon
+    This class represents the Infrastructure using a Polygon, Pathfinder, and a Graph
 
     Attributes
     ----------
-    gates : list of Points
-        The vertices in the polygon representing the wall that are gates.
+    gates : List of Points
+        The location of the gates along the city wall
+    roads : List of Lists of Points
+        Each list represents the points along a path which represents the main roads of the city
     """
 
     def __init__(self, regions, graph, bounding_box):
         """
-        Constructs a wall given a list of Regions
+        Constructs the Infrastructure of the city given a list of Regions, the underlying graph, and a bounding_box.
 
         Parameters
         ----------
-        regions : List of Regions
+        regions : list of Polygon
             A list of Regions of the city
         graph : nx.Graph
             Networkx Graph of regions
@@ -150,16 +152,16 @@ class Wall(Polygon):
         """
         return self.gates
 
-    def set_gates(self, new_gates):
+    def get_roads(self):
         """
-        Sets the List of Points that defines the Gates of a Wall
+        Returns the List of Lists of Points that defines the main roads in the city
 
-        Parameters
-        ----------
-        new_gates : List of Points
-            The new List of Points that defines the Gates of the Wall
+        Returns
+        -------
+        List of List of Points
+            The List of Lists of Points that defines the main roads in the city
         """
-        self.gates = new_gates
+        return self.roads
 
     # PRIVATE HELPER METHODS
     def __push_polygons(self, graph, u, v):

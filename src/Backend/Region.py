@@ -61,6 +61,7 @@ class Region(Polygon):
         self.is_water = is_water
         self.has_river = has_river
         self.buildings = []
+        self.neighbors = []
 
     def get_district(self):
         """
@@ -150,6 +151,16 @@ class Region(Polygon):
         """
         self.has_river = new_has_river
 
+    def get_neighbors(self):
+        """
+
+        Returns
+        -------
+        List
+            Returns a list of the neighbors
+        """
+        return self.neighbors
+
     def in_city(self, city):
         """
         Determines if a Region is inside of the given City
@@ -211,4 +222,5 @@ class Region(Polygon):
             if reg != self:
                 if self.is_bordering(reg):
                     neighbors.append(reg)
+        self.neighbors = neighbors
         return neighbors

@@ -3,7 +3,7 @@ from src.Backend.District import Armory, BasicDistrict, HousingMid, Slum
 from src.Backend.Point import Point
 from src.Backend.Polygon import Polygon
 from src.Backend.Region import Region
-from src.Backend.Wall import Wall
+from src.Backend.Infrastructure import Infrastructure
 
 
 class DemoStuff:
@@ -106,7 +106,7 @@ class DemoStuff:
     # wall
     verWall = [Point(350, -200), Point(600, 200), Point(600, 800), Point(350, 1200), Point(-350, 1200), Point(-600, 800),
                Point(-600, 200), Point(-350, -200)]
-    wall = Wall([reg0])
+    wall = Infrastructure([reg0])
     wall.set_vertices(verWall)
     wall.set_gates([Point(-600, 400), Point(600, 400), Point(-200, -200)])
 

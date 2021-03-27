@@ -2,7 +2,7 @@ import unittest
 from src.Backend.Point import Point
 from src.Backend.Polygon import Polygon
 from src.Backend.Voronoi import Voronoi
-from src.Backend.Wall import Wall
+from src.Backend.Infrastructure import Infrastructure
 from src.Backend.Constructor import Constructor
 import matplotlib.pyplot as plt
 
@@ -15,7 +15,7 @@ class DemoTest(unittest.TestCase):
         vor.relax()
         vor.relax()
 
-        wall = Wall(vor.polygons, vor.graph, bounding_polygon)
+        wall = Infrastructure(vor.polygons, vor.graph, bounding_polygon)
 
         for v in vor.graph:
             for adj in vor.graph[v]:
