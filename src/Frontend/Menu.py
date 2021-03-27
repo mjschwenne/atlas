@@ -174,6 +174,18 @@ def main():
         Label(info, text="This is filler text till I know what to write here").pack()
         Button(info, text="Close", command=info.destroy).pack()
 
+    def key_msg():
+        """
+        command for the key
+        """
+        key = Toplevel()
+        key.title('KEY')
+        key.geometry('400x400')
+        key.iconbitmap('../../images/Atlas.ico')
+        Label(key, text="ATLAS District Key", font="Helvetica 16 bold", bg="#a3a3a3").pack(side=TOP)
+        Label(key, text="This is filler text till I know what to write here").pack()
+        Button(key, text="Close", command=key.destroy).pack()
+
     def edit_msg():
         """
         command for the help message
@@ -194,7 +206,7 @@ def main():
                                                                     var14.get(), var15.get(), var16.get(),
                                                                     var17.get(), var18.get(), var19.get(), var20.get(),
                                                                     var21.get(), var22.get()))
-            
+
         Label(edit, text="How Many Districts?", font="Helvetica 16 bold", bg="#a3a3a3").grid(row=0, sticky=W)
         var1 = IntVar()
         Checkbutton(edit, text="10", variable=var1).grid(row=1, sticky=W)
@@ -268,8 +280,8 @@ def main():
     Label(welcome, text="Welcome to ATLAS", font="Helvetica 16 bold", bg="#a3a3a3").pack(side=TOP)
     Label(welcome, text="Hello user, thank you for downloading our map generator.\n").pack(side=TOP)
     Label(welcome, text=" Directions:\n\n\n").pack(side=LEFT)
-    Label(welcome, text="To create the map click generate.").pack()
-    Label(welcome, text="To create the map click generate.").pack()
+    Label(welcome, text="To create a random map click generate.").pack()
+    Label(welcome, text="To create your own map click edit.").pack()
     Button(welcome, text="Close", command=welcome.destroy).pack(side=BOTTOM)
 
     # sets the icons in the corner to our logo
@@ -284,34 +296,37 @@ def main():
     # Creates the button frame
     button_frame = tk.Frame(background="#CCCCCC", relief='raised', width=8)
     button_frame.grid(column=0, row=0, sticky=('n', 's', 'e', 'w'))
-    button_frame.rowconfigure(5, weight=2)
+    button_frame.rowconfigure(12, weight=2)
 
     # Create the canvas that the picture will be rendered on
     canvas = ResizingCanvas(window, background="#ebd5b3")
     canvas.grid(column=1, row=0, sticky=('n', 's', 'e', 'w'))
 
     # Each of These are for the buttons that are created
-    action_btn = tk.Button(button_frame, text="Generate", background="#6ab0b0", foreground="black",
+    action_btn = tk.Button(button_frame, text="Generate", background="#4aa75d", foreground="black",
                            command=lambda: draw_map(canvas))  # Replace this with draw_map when I have it made
     action_btn.grid(column=0, row=0, sticky='w', padx=5, pady=5)
 
-    load_btn = tk.Button(button_frame, text="Load", background="#ac6024", foreground="black")
+    load_btn = tk.Button(button_frame, text="Load", background="#a3a3a3", foreground="black")
     load_btn.grid(column=0, row=1, sticky='w', padx=5)
 
-    save_btn = tk.Button(button_frame, text="Save", background="#4aa75d", foreground="black",
+    save_btn = tk.Button(button_frame, text="Save", background="#a3a3a3", foreground="black",
                          command=lambda: save_file())
     save_btn.grid(column=0, row=2, sticky='w', padx=5, pady=5)
 
     edit_btn = tk.Button(button_frame, text="Edit", background="#a3a3a3", foreground="black", command=edit_msg)
     edit_btn.grid(column=0, row=3, sticky='w', padx=5, pady=5)
 
-    help_btn = tk.Button(button_frame, text="Help", background="#a3a3a3", foreground="black", command=help_msg)
-    help_btn.grid(column=0, row=4, sticky='w', padx=5, pady=5)
+    key_btn = tk.Button(button_frame, text="Key", background="#a3a3a3", foreground="black", command=key_msg)
+    key_btn.grid(column=0, row=4, sticky='w', padx=5, pady=5)
+
+    help_btn = tk.Button(button_frame, text="Help", background="#a93939", foreground="black", command=help_msg)
+    help_btn.grid(column=0, row=5, sticky='w', padx=5, pady=5)
 
     # Sets up and puts the image of the cardinal directions on the screen 
     img = tk.PhotoImage(file='../../images/compass.png')
     mylabel = tk.Label(button_frame, image=img, background="#CCCCCC")
-    mylabel.grid(column=0, row=5, sticky='s', padx=10, pady=10)
+    mylabel.grid(column=0, row=12, sticky='s', padx=10, pady=10)
 
     window.mainloop()
 
