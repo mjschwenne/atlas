@@ -22,7 +22,7 @@ class Infrastructure(Polygon):
 
         Parameters
         ----------
-        regions : list of Point
+        regions : list of Polygon
             A list of Regions of the city
         graph : Graph
             Networkx Graph of regions
