@@ -201,6 +201,7 @@ class BasicDistrict(District):
         min_building_size : float
             The initial value of min_building_size for this district
         """
+        super().__init__()
         self.chaos_level = chaos_level
         self.probability_of_empty_space = probability_of_empty_space
         self.min_building_size = min_building_size
