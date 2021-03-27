@@ -3,7 +3,7 @@ from datetime import datetime
 
 from src.Backend.District import *
 from src.Backend.Voronoi import Voronoi
-from src.Backend.Wall import Wall
+from src.Backend.Infrastructure import Infrastructure
 
 
 class Constructor:
@@ -32,8 +32,8 @@ class Constructor:
         regions = []
         for poly in polygons:
             regions.append(Region(None, poly.get_vertices(), False, False))
-        wall = Wall(regions, vor.graph, bounding_polygon)
-        wall2 = Wall(regions, vor.graph, bounding_polygon)
+        wall = Infrastructure(regions, vor.graph, bounding_polygon)
+        wall2 = Infrastructure(regions, vor.graph, bounding_polygon)
         city = Polygon(wall2.get_vertices())
         self.assign_districts(regions, wall, city)
         for reg in regions:
@@ -58,7 +58,7 @@ class Constructor:
         ----------
         regions : List of regions
             Regions to have districts assigned
-        wall : Wall
+        wall : Infrastructure
             The wall of the city
         city : Polygon
             The polygon representing the city bounds
@@ -97,7 +97,7 @@ class Constructor:
             Region to have a district assigned to it
         regions : List of Regions
             All of the Regions on the map
-        wall : Wall
+        wall : Infrastructure
             The City wall
         city : Polygon
             The polygon representing the city limits

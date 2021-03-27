@@ -78,8 +78,6 @@ def _intersects(p1, q1, p2, q2):
     return False
 
 
-
-
 def clockwise_order(vertices):
     """
     Given a list of vertices, return them ordered in clockwise order
@@ -502,11 +500,13 @@ class Polygon:
         """
         # Case 1: Vertical Line.
         # If p3's y-coordinate is within the y-range of this line segment, return if they have the same x-coordinate
-        if round(p1.get_x(), 8) == round(p2.get_x(), 8) and min(p1.get_y(), p2.get_y()) <= p3.get_y() <= max(p1.get_y(), p2.get_y()):
+        if round(p1.get_x(), 8) == round(p2.get_x(), 8) and min(p1.get_y(), p2.get_y()) <= p3.get_y() <= max(p1.get_y(),
+                                                                                                             p2.get_y()):
             return round(p1.get_x(), 8) == round(p3.get_x(), 8)
         # Case 2: Horizontal Line.
         # If p3's x-coordinate is within the x-range of this line segment, return if they have the same y-coordinate
-        elif round(p1.get_y(), 8) == round(p2.get_y(), 8) and min(p1.get_x(), p2.get_x()) <= p3.get_x() <= max(p1.get_x(), p2.get_x()):
+        elif round(p1.get_y(), 8) == round(p2.get_y(), 8) and min(p1.get_x(), p2.get_x()) <= p3.get_x() <= max(
+                p1.get_x(), p2.get_x()):
             return round(p1.get_y(), 8) == round(p3.get_y(), 8)
         # Case 3:
         # If the distance from p1 -> p2 -> p3 == to the distance from p1 directly to p2 then they are on the same line
@@ -708,7 +708,7 @@ class Polygon:
         # Standard Form of Line Segment from p1 to p2
         a1 = p2.get_y() - p1.get_y()
         b1 = p1.get_x() - p2.get_x()
-        c1 = (a1*p1.get_x()) + (b1 * p1.get_y())
+        c1 = (a1 * p1.get_x()) + (b1 * p1.get_y())
 
         # Standard Form of Line Segment from p3 to p4
         a2 = p4.get_y() - p3.get_y()
@@ -759,6 +759,25 @@ class Polygon:
 
     @staticmethod
     def intersect_segment(p1, p2, p3, p4):
+        """
+        Returns True if two line segments defined by 4 points intersect
+
+        Parameters
+        ----------
+        p1 : Point
+            First point in the first line segment
+        p2 : Point
+            Second point in the second line segment
+        p3 : Point
+            First point in the second line segment
+        p4 : Point
+            Second point in the second line segment
+
+        Returns
+        -------
+        bool
+            True if the two line segments intersect
+        """
         inter = Polygon.intersection(p1, p2, p3, p4)
         if inter is not None and Polygon.in_segment(p1, p2, inter):
             return True
@@ -797,4 +816,3 @@ class Polygon:
         sorted_vertices = self.vertices.copy()
         sorted_vertices.sort()
         return hash(tuple(sorted_vertices))
-

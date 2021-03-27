@@ -2,7 +2,7 @@ import unittest
 from src.Backend.Point import Point
 from src.Backend.District import *
 from src.Backend.Polygon import Polygon
-from src.Backend.Wall import Wall
+from src.Backend.Infrastructure import Infrastructure
 
 
 class DistrictTests(unittest.TestCase):
@@ -62,12 +62,12 @@ class DistrictTests(unittest.TestCase):
     # wall
     verWall = [Point(3.5, -2), Point(6, 2), Point(6, 8), Point(3.5, 12), Point(-3.5, 12), Point(-6, 8), Point(-4, 7),
                Point(-5, 5), Point(-6, 5), Point(-6, 2), Point(-3.5, -2)]
-    wall = Wall([reg13])
+    wall = Infrastructure([reg13])
     wall.set_vertices(verWall)
     wall.set_gates([Point(-4.5, 6)])
 
     # wall no gate
-    wall2 = Wall([reg13])
+    wall2 = Infrastructure([reg13])
     wall2.set_vertices(verWall)
     wall2.set_gates([])
 

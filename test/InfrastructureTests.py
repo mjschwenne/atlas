@@ -1,6 +1,5 @@
 import unittest
-import random
-from src.Backend.Wall import Wall
+from src.Backend.Infrastructure import Infrastructure
 from src.Backend.Point import Point
 from src.Backend.Polygon import Polygon
 from src.Backend.Voronoi import Voronoi
@@ -9,7 +8,7 @@ import matplotlib.pyplot as plt
 
 class TestWall(unittest.TestCase):
     """
-    Tests for Wall.py
+    Tests for Infrastructure.py
     """
     def test_create_wall_voronoi_1(self):
         bounding_box = Polygon([Point(-500, 500), Point(500, 500), Point(500, -500), Point(-500, -500)])
@@ -17,7 +16,7 @@ class TestWall(unittest.TestCase):
         for i in range(3):
             vor.relax()
 
-        wall = Wall(vor.polygons, vor.graph, bounding_box)
+        wall = Infrastructure(vor.polygons, vor.graph, bounding_box)
 
         for v in vor.graph:
             for adj in vor.graph[v]:
@@ -58,7 +57,7 @@ class TestWall(unittest.TestCase):
         for i in range(3):
             vor.relax()
 
-        wall = Wall(vor.polygons, vor.graph, bounding_box)
+        wall = Infrastructure(vor.polygons, vor.graph, bounding_box)
 
         for v in vor.graph:
             for adj in vor.graph[v]:
@@ -100,7 +99,7 @@ class TestWall(unittest.TestCase):
         vor.relax()
         vor.relax()
 
-        wall = Wall(vor.polygons, vor.graph, bounding_polygon)
+        wall = Infrastructure(vor.polygons, vor.graph, bounding_polygon)
 
         for v in vor.graph:
             for adj in vor.graph[v]:
