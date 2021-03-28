@@ -188,7 +188,7 @@ def main():
 
     def edit_msg():
         """
-        command for the help message
+        command for the edit window
         """
         edit = Toplevel()
         edit.title('Edit Window')
@@ -197,6 +197,9 @@ def main():
         edit.rowconfigure(25, weight=2)
 
         def var_states():
+            """
+            handles the printing of the edited
+            """
             print("N:%d" % (var1.get()))
             print("T Armory:%d,\nBuilding:%d,\nCastle:%d,\nCathedral:%d,\nCourtyard:%d,\nFarmland:%d,\nGate:%d,"
                   "\nHousingHigh:%d,\nHousingLow:%d,\nHousingMid:%d,\nIndustrial:%d,\nMarket:%d,\nOpenland:%d,"
@@ -206,14 +209,16 @@ def main():
                                                                     var17.get(), var18.get(), var19.get(), var20.get(),
                                                                     var21.get(), var22.get()))
 
+        # Handles the first question in edit window and sets a variable to it
         Label(edit, text="How Many Districts?", font="Helvetica 16 bold", bg="#a3a3a3").grid(row=0, sticky=W)
         var1 = IntVar()
-        Checkbutton(edit, text="10", variable=var1, onvalue = 1).grid(row=1, sticky=W)
-        Checkbutton(edit, text="25", variable=var1, onvalue = 2).grid(row=2, sticky=W)
-        Checkbutton(edit, text="50", variable=var1, onvalue = 3).grid(row=3, sticky=W)
-        Checkbutton(edit, text="75", variable=var1, onvalue = 4).grid(row=4, sticky=W)
-        Checkbutton(edit, text="100", variable=var1, onvalue = 5).grid(row=5, sticky=W)
+        Checkbutton(edit, text="10", variable=var1, onvalue=1).grid(row=1, sticky=W)
+        Checkbutton(edit, text="25", variable=var1, onvalue=2).grid(row=2, sticky=W)
+        Checkbutton(edit, text="50", variable=var1, onvalue=3).grid(row=3, sticky=W)
+        Checkbutton(edit, text="75", variable=var1, onvalue=4).grid(row=4, sticky=W)
+        Checkbutton(edit, text="100", variable=var1, onvalue=5).grid(row=5, sticky=W)
 
+        # Handles second question and variables for each of the options
         Label(edit, text="What Type of Districts?", font="Helvetica 16 bold", bg="#a3a3a3").grid(row=6, sticky=W)
         var6 = IntVar()
         Checkbutton(edit, text="Armory", variable=var6).grid(row=7, sticky=W)
@@ -250,6 +255,7 @@ def main():
         var22 = IntVar()
         Checkbutton(edit, text="Slums", variable=var22).grid(row=23, sticky=W)
 
+        # Creates the Go and Quit button
         Button(edit, text='Go', command=var_states).grid(row=25, sticky=W, pady=4, padx=4)
         Button(edit, text='Quit', command=edit.destroy).grid(row=25, sticky=E, pady=4, padx=4)
 
