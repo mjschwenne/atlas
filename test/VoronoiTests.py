@@ -74,7 +74,7 @@ class TestVoronoi(unittest.TestCase):
         bounding_box = Polygon([Point(-200, 200), Point(200, 200), Point(200, -200), Point(-200, -200)])
         vor = Voronoi(50, bounding_box)
         vis_polygons(vor, [-225, 225], [-225, 225])
-        for i in range(10):
+        for i in range(3):
             vor.relax()
             vis_polygons(vor, [-225, 225], [-225, 225])
 

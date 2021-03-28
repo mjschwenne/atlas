@@ -1,12 +1,13 @@
 import unittest
+
 from src.Backend.Infrastructure import Infrastructure
 from src.Backend.Point import Point
 from src.Backend.Polygon import Polygon
-from src.Backend.Voronoi import Voronoi
 import matplotlib.pyplot as plt
+from src.Backend.Voronoi import Voronoi
 
 
-class TestWall(unittest.TestCase):
+class TestInfrastructure(unittest.TestCase):
     """
     Tests for Infrastructure.py
     """

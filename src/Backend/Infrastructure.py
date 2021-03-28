@@ -3,7 +3,85 @@ from src.Backend.Point import Point
 from src.Backend.Pathfinder import Pathfinder
 from scipy.spatial import ConvexHull
 import networkx as nx
-import Voronoi
+import numpy as np
+from collections import deque
+
+
+def bfs_path(G, source, destination):
+    """
+    Use a breadth first search to find the path from vertex `source` to vertex `destination`.
+
+    Parameters
+    ----------
+    G : nx.Graph
+        The graph to search
+    source : Point
+        Origin point
+    destination : Point
+        Destination point
+
+    Returns
+    -------
+    deque
+        A queue with the path from `source` to `destination` already enqueued.
+    """
+    vertex_dict = dict(nx.bfs_predecessors(G, source))
+    queue = deque()
+    queue.append(destination)
+    # print(f"Finding path from {source} to {destination} using {print_dict('vertex_dict', vertex_dict)}")
+    while queue[-1] != source:
+        # print(f"Head of queue is {queue[-1]}")
+        queue.append(vertex_dict[queue[-1]])
+    queue.reverse()
+    return queue
+
+
+def move_vertex(region, vertex, new_vertex):
+    """
+    Move the vertex in the region, and update that same vertex in the neighbours of the region
+
+    Parameters
+    ----------
+    region : Region
+        The region whose vertex is being updated
+    vertex : Point
+        Vertex of the region to be changed, which will also be updated in the neighbouring regions
+    new_vertex : Point
+        The new location of the vertex
+    """
+    # Update the original region
+    new_vertex_list = [new_vertex if v == vertex else v for v in region.vertices]
+    region.set_vertices(new_vertex_list)
+    # Check the neighbours
+    for r in region.get_neighbors():
+        new_vertex_list = [new_vertex if v == vertex else v for v in r.vertices]
+        region.set_vertices(new_vertex_list)
+
+
+def project_vector(u, v):
+    """
+    Project vector u onto vector v
+
+    Convert the Points into np.array and then use
+
+    .. math:: \text\{proj\}_{\\vec{v}}(\\vec{u}) = \\frac{\\vec{u} \\cdot \\vec{v}}{||\\vec{v}||^2} \\times \\vec{v}
+
+    Parameters
+    ----------
+    u : Point
+        Vector
+    v : Point
+        Vector
+
+    Returns
+    -------
+    Point
+        The result of projecting u onto v
+    """
+    u_np = np.array([u.get_x(), u.get_y()])
+    v_np = np.array([v.get_x(), v.get_y()])
+    proj = (np.dot(u_np, v_np) / np.dot(v_np, v_np)) * v_np
+    return Point(proj[0], proj[1])
 
 
 class Infrastructure(Polygon):
@@ -24,10 +102,10 @@ class Infrastructure(Polygon):
 
         Parameters
         ----------
-        regions : list of Polygon
+        regions : list of Region
             A list of Regions of the city
         graph : nx.Graph
-            Networkx Graph of regions
+            Networkx Graph of Region
         bounding_box : Polygon
             The max polygon of the city (the bounding box of the city)
         """
@@ -184,8 +262,10 @@ class Infrastructure(Polygon):
         """
         # Here we assume that the edge of the wall is not in the graph, otherwise there is no adjustment needed
         # Find the shortest path from start to end
-        path = Voronoi.bfs_path(graph, u, v)
         # Use this path to check which polygons are on the side of the path away from the origin
+        path = bfs_path(graph, u, v)
+        # Vector representing the edge of the wall
+        wall_vector = Point(v.get_x() - u.get_x(), v.get_y() - u.get_y())
         # Find the midpoint of the edge
         push_polygons = set()
         edge_start = path.pop()
@@ -211,12 +291,16 @@ class Infrastructure(Polygon):
                 for r in self.regions:
                     if r.is_contained(point):
                         push_polygons.add(r)
+                        point_edge_vector = Point(point.get_x() - u.get_x(), point.get_y() - u.get_y())
+                        move_vertex(r, point, project_vector(point_edge_vector, edge_vector))
                         break
             elif dot_product < 0:
                 point = Point(midpoint.get_x() - normal.get_x(), midpoint.get_y() - normal.get_y())
                 for r in self.regions:
                     if r.is_contained(point):
                         push_polygons.add(r)
+                        point_edge_vector = Point(point.get_x() - u.get_x(), point.get_y() - u.get_y())
+                        move_vertex(r, point, project_vector(point_edge_vector, edge_vector))
                         break
             # The end of this edge is by definition the start of the next edge
             edge_start = edge_end

@@ -327,5 +327,4 @@ class Point:
         String :
             A string of the form '(x, y)'
         """
-        # return f"({round(self.x, 3)}, {round(self.y, 3)})"
-        return f"({self.x}, {self.y})"
+        return f"({round(self.x, 3)}, {round(self.y, 3)})"

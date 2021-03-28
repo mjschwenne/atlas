@@ -2,6 +2,13 @@ import math
 from src.Backend.Point import Point
 
 
+def print_list(list_name, points):
+    print(f"{list_name} = [", end=" ")
+    for i in points:
+        print(f"{i},", end=" ")
+    print("]")
+
+
 def _three_point_orientation(p1, p2, p3):
     """
     Returns the orientation of three points in the form of an integer
@@ -150,6 +157,13 @@ class Polygon:
         else:
             self.vertices = clockwise_order(vertices)
 
+        if len(self.vertices) != len(vertices):
+            print(f"Received {len(vertices)} vertices, used {len(self.vertices)} vertices")
+            print_list("vertices", vertices)
+            print_list("used vertices", self.vertices)
+            remove_vertices = [i for i in self.vertices if vertices.count(i) > 1]
+            print_list("removed vertices", remove_vertices)
+
     def set_vertices(self, vertices):
         """
         Sets the vertices of the polygon
@@ -241,6 +255,8 @@ class Polygon:
             centroid.set(cx + a * (x0 + x1), cy + a * (y0 + y1))
         # Calculate the finial position of the centroid
         signed_area *= 3  # This is 0.5 * 6, see formula for more details
+        if signed_area == 0:
+            print("THIS IS GOING TO CRASH SOMETHING")
         centroid.set_x(centroid.get_x() / signed_area)
         centroid.set_y(centroid.get_y() / signed_area)
         return centroid

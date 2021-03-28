@@ -66,9 +66,7 @@ def bfs_path(G, source, destination):
     vertex_dict = dict(nx.bfs_predecessors(G, source))
     queue = deque()
     queue.append(destination)
-    # print(f"Finding path from {source} to {destination} using {print_dict('vertex_dict', vertex_dict)}")
     while queue[-1] != source:
-        # print(f"Head of queue is {queue[-1]}")
         queue.append(vertex_dict[queue[-1]])
     queue.reverse()
     return queue
@@ -95,6 +93,7 @@ class Voronoi:
     def __init__(self, num_district, bounds):
         self.num_district = num_district
         self.bounds = bounds
+        self.original_bound = bounds
 
         self.__run()
 
@@ -105,6 +104,7 @@ class Voronoi:
         self.seeds = []
         self.polygons = set()
         self.graph = nx.Graph()
+        self.bounds = self.original_bound
 
         if new_seeds is None:
             self.generate_seeds()
@@ -257,7 +257,6 @@ class Voronoi:
 
         Stores the polygons in a class attribute list
         """
-        # print(self.voronoi.vertices)
         for r in self.voronoi.regions:
             # If the region is not complete according to QHull and SciPy
             border = False
@@ -327,12 +326,12 @@ class Voronoi:
                     continue
                 # Find the boundary vertex for the front end of the path
                 for v in self.graph[path[0]]:
-                    if v in bound_points:
+                    if v in bound_points and v not in path:
                         path.appendleft(v)
                         break
                 # Find the boundary vertex for the back end of the path
                 for v in self.graph[path[-1]]:
-                    if v in bound_points:
+                    if v in bound_points and v not in path:
                         path.append(v)
                         break
                 # Next, find all of the internal vertices in the graph and remove them to have just the perimeter ones
@@ -345,7 +344,8 @@ class Voronoi:
                 # Start at route[1] because route[0] is already in path
                 route = bfs_path(perimeter_graph, path[0], path[-1])
                 for v in range(1, len(route)):
-                    path.appendleft(route[v])
+                    if route[v] not in path:
+                        path.appendleft(route[v])
                 # path is now the vertex list of the polygon
                 polygon = Polygon(path, reorder=True)
                 self.polygons.add(polygon)
