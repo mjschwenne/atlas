@@ -23,10 +23,10 @@ class ResizingCanvas(tk.Canvas):
     def __init__(self, parent, **kwargs):
         tk.Canvas.__init__(self, parent, **kwargs)
         self.bind("<Configure>", self.resize)
-        self.height = self.winfo_height()
-        self.width = self.winfo_width()
-        self.permheight = self.winfo_height()
-        self.permwidth = self.winfo_width()
+        self.height = self.winfo_reqheight()
+        self.width = self.winfo_reqwidth()
+        self.permheight = self.winfo_reqheight()
+        self.permwidth = self.winfo_reqwidth()
 
     def resize(self, event):
         """
@@ -39,21 +39,16 @@ class ResizingCanvas(tk.Canvas):
 
         event: the resizing of the window
         """
-        wscale = float(event.width) / self.width
-        hscale = float(event.height) / self.height
+        
+        # determine the ratio of old width/height to new width/height
+        wscale = event.width / self.width
+        hscale = event.height / self.height
         self.width = event.width
         self.height = event.height
-        if self.width > 300 or self.height > 250:
-            if self.height < self.width:
-                self.scale("all", 0, 0, hscale, hscale)
-            else:
-                self.scale("all", 0, 0, wscale, wscale)
-        else:
-            print("THings")
-            wscale = float(event.width) / self.permwidth
-            hscale = float(event.height) / self.permheight
-            self.scale("all", 0, 0, wscale, hscale)
+        # rescale all the objects
+        self.scale("all", 0, 0, wscale, hscale)
         return
+
 
 
 def main():
@@ -113,9 +108,40 @@ def main():
         }
         map_canvas.create_polygon(*points, fill=switcher.get(region_type, "#ebd5b3"))
 
+    def find_map_bounds(verts):
+        i = 0
+        lowest_width = float('inf')
+        highest_width = float('-inf')
+        lowest_height = float('inf')
+        highest_height = float('-inf')
+        for i in range(len(verts)):
+            if i % 2 == 0:
+                # check for highest /lowest width
+                if verts[i] < lowest_width:
+                    lowest_width = verts[i]
+                if verts[i] > highest_width:
+                    highest_width = verts[i]
+            else:
+                # check for highest / lowest height
+                if verts[i] < lowest_height:
+                    lowest_height = verts[i]
+                if verts[i] > highest_height:
+                    highest_height = verts[i]
+        return lowest_width, highest_width, lowest_height, highest_height
+
     def draw_map(map_canvas):
         map_canvas.delete("all")
         reg_list = Constructor().generate_map()
+
+        verts = []
+        for reg in reg_list:
+            for v in reg.get_vertices():
+                verts.append((v.get_x() + 250) / 2)
+                verts.append((v.get_y() + 250) / 2)
+        low_w, high_w, low_h, high_h = find_map_bounds(verts)
+        w = math.ceil(high_w - low_w)
+        h = math.ceil(high_h - low_h)
+
         switch_val = 0
         for reg in reg_list:
             dis = reg.get_district()
@@ -153,15 +179,17 @@ def main():
                 switch_val = 16
             verts = []
             for v in reg.get_vertices():
-                verts.append((v.get_x() + 250) / 2)
-                verts.append((v.get_y() + 250) / 2)
+                verts.append(((v.get_x() + 250) / 2)-low_w)
+                verts.append(((v.get_y() + 250) / 2)-low_h)
             draw_region(map_canvas, switch_val, verts)
             for build in reg.buildings:
                 verts = []
                 for v in build.get_vertices():
-                    verts.append((v.get_x() + 250) / 2)
-                    verts.append((v.get_y() + 250) / 2)
+                    verts.append(((v.get_x() + 250) / 2)-low_w)
+                    verts.append(((v.get_y() + 250) / 2)-low_h)
                 draw_region(map_canvas, 12, verts)
+        map_canvas.scale("all", 0, 0, map_canvas.width/w, map_canvas.height/h)
+
 
     def help_msg():
         """
@@ -267,7 +295,8 @@ def main():
     # create the window object
     window = tk.Tk()
     window.title("Atlas")
-    window.minsize(300, 250)
+
+
 
     # creates the welcome window
     welcome = tk.Toplevel(window)
