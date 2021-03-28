@@ -131,7 +131,7 @@ class Infrastructure(Polygon):
         # Makes this wall a Polygon
         super().__init__(vertices)
 
-        # TODO Reformat Polygons cut by Wall
+        # TODO Adjust polygons cut by the wall
         # Clip the graph so that it is only vertices on or inside of the wall.
         clipped_graph = graph.copy()
         for v in graph:
@@ -276,31 +276,28 @@ class Infrastructure(Polygon):
             midpoint = Point(edge_start.get_x() + edge_end.get_x() / 2,
                              edge_start.get_y() + edge_end.get_y() / 2)
             # Create <edge_start, edge_end> as an edge vector, normalize it
-            edge_vector = Point(edge_start.get_x() - edge_end.get_x(),
-                                edge_start.get_y() - edge_end.get_y())
-            norm = edge_vector.simple_distance(Point(0, 0))
-            edge_vector.set(edge_vector.get_x() / norm, edge_vector.get_y() / norm)
+            edge_vector = Point(edge_end.get_x() - edge_start.get_x(),
+                                edge_end.get_y() - edge_start.get_y())
+            norm = edge_vector.simple_distance(edge_start)
+            edge_vector.set(edge_vector.get_x(), edge_vector.get_y())
+            # Find the normalized normal vector in relation to edge_vector
+            normal = Point(-edge_vector.get_y() / norm, edge_vector.get_x() / norm)
             del norm
-            # Find the normal vector in relation to edge_vector
-            normal = Point(-edge_vector.get_y(), edge_vector.get_x())
             # Find the dot product between the midpoint vector and the normal vector
             dot_product = midpoint.get_x() * normal.get_x() + midpoint.get_y() * normal.get_y()
             if dot_product > 0:
                 # This is the point going away from the origin, find the polygon containing this midpoint + normal
                 point = Point(midpoint.get_x() + normal.get_x(), midpoint.get_y() + normal.get_y())
-                for r in self.regions:
-                    if r.is_contained(point):
-                        push_polygons.add(r)
-                        point_edge_vector = Point(point.get_x() - u.get_x(), point.get_y() - u.get_y())
-                        move_vertex(r, point, project_vector(point_edge_vector, edge_vector))
-                        break
             elif dot_product < 0:
+                # Flip the direction
                 point = Point(midpoint.get_x() - normal.get_x(), midpoint.get_y() - normal.get_y())
-                for r in self.regions:
-                    if r.is_contained(point):
-                        push_polygons.add(r)
-                        point_edge_vector = Point(point.get_x() - u.get_x(), point.get_y() - u.get_y())
-                        move_vertex(r, point, project_vector(point_edge_vector, edge_vector))
-                        break
+            else:
+                continue
+            for r in self.regions:
+                if r.is_contained(point):
+                    push_polygons.add(r)
+                    point_edge_vector = Point(point.get_x() - u.get_x(), point.get_y() - u.get_y())
+                    move_vertex(r, point, project_vector(point_edge_vector, edge_vector))
+                    break
             # The end of this edge is by definition the start of the next edge
             edge_start = edge_end

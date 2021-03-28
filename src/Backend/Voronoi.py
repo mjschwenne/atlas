@@ -90,14 +90,14 @@ class Voronoi:
         The bounding polygon
     """
 
-    def __init__(self, num_district, bounds):
+    def __init__(self, num_district, bounds, seed=None):
         self.num_district = num_district
         self.bounds = bounds
         self.original_bound = bounds
 
-        self.__run()
+        self.__run(seed=seed)
 
-    def __run(self, new_seeds=None):
+    def __run(self, new_seeds=None, seed=None):
         """
         Flush the existing data, then construct the Voronoi diagram, graph and polygons
         """
@@ -106,21 +106,26 @@ class Voronoi:
         self.graph = nx.Graph()
         self.bounds = self.original_bound
 
-        if new_seeds is None:
+        if new_seeds is None and seed is None:
             self.generate_seeds()
+        elif new_seeds is None and seed is not None:
+            self.generate_seeds(seed)
         else:
             self.seeds = new_seeds
         self.voronoi = Vor(Point.to_list(self.seeds))
         self.generate_graph()
         self.generate_polygons()
 
-    def generate_seeds(self):
+    def generate_seeds(self, seed=None):
         """
         Generate random Points which are used as seeds in the construction of a voronoi diagram.
 
         The notes are more concentrated in the middle of the map.
         """
-        random.seed()
+        if seed is None:
+            random.seed()
+        else:
+            random.seed(seed)
         delta_angle = random.random() * 2 * math.pi
 
         for p in range(self.num_district):
