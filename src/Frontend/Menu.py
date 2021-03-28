@@ -23,10 +23,10 @@ class ResizingCanvas(tk.Canvas):
     def __init__(self, parent, **kwargs):
         tk.Canvas.__init__(self, parent, **kwargs)
         self.bind("<Configure>", self.resize)
-        self.height = self.winfo_height()
-        self.width = self.winfo_width()
-        self.permheight = self.winfo_height()
-        self.permwidth = self.winfo_width()
+        self.height = self.winfo_reqheight()
+        self.width = self.winfo_reqwidth()
+        self.permheight = self.winfo_reqheight()
+        self.permwidth = self.winfo_reqwidth()
 
     def resize(self, event):
         """
@@ -39,21 +39,16 @@ class ResizingCanvas(tk.Canvas):
 
         event: the resizing of the window
         """
-        wscale = float(event.width) / self.width
-        hscale = float(event.height) / self.height
+        
+        # determine the ratio of old width/height to new width/height
+        wscale = event.width / self.width
+        hscale = event.height / self.height
         self.width = event.width
         self.height = event.height
-        if self.width > 300 or self.height > 250:
-            if self.height < self.width:
-                self.scale("all", 0, 0, hscale, hscale)
-            else:
-                self.scale("all", 0, 0, wscale, wscale)
-        else:
-            print("THings")
-            wscale = float(event.width) / self.permwidth
-            hscale = float(event.height) / self.permheight
-            self.scale("all", 0, 0, wscale, hscale)
+        # rescale all the objects
+        self.scale("all", 0, 0, wscale, hscale)
         return
+
 
 
 def main():
@@ -113,9 +108,40 @@ def main():
         }
         map_canvas.create_polygon(*points, fill=switcher.get(region_type, "#ebd5b3"))
 
+    def find_map_bounds(verts):
+        i = 0
+        lowest_width = float('inf')
+        highest_width = float('-inf')
+        lowest_height = float('inf')
+        highest_height = float('-inf')
+        for i in range(len(verts)):
+            if i % 2 == 0:
+                # check for highest /lowest width
+                if verts[i] < lowest_width:
+                    lowest_width = verts[i]
+                if verts[i] > highest_width:
+                    highest_width = verts[i]
+            else:
+                # check for highest / lowest height
+                if verts[i] < lowest_height:
+                    lowest_height = verts[i]
+                if verts[i] > highest_height:
+                    highest_height = verts[i]
+        return lowest_width, highest_width, lowest_height, highest_height
+
     def draw_map(map_canvas):
         map_canvas.delete("all")
         reg_list = Constructor().generate_map()
+
+        verts = []
+        for reg in reg_list:
+            for v in reg.get_vertices():
+                verts.append((v.get_x() + 250) / 2)
+                verts.append((v.get_y() + 250) / 2)
+        low_w, high_w, low_h, high_h = find_map_bounds(verts)
+        w = math.ceil(high_w - low_w)
+        h = math.ceil(high_h - low_h)
+
         switch_val = 0
         for reg in reg_list:
             dis = reg.get_district()
@@ -153,15 +179,17 @@ def main():
                 switch_val = 16
             verts = []
             for v in reg.get_vertices():
-                verts.append((v.get_x() + 250) / 2)
-                verts.append((v.get_y() + 250) / 2)
+                verts.append(((v.get_x() + 250) / 2)-low_w)
+                verts.append(((v.get_y() + 250) / 2)-low_h)
             draw_region(map_canvas, switch_val, verts)
             for build in reg.buildings:
                 verts = []
                 for v in build.get_vertices():
-                    verts.append((v.get_x() + 250) / 2)
-                    verts.append((v.get_y() + 250) / 2)
+                    verts.append(((v.get_x() + 250) / 2)-low_w)
+                    verts.append(((v.get_y() + 250) / 2)-low_h)
                 draw_region(map_canvas, 12, verts)
+        map_canvas.scale("all", 0, 0, map_canvas.width/w, map_canvas.height/h)
+
 
     def help_msg():
         """
@@ -188,7 +216,7 @@ def main():
 
     def edit_msg():
         """
-        command for the help message
+        command for the edit window
         """
         edit = Toplevel()
         edit.title('Edit Window')
@@ -197,6 +225,9 @@ def main():
         edit.rowconfigure(25, weight=2)
 
         def var_states():
+            """
+            handles the printing of the edited
+            """
             print("N:%d" % (var1.get()))
             print("T Armory:%d,\nBuilding:%d,\nCastle:%d,\nCathedral:%d,\nCourtyard:%d,\nFarmland:%d,\nGate:%d,"
                   "\nHousingHigh:%d,\nHousingLow:%d,\nHousingMid:%d,\nIndustrial:%d,\nMarket:%d,\nOpenland:%d,"
@@ -206,14 +237,16 @@ def main():
                                                                     var17.get(), var18.get(), var19.get(), var20.get(),
                                                                     var21.get(), var22.get()))
 
+        # Handles the first question in edit window and sets a variable to it
         Label(edit, text="How Many Districts?", font="Helvetica 16 bold", bg="#a3a3a3").grid(row=0, sticky=W)
         var1 = IntVar()
-        Checkbutton(edit, text="10", variable=var1, onvalue = 1).grid(row=1, sticky=W)
-        Checkbutton(edit, text="25", variable=var1, onvalue = 2).grid(row=2, sticky=W)
-        Checkbutton(edit, text="50", variable=var1, onvalue = 3).grid(row=3, sticky=W)
-        Checkbutton(edit, text="75", variable=var1, onvalue = 4).grid(row=4, sticky=W)
-        Checkbutton(edit, text="100", variable=var1, onvalue = 5).grid(row=5, sticky=W)
+        Checkbutton(edit, text="10", variable=var1, onvalue=1).grid(row=1, sticky=W)
+        Checkbutton(edit, text="25", variable=var1, onvalue=2).grid(row=2, sticky=W)
+        Checkbutton(edit, text="50", variable=var1, onvalue=3).grid(row=3, sticky=W)
+        Checkbutton(edit, text="75", variable=var1, onvalue=4).grid(row=4, sticky=W)
+        Checkbutton(edit, text="100", variable=var1, onvalue=5).grid(row=5, sticky=W)
 
+        # Handles second question and variables for each of the options
         Label(edit, text="What Type of Districts?", font="Helvetica 16 bold", bg="#a3a3a3").grid(row=6, sticky=W)
         var6 = IntVar()
         Checkbutton(edit, text="Armory", variable=var6).grid(row=7, sticky=W)
@@ -250,6 +283,7 @@ def main():
         var22 = IntVar()
         Checkbutton(edit, text="Slums", variable=var22).grid(row=23, sticky=W)
 
+        # Creates the Go and Quit button
         Button(edit, text='Go', command=var_states).grid(row=25, sticky=W, pady=4, padx=4)
         Button(edit, text='Quit', command=edit.destroy).grid(row=25, sticky=E, pady=4, padx=4)
 
@@ -267,7 +301,8 @@ def main():
     # create the window object
     window = tk.Tk()
     window.title("Atlas")
-    window.minsize(300, 250)
+
+
 
     # creates the welcome window
     welcome = tk.Toplevel(window)
