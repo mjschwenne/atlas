@@ -197,8 +197,7 @@ def main():
         edit.rowconfigure(25, weight=2)
 
         def var_states():
-            print("N 10:%d,\n25:%d,\n50:%d,\n75:%d,\n100:%d" % (var1.get(), var2.get(), var3.get(), var4.get(),
-                                                                var5.get()))
+            print("N:%d" % (var1.get()))
             print("T Armory:%d,\nBuilding:%d,\nCastle:%d,\nCathedral:%d,\nCourtyard:%d,\nFarmland:%d,\nGate:%d,"
                   "\nHousingHigh:%d,\nHousingLow:%d,\nHousingMid:%d,\nIndustrial:%d,\nMarket:%d,\nOpenland:%d,"
                   "\nPark:%d,\nPrecinct:%d,\nShops:%d,\nSlum:%d" % (var6.get(), var7.get(), var8.get(), var9.get(),
@@ -209,15 +208,11 @@ def main():
 
         Label(edit, text="How Many Districts?", font="Helvetica 16 bold", bg="#a3a3a3").grid(row=0, sticky=W)
         var1 = IntVar()
-        Checkbutton(edit, text="10", variable=var1).grid(row=1, sticky=W)
-        var2 = IntVar()
-        Checkbutton(edit, text="25", variable=var2).grid(row=2, sticky=W)
-        var3 = IntVar()
-        Checkbutton(edit, text="50", variable=var3).grid(row=3, sticky=W)
-        var4 = IntVar()
-        Checkbutton(edit, text="75", variable=var4).grid(row=4, sticky=W)
-        var5 = IntVar()
-        Checkbutton(edit, text="100", variable=var5).grid(row=5, sticky=W)
+        Checkbutton(edit, text="10", variable=var1, onvalue = 1).grid(row=1, sticky=W)
+        Checkbutton(edit, text="25", variable=var1, onvalue = 2).grid(row=2, sticky=W)
+        Checkbutton(edit, text="50", variable=var1, onvalue = 3).grid(row=3, sticky=W)
+        Checkbutton(edit, text="75", variable=var1, onvalue = 4).grid(row=4, sticky=W)
+        Checkbutton(edit, text="100", variable=var1, onvalue = 5).grid(row=5, sticky=W)
 
         Label(edit, text="What Type of Districts?", font="Helvetica 16 bold", bg="#a3a3a3").grid(row=6, sticky=W)
         var6 = IntVar()
