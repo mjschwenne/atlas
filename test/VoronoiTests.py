@@ -63,9 +63,11 @@ class TestVoronoi(unittest.TestCase):
         """
         Test the creation of polygons from the Voronoi graph, then visualize them
         """
-        bounding_box = Polygon([Point(-200, 200), Point(200, 200), Point(200, -200), Point(-200, -200)])
-        vor = Voronoi(50, bounding_box)
-        vis_polygons(vor, [-225, 225], [-225, 225])
+        bounding_box = Polygon([Point(-50, 50), Point(50, 50), Point(50, -50), Point(-50, -50)])
+        vor = Voronoi(10, bounding_box, 37)
+        for i in range(3):
+            vor.relax()
+        vis_polygons(vor, [-55, 55], [-55, 55])
 
     def test_relax(self):
         """

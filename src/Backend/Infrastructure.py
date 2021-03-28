@@ -7,6 +7,13 @@ import numpy as np
 from collections import deque
 
 
+def print_list(list_name, points):
+    print(f"{list_name} = [", end=" ")
+    for i in points:
+        print(f"{i},", end=" ")
+    print("]")
+
+
 def bfs_path(G, source, destination):
     """
     Use a breadth first search to find the path from vertex `source` to vertex `destination`.
@@ -36,7 +43,7 @@ def bfs_path(G, source, destination):
     return queue
 
 
-def move_vertex(region, vertex, new_vertex):
+def move_vertex(region, vertex, new_vertex, graph):
     """
     Move the vertex in the region, and update that same vertex in the neighbours of the region
 
@@ -48,19 +55,35 @@ def move_vertex(region, vertex, new_vertex):
         Vertex of the region to be changed, which will also be updated in the neighbouring regions
     new_vertex : Point
         The new location of the vertex
+    graph : nx.Graph
+        Underlying graph of the region boundaries, which needs to be update for the Pathfinder class
+
+    Returns
+    -------
+    nx.Graph
+        The new graph with the moved vertex
     """
+    # Skip useless moves
+    if vertex == new_vertex:
+        return
     # Update the original region
     new_vertex_list = [new_vertex if v == vertex else v for v in region.vertices]
+    print(f"Updating {vertex} to {new_vertex}")
+    print_list("old vertices", region.vertices)
     region.set_vertices(new_vertex_list)
+    print_list("new vertices", region.vertices)
     # Check the neighbours
     for r in region.get_neighbors():
         new_vertex_list = [new_vertex if v == vertex else v for v in r.vertices]
-        region.set_vertices(new_vertex_list)
+        r.set_vertices(new_vertex_list)
+    # Update the point position in the graph
+    vert_map = {vertex: new_vertex}
+    return nx.relabel_nodes(graph, vert_map)
 
 
 def project_vector(u, v):
     """
-    Project vector u onto vector v
+    Project vector `u` onto vector `v`
 
     Convert the Points into np.array and then use
 
@@ -131,17 +154,21 @@ class Infrastructure(Polygon):
         # Makes this wall a Polygon
         super().__init__(vertices)
 
-        # TODO Adjust polygons cut by the wall
         # Clip the graph so that it is only vertices on or inside of the wall.
         clipped_graph = graph.copy()
+        outer_graph = graph.copy()
         for v in graph:
             if not self.is_contained(v):
                 clipped_graph.remove_node(v)
+            else:
+                outer_graph.remove_node(v)
         # For each edge, adjust the polygons if needed
         for v in range(len(self.vertices)):
             start = vertices[v]
             end = vertices[(v + 1) % len(self.vertices)]
-            self.__push_polygons(clipped_graph, start, end)
+            clipped_graph = self.__push_polygons(clipped_graph, start, end)
+        # Merge the final clipped graph back into the regular graph
+        graph = nx.compose(outer_graph, clipped_graph)
 
         # Finds the Roads and Gates
         center_poly = None
@@ -259,11 +286,20 @@ class Infrastructure(Polygon):
             The starting point of the wall edge
         v : Point
             The ending point of the wall edge
+
+        Returns
+        -------
+        nx.Graph
+            An update version of the graph such that it reflects the changed made to the polygons, to be used in
+            Pathfinder
         """
         # Here we assume that the edge of the wall is not in the graph, otherwise there is no adjustment needed
         # Find the shortest path from start to end
         # Use this path to check which polygons are on the side of the path away from the origin
+        print(f"__push_polygons({graph}, {u}, {v})")
         path = bfs_path(graph, u, v)
+        if len(path) <= 2:
+            return
         # Vector representing the edge of the wall
         wall_vector = Point(v.get_x() - u.get_x(), v.get_y() - u.get_y())
         # Find the midpoint of the edge
@@ -273,8 +309,8 @@ class Infrastructure(Polygon):
             edge_end = path.pop()
             # The midpoint will be treated as the endpoint of a vector from the origin and used to determine which
             # normal vector is pointing away from the origin
-            midpoint = Point(edge_start.get_x() + edge_end.get_x() / 2,
-                             edge_start.get_y() + edge_end.get_y() / 2)
+            midpoint = Point((edge_start.get_x() + edge_end.get_x()) / 2,
+                             (edge_start.get_y() + edge_end.get_y()) / 2)
             # Create <edge_start, edge_end> as an edge vector, normalize it
             edge_vector = Point(edge_end.get_x() - edge_start.get_x(),
                                 edge_end.get_y() - edge_start.get_y())
@@ -293,11 +329,15 @@ class Infrastructure(Polygon):
                 point = Point(midpoint.get_x() - normal.get_x(), midpoint.get_y() - normal.get_y())
             else:
                 continue
+            print(f"Testing edge from {edge_start} to {edge_end}, midpoint: {midpoint}, point: {point}")
+            point_edge_vector = Point(edge_end.get_x() - u.get_x(), edge_end.get_y() - u.get_y())
+            new_vertex = u + project_vector(point_edge_vector, wall_vector)
             for r in self.regions:
                 if r.is_contained(point):
                     push_polygons.add(r)
-                    point_edge_vector = Point(point.get_x() - u.get_x(), point.get_y() - u.get_y())
-                    move_vertex(r, point, project_vector(point_edge_vector, edge_vector))
+                    graph = move_vertex(r, edge_end, new_vertex, graph)
                     break
             # The end of this edge is by definition the start of the next edge
-            edge_start = edge_end
+            edge_start = new_vertex
+
+            return graph

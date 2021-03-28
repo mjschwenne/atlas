@@ -318,6 +318,22 @@ class Point:
         """
         return not self < other
 
+    def __add__(self, other):
+        """
+        Add to Points together
+
+        Parameters
+        ----------
+        other : Point
+            The other point to be added
+
+        Returns
+        -------
+        Point
+            (x1 + x2, y1 + y2)
+        """
+        return Point(self.get_x() + other.get_x(), self.get_y() + other.get_y())
+
     def __str__(self):
         """
         Convert the Point to a string.
