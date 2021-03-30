@@ -34,24 +34,18 @@ class TestInfrastructure(unittest.TestCase):
         regions = []
         for poly in polygons:
             regions.append(Region(None, poly.get_vertices(), False, False))
-        print(len(regions))
+
         for reg in regions:
             reg.find_neighbors(regions)
-            print_list('region vertices', reg.vertices)
 
         wall = Infrastructure(regions, vor.graph, bounding_box)
-        print(len(regions))
+
         for r in regions:
             x_list = [x.get_x() for x in r.vertices]
             x_list.append(r.vertices[0].get_x())
             y_list = [y.get_y() for y in r.vertices]
             y_list.append(r.vertices[0].get_y())
             color_code = 'b-'
-            # if r == regions[spot_check]:
-            #     color_code = 'r-'
-            # elif r in regions[spot_check].get_neighbors():
-            #     color_code = 'g-'
-            print_list('region vertices', r.vertices)
             plt.plot(x_list, y_list, color_code)
 
         x_list = []

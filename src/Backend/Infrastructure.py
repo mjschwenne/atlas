@@ -42,9 +42,7 @@ def bfs_path(G, source, destination):
     vertex_dict = dict(nx.bfs_predecessors(G, source))
     queue = deque()
     queue.append(destination)
-    # print(f"Finding path from {source} to {destination} using {print_dict('vertex_dict', vertex_dict)}")
     while queue[-1] != source:
-        # print(f"Head of queue is {queue[-1]}")
         queue.append(vertex_dict[queue[-1]])
     queue.reverse()
     return queue
@@ -70,10 +68,7 @@ def move_vertex(region, vertex, new_vertex,vert_dict):
         return
     # Update the original region
     new_vertex_list = [new_vertex if v == vertex else v for v in region.vertices]
-    print(f"Updating {vertex} to {new_vertex}")
-    print_list("old vertices", region.vertices)
     region.set_vertices(new_vertex_list)
-    print_list("new vertices", region.vertices)
     # Check the neighbours
     for r in region.get_neighbors():
         new_vertex_list = [new_vertex if v == vertex else v for v in r.vertices]
@@ -167,9 +162,7 @@ class Infrastructure(Polygon):
             end = vertices[(v + 1) % len(self.vertices)]
             self.__push_polygons(clipped_graph, start, end, vert_dict)
         # Merge the final clipped graph back into the regular graph
-        print_dict("vert_map", vert_dict)
         graph = nx.relabel_nodes(graph, vert_dict)
-        print_list("graph vertices", list(graph.adj.keys()))
 
         # Finds the Roads and Gates
         center_poly = None
@@ -331,7 +324,6 @@ class Infrastructure(Polygon):
                 point = Point(midpoint.get_x() - normal.get_x(), midpoint.get_y() - normal.get_y())
             else:
                 continue
-            print(f"Testing edge from {edge_start} to {edge_end}, midpoint: {midpoint}, point: {point}")
             point_edge_vector = Point(edge_end.get_x() - u.get_x(), edge_end.get_y() - u.get_y())
             new_vertex = u + project_vector(point_edge_vector, wall_vector)
             for r in self.regions:
