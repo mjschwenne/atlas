@@ -14,6 +14,13 @@ def print_list(list_name, points):
     print("]")
 
 
+def print_dict(dict_name, points):
+    print(f"{dict_name} = [", end=" ")
+    for i in points.keys():
+        print(f"{i} : {points[i]},", end=" ")
+    print("]")
+
+
 def bfs_path(G, source, destination):
     """
     Use a breadth first search to find the path from vertex `source` to vertex `destination`.
@@ -43,7 +50,7 @@ def bfs_path(G, source, destination):
     return queue
 
 
-def move_vertex(region, vertex, new_vertex, graph):
+def move_vertex(region, vertex, new_vertex,vert_dict):
     """
     Move the vertex in the region, and update that same vertex in the neighbours of the region
 
@@ -55,13 +62,8 @@ def move_vertex(region, vertex, new_vertex, graph):
         Vertex of the region to be changed, which will also be updated in the neighbouring regions
     new_vertex : Point
         The new location of the vertex
-    graph : nx.Graph
-        Underlying graph of the region boundaries, which needs to be update for the Pathfinder class
-
-    Returns
-    -------
-    nx.Graph
-        The new graph with the moved vertex
+    vert_dict : Dict
+        A dictionary which will be used to move the nodes in the graph
     """
     # Skip useless moves
     if vertex == new_vertex:
@@ -77,8 +79,7 @@ def move_vertex(region, vertex, new_vertex, graph):
         new_vertex_list = [new_vertex if v == vertex else v for v in r.vertices]
         r.set_vertices(new_vertex_list)
     # Update the point position in the graph
-    vert_map = {vertex: new_vertex}
-    return nx.relabel_nodes(graph, vert_map)
+    vert_dict[vertex] = new_vertex
 
 
 def project_vector(u, v):
@@ -156,19 +157,19 @@ class Infrastructure(Polygon):
 
         # Clip the graph so that it is only vertices on or inside of the wall.
         clipped_graph = graph.copy()
-        outer_graph = graph.copy()
         for v in graph:
             if not self.is_contained(v):
                 clipped_graph.remove_node(v)
-            else:
-                outer_graph.remove_node(v)
         # For each edge, adjust the polygons if needed
+        vert_dict = {}
         for v in range(len(self.vertices)):
             start = vertices[v]
             end = vertices[(v + 1) % len(self.vertices)]
-            clipped_graph = self.__push_polygons(clipped_graph, start, end)
+            self.__push_polygons(clipped_graph, start, end, vert_dict)
         # Merge the final clipped graph back into the regular graph
-        graph = nx.compose(outer_graph, clipped_graph)
+        print_dict("vert_map", vert_dict)
+        graph = nx.relabel_nodes(graph, vert_dict)
+        print_list("graph vertices", list(graph.adj.keys()))
 
         # Finds the Roads and Gates
         center_poly = None
@@ -269,7 +270,7 @@ class Infrastructure(Polygon):
         return self.roads
 
     # PRIVATE HELPER METHODS
-    def __push_polygons(self, graph, u, v):
+    def __push_polygons(self, graph, u, v, vert_dict):
         """
         Edit the graph and polygons so that bisected polygons align with the edge of the city wall
 
@@ -286,6 +287,8 @@ class Infrastructure(Polygon):
             The starting point of the wall edge
         v : Point
             The ending point of the wall edge
+        vert_dict : Dict
+            A dictionary which will be used to update the graph and move the nodes
 
         Returns
         -------
@@ -296,7 +299,6 @@ class Infrastructure(Polygon):
         # Here we assume that the edge of the wall is not in the graph, otherwise there is no adjustment needed
         # Find the shortest path from start to end
         # Use this path to check which polygons are on the side of the path away from the origin
-        print(f"__push_polygons({graph}, {u}, {v})")
         path = bfs_path(graph, u, v)
         if len(path) <= 2:
             return
@@ -335,9 +337,7 @@ class Infrastructure(Polygon):
             for r in self.regions:
                 if r.is_contained(point):
                     push_polygons.add(r)
-                    graph = move_vertex(r, edge_end, new_vertex, graph)
+                    move_vertex(r, edge_end, new_vertex, vert_dict)
                     break
             # The end of this edge is by definition the start of the next edge
             edge_start = new_vertex
-
-            return graph

@@ -22,9 +22,9 @@ class TestInfrastructure(unittest.TestCase):
     Tests for Infrastructure.py
     """
     def test_create_wall_voronoi_1(self):
-        bounding_box = Polygon([Point(-50, 50), Point(50, 50), Point(50, -50), Point(-50, -50)])
-        vor = Voronoi(10, bounding_box, 37)
-        for i in range(3):
+        bounding_box = Polygon([Point(-550, 550), Point(550, 550), Point(550, -550), Point(-550, -550)])
+        vor = Voronoi(50, bounding_box, 37)
+        for i in range(5):
             vor.relax()
 
         random.seed()
@@ -67,8 +67,8 @@ class TestInfrastructure(unittest.TestCase):
             plt.plot([p.get_x()], [p.get_y()], 'yo')
         for p in wall.gates:
             plt.plot([p.get_x()], [p.get_y()], 'ro')
-        plt.xlim([-55, 55])
-        plt.ylim([-55, 55])
+        plt.xlim([-550, 550])
+        plt.ylim([-550, 550])
         plt.show()
 
         self.assertEqual(True, wall.is_convex())
