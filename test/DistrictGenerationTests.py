@@ -213,15 +213,15 @@ class DistrictGenerationTests(unittest.TestCase):
         vy_list.append(region.vertices[0].get_y())
         plt.plot(vx_list, vy_list, 'b-')
 
-        for b in buildings:
-            x_list = []
-            y_list = []
-            for p in b.vertices:
-                x_list.append(p.get_x())
-                y_list.append(p.get_y())
-            x_list.append(b.vertices[0].get_x())
-            y_list.append(b.vertices[0].get_y())
-            plt.plot(x_list, y_list, 'k-')
+        # for b in buildings:
+        #     x_list = []
+        #     y_list = []
+        #     for p in b.vertices:
+        #         x_list.append(p.get_x())
+        #         y_list.append(p.get_y())
+        #     x_list.append(b.vertices[0].get_x())
+        #     y_list.append(b.vertices[0].get_y())
+        #     plt.plot(x_list, y_list, 'k-')
 
         plt.show()
         self.assertEqual(True, True)

@@ -516,16 +516,16 @@ class TestPolygon(unittest.TestCase):
         vy_list.append(poly.vertices[0].get_y())
         plt.plot(vx_list, vy_list, 'b-')
 
-        vx_list = []
-        vy_list = []
+        v2x_list = []
+        v2y_list = []
         for v in rect.vertices:
             if v is None:
                 break
-            vx_list.append(v.get_x())
-            vy_list.append(v.get_y())
-        vx_list.append(rect.vertices[0].get_x())
-        vy_list.append(rect.vertices[0].get_y())
-        plt.plot(vx_list, vy_list, 'k-')
+            v2x_list.append(v.get_x())
+            v2y_list.append(v.get_y())
+        v2x_list.append(rect.vertices[0].get_x())
+        v2y_list.append(rect.vertices[0].get_y())
+        plt.plot(v2x_list, v2y_list, 'k-')
 
         plt.show()
         self.assertEqual(True, True)
