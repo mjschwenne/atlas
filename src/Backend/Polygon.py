@@ -553,34 +553,12 @@ class Polygon:
         List of Polygons
             A list of polygons from the resulting split
         """
-        max_distance_vert = self.vertices[0]
-        for v in self.vertices:
-            cur_dis = p.simple_distance(v)
-            if cur_dis >= max_distance_vert.simple_distance(p):
-                max_distance_vert = v
+        ext_p = Polygon.find_ext_point(self.furthest_point(p), ang, p)
 
-        ext_p = None
-        if (ang % (math.pi / 2)) == 0 and (ang % math.pi) != 0:
-            ext_p = Point(p.get_x(), max_distance_vert.get_y())
-        elif (ang % math.pi) == 0:
-            ext_p = Point(max_distance_vert.get_x(), p.get_y())
-        else:
-            m = round(math.tan(ang), 8)
-            n = p.get_y() - (m * p.get_x())
-            if max_distance_vert.get_x() != p.get_x():
-                ext_p = Point(max_distance_vert.get_x(), n + m * max_distance_vert.get_x())
-            else:
-                ext_p = Point((max_distance_vert.get_y() - n) / m, max_distance_vert.get_y())
-
-        edge = (self.vertices[0], self.vertices[1])
-        for i in range(0, len(self.vertices)):
-            v1 = self.vertices[i]
-            v2 = self.vertices[(i + 1) % len(self.vertices)]
-
-            if Polygon.intersect_segment(v1, v2, p, ext_p) and not self.in_segment(v1, v2, p):
-                edge = (v1, v2)
+        edge = self.find_intersecting_edge(p, ext_p)
 
         inter_p = self.intersection(edge[0], edge[1], p, ext_p)
+
         return self.cut_gap(p, inter_p, gap)
 
     def cut(self, p1, p2):
@@ -764,6 +742,19 @@ class Polygon:
         return abs(a / 2.0)
 
     def furthest_point(self, point):
+        """
+        Finds the furthest point in this polygon from a give point
+
+        Parameters
+        ----------
+        point : Point
+            The point to compare for every polygon vertices
+
+        Returns
+        -------
+        Point
+            The furthest point from the given point in the polygon
+        """
         max_point = self.vertices[0]
         max_dist = self.vertices[0].simple_distance(point)
         for v in self.vertices:
@@ -799,6 +790,61 @@ class Polygon:
             return True
         return False
 
+    @staticmethod
+    def find_ext_point(furthest_point, ang, initial_p):
+        """
+        Find an extreme point given a furthest_point, an angle, and an initial point
+
+        Parameters
+        ----------
+        furthest_point : Point
+            the furthest point for reference to find an extreme point
+        ang : float
+            the angle towards the extreme point
+        initial_p : Point
+            the initial point for the line towards the extreme point
+
+        Returns
+        -------
+        Point
+            the extreme point
+        """
+        if (ang % (math.pi / 2)) == 0 and (ang % math.pi) != 0:
+            return Point(initial_p.get_x(), furthest_point.get_y())
+        elif (ang % math.pi) == 0:
+            return Point(furthest_point.get_x(), initial_p.get_y())
+        else:
+            m = round(math.tan(ang), 8)
+            n = initial_p.get_y() - (m * initial_p.get_x())
+            if furthest_point.get_x() != initial_p.get_x():
+                return Point(furthest_point.get_x(), n + m * furthest_point.get_x())
+            else:
+                return Point((furthest_point.get_y() - n) / m, furthest_point.get_y())
+
+    def find_intersecting_edge(self, p, ext_p):
+        """
+        Given a line segment this method returns an edge that that line segment intersects
+
+        Parameters
+        ----------
+        p : point
+            the first point of the line segment
+        ext_p : Point
+            the second point of the line segment
+
+        Returns
+        -------
+        list of Points
+            the edge on the polygon that the line segment crosses
+        """
+        for i in range(0, len(self.vertices)):
+            v1 = self.vertices[i]
+            v2 = self.vertices[(i + 1) % len(self.vertices)]
+
+            if Polygon.intersect_segment(v1, v2, p, ext_p) and not self.in_segment(v1, v2, p):
+                return v1, v2
+        return None
+
     def rectangle_inside(self, p1, p2):
         """
         Finds a rectangle given an edge of the polygon
@@ -818,139 +864,93 @@ class Polygon:
         if p1 not in self.vertices or p2 not in self.vertices:
             return Polygon([])
 
-        edge_ang = math.atan2((p1.get_y() - p2.get_y()), (p1.get_x() - p2.get_x()))
-        perp_ang = edge_ang + (math.pi / 2)
-        new_vertices = []
+        ang = math.atan2((p1.get_y() - p2.get_y()), (p1.get_x() - p2.get_x())) + (math.pi / 2)
 
-        max_distance_vert = self.vertices[0]
-        for v in self.vertices:
-            cur_dis = p1.simple_distance(v)
-            if cur_dis >= max_distance_vert.simple_distance(p1):
-                max_distance_vert = v
+        ext_p1 = Polygon.find_ext_point(self.furthest_point(p1), ang, p1)
+        ext_p2 = Polygon.find_ext_point(self.furthest_point(p2), ang, p2)
 
-        ext_p = None
-        if (perp_ang % (math.pi / 2)) == 0 and (perp_ang % math.pi) != 0:
-            ext_p = Point(p1.get_x(), max_distance_vert.get_y())
-        elif (perp_ang % math.pi) == 0:
-            ext_p = Point(max_distance_vert.get_x(), p1.get_y())
+        edge_p1 = self.find_intersecting_edge(p1, ext_p1)
+        edge_p2 = self.find_intersecting_edge(p2, ext_p2)
+
+        i_p1 = Polygon.intersection(p1, ext_p1, edge_p1[0], edge_p1[1])
+        i_p2 = Polygon.intersection(p2, ext_p2, edge_p2[0], edge_p2[1])
+
+        dist_p1_i = p1.simple_distance(i_p1)
+        dist_p2_i = p2.simple_distance(i_p2)
+
+        if dist_p1_i > dist_p2_i:
+            u = Point(i_p1.get_x() - p1.get_x(), i_p1.get_y() - p1.get_y())
+            mag = math.sqrt(pow(u.get_x(), 2) + pow(u.get_y(), 2))
+            u.set_x(u.get_x() / mag)
+            u.set_y(u.get_y() / mag)
+            new_p = Point(p1.get_x() + dist_p2_i * u.get_x(), p1.get_y() + dist_p2_i * u.get_y())
+            return Polygon([p2, i_p2, new_p, p1])
         else:
-            m = round(math.tan(perp_ang), 8)
-            n = p1.get_y() - (m * p1.get_x())
-            if max_distance_vert.get_x() != p1.get_x():
-                ext_p = Point(max_distance_vert.get_x(), n + m * max_distance_vert.get_x())
-            else:
-                ext_p = Point((max_distance_vert.get_y() - n) / m, max_distance_vert.get_y())
+            u = Point(i_p2.get_x() - p2.get_x(), i_p2.get_y() - p2.get_y())
+            mag = math.sqrt(pow(u.get_x(), 2) + pow(u.get_y(), 2))
+            u.set_x(u.get_x() / mag)
+            u.set_y(u.get_y() / mag)
+            new_p = Point(p2.get_x() + dist_p1_i * u.get_x(), p2.get_y() + dist_p1_i * u.get_y())
+            return Polygon([p1, i_p1, new_p, p2])
 
-        edge = (self.vertices[0], self.vertices[1])
+    def cut_out(self, interior_polygon):
+        """
+        Cuts a larger polygon into parts without an interior polygon part
+
+        Parameters
+        ----------
+        interior_polygon : Polygon
+            The polygon to cut out
+
+        Returns
+        -------
+        list of Polygons
+            the parts of the original polygon without the interior polygon
+        """
+        if not interior_polygon.inside(self):
+            return None
+        running_poly = self
+        for i in range(0, len(interior_polygon.vertices)):
+            v1 = interior_polygon.vertices[i]
+            v2 = interior_polygon.vertices[(i + 1) % len(interior_polygon.vertices)]
+            ang = math.atan2((v1.get_y() - v2.get_y()), (v1.get_x() - v2.get_x()))
+            if not (v1 in self.vertices and v2 in self.vertices):
+                running_poly.easy_cut(v1, ang, 0)
+
+    def easy_cut(self, p, ang, gap):
+        if self.on_edge(p):
+            return self.cut_gap(p, ang, gap)
+        furthest_point = self.furthest_point(p)
+
+        ext_1 = Polygon.find_ext_point(furthest_point, ang, p)
+        dist = ext_1.simple_distance(p) * 2
+        u = Point(p.get_x() - ext_1.get_x(), p.get_y() - ext_1.get_y())
+        mag = math.sqrt(pow(u.get_x(), 2) + pow(u.get_y(), 2))
+        u.set_x(u.get_x() / mag)
+        u.set_y(u.get_y() / mag)
+        ext_2 = Point(ext_1.get_x() + dist * u.get_x(), ext_1.get_y() + dist * u.get_y())
+
+        edge1 = self.find_intersecting_edge(p, ext_1)
+        edge2 = self.find_intersecting_edge(p, ext_2)
+
+        i_1 = Polygon.intersection(p, ext_1, edge1[0], edge1[1])
+        i_2 = Polygon.intersection(p, ext_1, edge2[0], edge2[1])
+
+        return self.cut_gap(i_1, i_2, gap)
+
+    def on_edge(self, p):
         for i in range(0, len(self.vertices)):
             v1 = self.vertices[i]
             v2 = self.vertices[(i + 1) % len(self.vertices)]
+            if Polygon.in_segment(v1, v2, p):
+                return True
+        return False
 
-            if Polygon.intersect_segment(v1, v2, p1, ext_p) and not Polygon.in_segment(v1, v2, p1):
-                if Polygon.intersection(v1, v2, p1, ext_p) != p1:
-                    edge = (v1, v2)
-
-        inter_p1 = Polygon.intersection(edge[0], edge[1], p1, ext_p)
-
-        max_distance_vert = self.vertices[0]
+    def inside(self, larger_polygon):
         for v in self.vertices:
-            cur_dis = p2.simple_distance(v)
-            if cur_dis >= max_distance_vert.simple_distance(p2):
-                max_distance_vert = v
-
-        ext_p = None
-        if (perp_ang % (math.pi / 2)) == 0 and (perp_ang % math.pi) != 0:
-            ext_p = Point(p2.get_x(), max_distance_vert.get_y())
-        elif (perp_ang % math.pi) == 0:
-            ext_p = Point(max_distance_vert.get_x(), p2.get_y())
-        else:
-            m = round(math.tan(perp_ang), 8)
-            n = p2.get_y() - (m * p2.get_x())
-            if max_distance_vert.get_x() != p2.get_x():
-                ext_p = Point(max_distance_vert.get_x(), n + m * max_distance_vert.get_x())
-            else:
-                ext_p = Point((max_distance_vert.get_y() - n) / m, max_distance_vert.get_y())
-
-        edge = (self.vertices[0], self.vertices[1])
-        for i in range(0, len(self.vertices)):
-            v1 = self.vertices[i]
-            v2 = self.vertices[(i + 1) % len(self.vertices)]
-
-            if Polygon.intersect_segment(v1, v2, p2, ext_p) and not Polygon.in_segment(v1, v2, p2):
-                if Polygon.intersection(v1, v2, p2, ext_p) != p2:
-                    edge = (v1, v2)
-
-        inter_p2 = Polygon.intersection(edge[0], edge[1], p2, ext_p)
-
-        length_p1_inter_p1 = inter_p1.simple_distance(p1)
-        length_p2_inter_p2 = inter_p2.simple_distance(p2)
-
-        if length_p1_inter_p1 < length_p2_inter_p2:
-            new_vertices.append(p1)
-            new_vertices.append(inter_p1)
-
-            if abs(inter_p1.get_x() - p2.get_x()) > abs(inter_p1.get_x() - inter_p2.get_x()):
-                max_distance_vert.set_x(p2.get_x())
-            else:
-                max_distance_vert.set_x(inter_p2.get_x())
-
-            if abs(inter_p1.get_y() - p2.get_y()) > abs(inter_p1.get_y() - inter_p2.get_y()):
-                max_distance_vert.set_y(p2.get_y())
-            else:
-                max_distance_vert.set_y(inter_p2.get_y())
-
-            if (perp_ang % (math.pi / 2)) == 0 and (perp_ang % math.pi) != 0:
-                ext_p = Point(p1.get_x(), max_distance_vert.get_y())
-            elif (perp_ang % math.pi) == 0:
-                ext_p = Point(max_distance_vert.get_x(), p1.get_y())
-            else:
-                m = round(math.tan(perp_ang), 8)
-                n = p1.get_y() - (m * p1.get_x())
-                if max_distance_vert.get_x() != p1.get_x():
-                    ext_p = Point(max_distance_vert.get_x(), n + m * max_distance_vert.get_x())
-                else:
-                    ext_p = Point((max_distance_vert.get_y() - n) / m, max_distance_vert.get_y())
-
-            new_inter = Polygon.intersection(inter_p1, ext_p, p2, inter_p2)
-
-            new_vertices.append(new_inter)
-            new_vertices.append(p2)
-        else:
-            new_vertices.append(p2)
-            new_vertices.append(inter_p2)
-
-            max_distance_vert = Point(0, 0)
-            if abs(inter_p2.get_x() - p1.get_x()) > abs(inter_p2.get_x() - inter_p1.get_x()):
-                max_distance_vert.set_x(p1.get_x())
-            else:
-                max_distance_vert.set_x(inter_p1.get_x())
-
-            if abs(inter_p2.get_y() - p1.get_y()) > abs(inter_p2.get_y() - inter_p1.get_y()):
-                max_distance_vert.set_y(p1.get_y())
-            else:
-                max_distance_vert.set_y(inter_p1.get_y())
-
-            if (perp_ang % (math.pi / 2)) == 0 and (perp_ang % math.pi) != 0:
-                ext_p = Point(p1.get_x(), max_distance_vert.get_y())
-            elif (perp_ang % math.pi) == 0:
-                ext_p = Point(max_distance_vert.get_x(), p1.get_y())
-            else:
-                m = round(math.tan(perp_ang), 8)
-                n = p1.get_y() - (m * p1.get_x())
-                if max_distance_vert.get_x() != p1.get_x():
-                    ext_p = Point(max_distance_vert.get_x(), n + m * max_distance_vert.get_x())
-                else:
-                    ext_p = Point((max_distance_vert.get_y() - n) / m, max_distance_vert.get_y())
-
-            new_inter = Polygon.intersection(inter_p2, ext_p, p1, inter_p1)
-
-            new_vertices.append(new_inter)
-            new_vertices.append(p1)
-
-        return Polygon(new_vertices)
-
-
-
+            if not larger_polygon.is_contained(v):
+                return False
+        return True
 
     def __eq__(self, other):
         """

@@ -502,6 +502,27 @@ class TestPolygon(unittest.TestCase):
     def test_rectangle_in_1(self):
         poly = Polygon(self.s1ver)
         rect = poly.rectangle_inside(Point(0.0, 0.0), Point(0.0, 1.0))
+        vx_list = []
+        vy_list = []
+        for v in poly.vertices:
+            vx_list.append(v.get_x())
+            vy_list.append(v.get_y())
+        vx_list.append(poly.vertices[0].get_x())
+        vy_list.append(poly.vertices[0].get_y())
+        plt.plot(vx_list, vy_list, 'b-')
+
+        v2x_list = []
+        v2y_list = []
+        for v in rect.vertices:
+            if v is None:
+                break
+            v2x_list.append(v.get_x())
+            v2y_list.append(v.get_y())
+        v2x_list.append(rect.vertices[0].get_x())
+        v2y_list.append(rect.vertices[0].get_y())
+        plt.plot(v2x_list, v2y_list, 'k-')
+
+        plt.show()
         self.assertEqual(True, True)
 
     def test_rectangle_in_2(self):
@@ -529,6 +550,34 @@ class TestPolygon(unittest.TestCase):
 
         plt.show()
         self.assertEqual(True, True)
+
+    def test_intersect_segment(self):
+        p1 = Point(78.087, 78.087)
+        p2 = Point(328.087, 78.087)
+        p3 = Point(328.087, 328.087)
+        p4 = Point(328.087, 78.087)
+        self.assertEqual(True, Polygon.intersect_segment(p2, p1, p4, p3))
+
+    def test_intersecting_edge_1(self):
+        poly = Polygon([Point(78.087, 78.087), Point(328.087, 78.087), Point(328.087, 328.087), Point(78.087, 328.087)])
+        p = Point(328.087, 328.087)
+        ext_p = Point(328.087, 78.087)
+        self.assertTrue(poly.find_intersecting_edge(p, ext_p))
+
+    def test_easy_cut_1(self):
+        poly = Polygon(self.s1ver)
+        polys = poly.easy_cut(Point(0.5, 0.5), math.pi, 0)
+        for p in polys:
+            x_list = []
+            y_list = []
+            for v in p.vertices:
+                x_list.append(v.get_x())
+                y_list.append(v.get_y())
+            x_list.append(p.vertices[0].get_x())
+            y_list.append(p.vertices[0].get_y())
+            plt.plot(x_list, y_list)
+        plt.show()
+        self.assertEqual(2, len(polys))
 
 
 if __name__ == '__main__':

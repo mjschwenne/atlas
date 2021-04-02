@@ -326,7 +326,7 @@ class Armory(BasicDistrict):
 
 class Castle(District):
     def generate_district(self, region):
-        # Generate interior polygon used to generate castle structure
+        # Generate interior polygon used to generate castle structure (is castle walls)
         random.seed()
 
         int_poly_vertices = []
@@ -338,6 +338,7 @@ class Castle(District):
             int_poly_vertices.append(Point((p.get_x() * scalar) + (region.get_center().get_x() * scalar + offset_x),
                                            (p.get_y() * scalar) + (region.get_center().get_y() * scalar + offset_y)))
         int_polygon = Polygon(int_poly_vertices)
+        region.buildings.append(int_polygon)
 
         # Generate castle structure
         max_area_poly = int_polygon.rectangle_inside(int_polygon.vertices[0], int_polygon.vertices[1])
@@ -352,8 +353,8 @@ class Castle(District):
                 max_area_poly = new_poly
         region.buildings.append(max_area_poly)
 
-        # Generate castle wall
         # Break up exterior buildings
+        exterior_polys = region.cut_out(int_polygon)
 
     # Overrides District's determine Rating
     @staticmethod

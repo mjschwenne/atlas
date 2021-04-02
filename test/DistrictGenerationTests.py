@@ -61,7 +61,7 @@ class DistrictGenerationTests(unittest.TestCase):
         self.assertEqual(True, True)
 
     def test_basic_district_Generation_3(self):
-        a = Armory(0.5, 0, 25)
+        a = Armory(0, 0, 25)
         r = Region(a, [Point(0.0, 0.0), Point(0.0, 100.0), Point(100.0, 100.0), Point(100.0, 0.0)], False, False)
         r.get_district().generate_district(r)
         buildings = r.buildings
@@ -213,15 +213,15 @@ class DistrictGenerationTests(unittest.TestCase):
         vy_list.append(region.vertices[0].get_y())
         plt.plot(vx_list, vy_list, 'b-')
 
-        # for b in buildings:
-        #     x_list = []
-        #     y_list = []
-        #     for p in b.vertices:
-        #         x_list.append(p.get_x())
-        #         y_list.append(p.get_y())
-        #     x_list.append(b.vertices[0].get_x())
-        #     y_list.append(b.vertices[0].get_y())
-        #     plt.plot(x_list, y_list, 'k-')
+        for b in buildings:
+            x_list = []
+            y_list = []
+            for p in b.vertices:
+                x_list.append(p.get_x())
+                y_list.append(p.get_y())
+            x_list.append(b.vertices[0].get_x())
+            y_list.append(b.vertices[0].get_y())
+            plt.plot(x_list, y_list, 'k-')
 
         plt.show()
         self.assertEqual(True, True)
