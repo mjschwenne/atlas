@@ -133,7 +133,7 @@ class Infrastructure(Polygon):
 
         for p in self.regions:
             furthest_dist_from_center = p.furthest_point(Point(0.0, 0.0)).simple_distance(Point(0.0, 0.0))
-            if furthest_dist_from_center < bounding_box.get_perimeter() * 0.1:
+            if furthest_dist_from_center < bounding_box.get_perimeter() * 0.08:
                 in_city_list.append(p)
 
         # Finds the total vertices from all the regions

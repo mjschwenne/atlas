@@ -23,8 +23,8 @@ class TestInfrastructure(unittest.TestCase):
     """
     def test_create_wall_voronoi_1(self):
         bounding_box = Polygon([Point(-550, 550), Point(550, 550), Point(550, -550), Point(-550, -550)])
-        vor = Voronoi(50, bounding_box, 37)
-        for i in range(5):
+        vor = Voronoi(50, bounding_box)
+        for i in range(4):
             vor.relax()
 
         random.seed()
