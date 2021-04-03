@@ -129,12 +129,23 @@ def main():
                     highest_height = verts[i]
         return lowest_width, highest_width, lowest_height, highest_height
 
+    def label_regions(map_canvas, verts):
+        i = 0
+        for i in range(len(verts)):
+            if i % 2 == 0:
+                map_canvas.create_text(verts[i], verts[i + 1], text="Testing", font=("TkTextFont", 10), fill='black')
+        return
+
+
     def draw_map(map_canvas):
         map_canvas.delete("all")
         reg_list = Constructor().generate_map()
 
         verts = []
+        center_verts = []
         for reg in reg_list:
+            center_verts.append(reg.get_center().get_x() + 250 / 2)
+            center_verts.append(reg.get_center().get_y() + 250 / 2)
             for v in reg.get_vertices():
                 verts.append((v.get_x() + 250) / 2)
                 verts.append((v.get_y() + 250) / 2)
@@ -188,6 +199,11 @@ def main():
                     verts.append(((v.get_x() + 250) / 2)-low_w)
                     verts.append(((v.get_y() + 250) / 2)-low_h)
                 draw_region(map_canvas, 12, verts)
+        center_verts = []
+        for reg in reg_list:
+            center_verts.append(((reg.get_center().get_x() + 250) / 2)-low_w)
+            center_verts.append(((reg.get_center().get_y() + 250) / 2)-low_h)
+            label_regions(map_canvas, center_verts)
         map_canvas.scale("all", 0, 0, map_canvas.width/w, map_canvas.height/h)
 
 
