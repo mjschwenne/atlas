@@ -5,9 +5,6 @@ from tkinter import *
 from src.Backend.Constructor import Constructor
 from src.Backend.District import *
 
-from PIL import Image
-from PIL import ImageTk
-
 
 class ResizingCanvas(tk.Canvas):
     """
@@ -48,7 +45,6 @@ class ResizingCanvas(tk.Canvas):
         # rescale all the objects
         self.scale("all", 0, 0, wscale, hscale)
         return
-
 
 
 def main():
@@ -206,7 +202,6 @@ def main():
             label_regions(map_canvas, center_verts)
         map_canvas.scale("all", 0, 0, map_canvas.width/w, map_canvas.height/h)
 
-
     def help_msg():
         """
         command for the help message
@@ -243,15 +238,40 @@ def main():
         def var_states():
             """
             handles the printing of the edited
+
+            Var Ordering:
+            var1  = number of districts
+                1 = 10
+                2 = 25
+                3 = 50
+                4 = 75
+                5 = 100
+            var6  = Armory
+            var7  = Building
+            var8  = Castle
+            var9  = Cathedral
+            var10 = Courtyard
+            var11 = Farmland
+            var12 = Gate
+            var13 = Housing High
+            var14 = Housing Low
+            var15 = Housing Mid
+            var16 = Industrial
+            var17 = Market
+            var18 = Open land
+            var19 = Park
+            var20 = Precinct
+            var21 = Shops
+            var22 = Slum
             """
-            print("N:%d" % (var1.get()))
-            print("T Armory:%d,\nBuilding:%d,\nCastle:%d,\nCathedral:%d,\nCourtyard:%d,\nFarmland:%d,\nGate:%d,"
-                  "\nHousingHigh:%d,\nHousingLow:%d,\nHousingMid:%d,\nIndustrial:%d,\nMarket:%d,\nOpenland:%d,"
-                  "\nPark:%d,\nPrecinct:%d,\nShops:%d,\nSlum:%d" % (var6.get(), var7.get(), var8.get(), var9.get(),
-                                                                    var10.get(), var11.get(), var12.get(), var13.get(),
-                                                                    var14.get(), var15.get(), var16.get(),
-                                                                    var17.get(), var18.get(), var19.get(), var20.get(),
-                                                                    var21.get(), var22.get()))
+
+            global userInfo
+            userInfo = (var1.get(), var6.get(), var7.get(), var8.get(),
+                        var9.get(), var10.get(), var11.get(), var12.get(),
+                        var13.get(), var14.get(), var15.get(), var16.get(),
+                        var17.get(), var18.get(), var19.get(), var20.get(),
+                        var21.get(), var22.get())
+            print(userInfo)
 
         # Handles the first question in edit window and sets a variable to it
         Label(edit, text="How Many Districts?", font="Helvetica 16 bold", bg="#a3a3a3").grid(row=0, sticky=W)
@@ -317,8 +337,6 @@ def main():
     # create the window object
     window = tk.Tk()
     window.title("Atlas")
-
-
 
     # creates the welcome window
     welcome = tk.Toplevel(window)
