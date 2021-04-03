@@ -5,6 +5,8 @@ from tkinter import *
 from src.Backend.Constructor import Constructor
 from src.Backend.District import *
 
+user_info = [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+
 
 class ResizingCanvas(tk.Canvas):
     """
@@ -48,6 +50,7 @@ class ResizingCanvas(tk.Canvas):
 
 
 def main():
+
     def draw_region(map_canvas, region_type, points):
         """
         command to draw a region as specified on the map,
@@ -135,7 +138,7 @@ def main():
 
     def draw_map(map_canvas):
         map_canvas.delete("all")
-        reg_list = Constructor().generate_map()
+        reg_list = Constructor().generate_map(user_info)
 
         verts = []
         center_verts = []
@@ -235,6 +238,7 @@ def main():
         edit.iconbitmap('../../images/Atlas.ico')
         edit.rowconfigure(25, weight=2)
 
+
         def var_states():
             """
             handles the printing of the edited
@@ -265,13 +269,13 @@ def main():
             var22 = Slum
             """
 
-            global userInfo
-            userInfo = (var1.get(), var6.get(), var7.get(), var8.get(),
+            global user_info
+            user_info = (var1.get(), var6.get(), var7.get(), var8.get(),
                         var9.get(), var10.get(), var11.get(), var12.get(),
                         var13.get(), var14.get(), var15.get(), var16.get(),
                         var17.get(), var18.get(), var19.get(), var20.get(),
                         var21.get(), var22.get())
-            print(userInfo)
+            print(user_info)
 
         # Handles the first question in edit window and sets a variable to it
         Label(edit, text="How Many Districts?", font="Helvetica 16 bold", bg="#a3a3a3").grid(row=0, sticky=W)
