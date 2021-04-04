@@ -171,40 +171,74 @@ def main():
         h = math.ceil(high_h - low_h)
 
         switch_val = 0
+        string = []
+        color = []
         for reg in reg_list:
             dis = reg.get_district()
             if isinstance(dis, Farmland):
                 switch_val = 0
+                string.append("Farmland")
+                color.append('black')
             if isinstance(dis, HousingMid):
                 switch_val = 1
+                string.append("Housing")
+                color.append('black')
             if isinstance(dis, HousingLow):
                 switch_val = 2
+                string.append("Housing")
+                color.append('black')
             if isinstance(dis, HousingHigh):
                 switch_val = 3
+                string.append("Housing")
+                color.append('white')
             if isinstance(dis, Slum):
                 switch_val = 4
+                string.append("Slums")
+                color.append('black')
             if isinstance(dis, Market):
                 switch_val = 5
+                string.append("Market")
+                color.append('black')
             if isinstance(dis, Castle):
                 switch_val = 6
+                string.append("Castle")
+                color.append('black')
             if isinstance(dis, Cathedral):
                 switch_val = 7
+                string.append("Cathedral")
+                color.append('black')
             if isinstance(dis, Armory):
                 switch_val = 8
+                string.append("Armory")
+                color.append('black')
             if isinstance(dis, Shops):
                 switch_val = 9
+                string.append("Shops")
+                color.append('black')
             if isinstance(dis, Gate):
                 switch_val = 10
+                string.append("Gate")
+                color.append('black')
             if isinstance(dis, Precinct):
                 switch_val = 11
+                string.append("Precinct")
+                color.append('black')
             if isinstance(dis, Industrial):
                 switch_val = 13
+                string.append("Industrial")
+                color.append('black')
             if isinstance(dis, Openland):
                 switch_val = 14
+                string.append("Open")
+                color.append('black')
             if isinstance(dis, Courtyard):
                 switch_val = 15
+                string.append("Courtyard")
+                color.append('black')
             if isinstance(dis, Park):
                 switch_val = 16
+                string.append("Park")
+                color.append('black')
             verts = []
             for v in reg.get_vertices():
                 verts.append(((v.get_x() + 250) / 2)-low_w)
@@ -217,58 +251,7 @@ def main():
                     verts.append(((v.get_y() + 250) / 2)-low_h)
                 draw_region(map_canvas, 12, verts)
         center_verts = []
-        string = []
-        color = []
         for reg in reg_list:
-            dis = reg.get_district()
-            if isinstance(dis, Farmland):
-                string.append("Farmland")
-                color.append('black')
-            if isinstance(dis, HousingMid):
-                string.append("Housing")
-                color.append('black')
-            if isinstance(dis, HousingLow):
-                string.append("Housing")
-                color.append('black')
-            if isinstance(dis, HousingHigh):
-                string.append("Housing")
-                color.append('white')
-            if isinstance(dis, Slum):
-                string.append("Slums")
-                color.append('black')
-            if isinstance(dis, Market):
-                string.append("Market")
-                color.append('black')
-            if isinstance(dis, Castle):
-                string.append("Castle")
-                color.append('black')
-            if isinstance(dis, Cathedral):
-                string.append("Cathedral")
-                color.append('black')
-            if isinstance(dis, Armory):
-                string.append("Armory")
-                color.append('black')
-            if isinstance(dis, Shops):
-                string.append("Shops")
-                color.append('black')
-            if isinstance(dis, Gate):
-                string.append("Gate")
-                color.append('black')
-            if isinstance(dis, Precinct):
-                string.append("Precinct")
-                color.append('black')
-            if isinstance(dis, Industrial):
-                string.append("Industrial")
-                color.append('black')
-            if isinstance(dis, Openland):
-                string.append("Open")
-                color.append('black')
-            if isinstance(dis, Courtyard):
-                string.append("Courtyard")
-                color.append('black')
-            if isinstance(dis, Park):
-                string.append("Park")
-                color.append('black')
             center_verts.append(((reg.get_center().get_x() + 250) / 2)-low_w)
             center_verts.append(((reg.get_center().get_y() + 250) / 2)-low_h)
             label_regions(map_canvas, center_verts, string, color)
