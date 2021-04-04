@@ -108,6 +108,11 @@ def main():
         map_canvas.create_polygon(*points, fill=switcher.get(region_type, "#ebd5b3"))
 
     def find_map_bounds(verts):
+        """
+        This function is used by the draw_map function to locate the bounds of the map for use in scaling and sizing
+        :param verts: An array of vertices for all polygons to be drawn
+        :return: The highest and lowest values of each axis
+        """
         i = 0
         lowest_width = float('inf')
         highest_width = float('-inf')
@@ -128,15 +133,28 @@ def main():
                     highest_height = verts[i]
         return lowest_width, highest_width, lowest_height, highest_height
 
-    def label_regions(map_canvas, verts):
+    def label_regions(map_canvas, verts, string, color):
+        """
+
+        :param map_canvas:
+        :param verts:
+        :param string:
+        :param color:
+        :return:
+        """
         i = 0
         for i in range(len(verts)):
             if i % 2 == 0:
-                map_canvas.create_text(verts[i], verts[i + 1], text="Testing", font=("TkTextFont", 10), fill='black')
+                map_canvas.create_text(verts[i], verts[i + 1], text=string[int(i/2)], font=("TkTextFont", 10), fill=color[int(i/2)])
         return
 
 
     def draw_map(map_canvas):
+        """
+        This function takes the generated points and sorts them into each group and draws them on the canvas
+        :param map_canvas: The canvas to be drawn on
+        :return: null
+        """
         map_canvas.delete("all")
         reg_list = Constructor().generate_map(user_info)
 
@@ -199,11 +217,63 @@ def main():
                     verts.append(((v.get_y() + 250) / 2)-low_h)
                 draw_region(map_canvas, 12, verts)
         center_verts = []
+        string = []
+        color = []
         for reg in reg_list:
+            dis = reg.get_district()
+            if isinstance(dis, Farmland):
+                string.append("Farmland")
+                color.append('black')
+            if isinstance(dis, HousingMid):
+                string.append("Housing")
+                color.append('black')
+            if isinstance(dis, HousingLow):
+                string.append("Housing")
+                color.append('black')
+            if isinstance(dis, HousingHigh):
+                string.append("Housing")
+                color.append('white')
+            if isinstance(dis, Slum):
+                string.append("Slums")
+                color.append('black')
+            if isinstance(dis, Market):
+                string.append("Market")
+                color.append('black')
+            if isinstance(dis, Castle):
+                string.append("Castle")
+                color.append('black')
+            if isinstance(dis, Cathedral):
+                string.append("Cathedral")
+                color.append('black')
+            if isinstance(dis, Armory):
+                string.append("Armory")
+                color.append('black')
+            if isinstance(dis, Shops):
+                string.append("Shops")
+                color.append('black')
+            if isinstance(dis, Gate):
+                string.append("Gate")
+                color.append('black')
+            if isinstance(dis, Precinct):
+                string.append("Precinct")
+                color.append('black')
+            if isinstance(dis, Industrial):
+                string.append("Industrial")
+                color.append('black')
+            if isinstance(dis, Openland):
+                string.append("Open")
+                color.append('black')
+            if isinstance(dis, Courtyard):
+                string.append("Courtyard")
+                color.append('black')
+            if isinstance(dis, Park):
+                string.append("Park")
+                color.append('black')
             center_verts.append(((reg.get_center().get_x() + 250) / 2)-low_w)
             center_verts.append(((reg.get_center().get_y() + 250) / 2)-low_h)
-            label_regions(map_canvas, center_verts)
+            label_regions(map_canvas, center_verts, string, color)
         map_canvas.scale("all", 0, 0, map_canvas.width/w, map_canvas.height/h)
+        return
 
     def help_msg():
         """
