@@ -410,8 +410,9 @@ class Castle(District):
                 rating += 10
             elif isinstance(dis, Park):
                 rating += 10
-        if region.in_walls(wall):
-            rating += 200
+        if not region.in_walls(wall):
+            return -10
+        rating += 100
         return rating
 
 
@@ -674,6 +675,8 @@ class Gate(District):
                 on_gate = True
                 break
         if not on_gate:
+            return -10
+        if not region.in_city(city):
             return -10
         return 100
 
