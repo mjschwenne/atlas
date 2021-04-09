@@ -579,6 +579,9 @@ class TestPolygon(unittest.TestCase):
         plt.show()
         self.assertEqual(2, len(polys))
 
+    def test_is_rectangle_1(self):
+        poly = Polygon(self.s1ver)
+        self.assertEqual(True, poly.is_rectangle())
 
 if __name__ == '__main__':
     unittest.main()

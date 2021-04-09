@@ -329,32 +329,29 @@ class Castle(District):
         # Generate interior polygon used to generate castle structure (is castle walls)
         random.seed()
 
-        int_poly_vertices = []
-        scalar = 1.0 / 2.0
-        random_offset = random.uniform(-0.2, 0.2)
-        for p in region.vertices:
-            offset_x = random_offset * region.get_center().get_x()
-            offset_y = random_offset * region.get_center().get_y()
-            int_poly_vertices.append(Point((p.get_x() * scalar) + (region.get_center().get_x() * scalar + offset_x),
-                                           (p.get_y() * scalar) + (region.get_center().get_y() * scalar + offset_y)))
-        int_polygon = Polygon(int_poly_vertices)
-        region.buildings.append(int_polygon)
+        wall_polygon = region.scale_of_polygon(1.0 / 2.0)
+        move_scale = region.get_perimeter() * 0.03
+        wall_polygon.move_polygon_by_center(random.uniform(-move_scale, move_scale),
+                                            random.uniform(-move_scale, move_scale))
+        region.buildings.append(wall_polygon)
 
-        # Generate castle structure
-        max_area_poly = int_polygon.rectangle_inside(int_polygon.vertices[0], int_polygon.vertices[1])
+        max_area_poly = wall_polygon.rectangle_inside(wall_polygon.vertices[0], wall_polygon.vertices[1])
         max_area = max_area_poly.area()
-        for i in range(0, len(int_polygon.vertices)):
-            v1 = int_polygon.vertices[i]
-            v2 = int_polygon.vertices[(i + 1) % len(int_polygon.vertices)]
-            new_poly = int_polygon.rectangle_inside(v1, v2)
+        for i in range(0, len(wall_polygon.vertices)):
+            v1 = wall_polygon.vertices[i]
+            v2 = wall_polygon.vertices[(i + 1) % len(wall_polygon.vertices)]
+            new_poly = wall_polygon.rectangle_inside(v1, v2)
             new_area = new_poly.area()
             if new_area > max_area:
                 max_area = new_area
                 max_area_poly = new_poly
-        region.buildings.append(max_area_poly)
+
+        castle = max_area_poly.scale_of_polygon(2.0 / 3.0)
+        castle.move_center_to(wall_polygon.get_center())
+        region.buildings.append(castle)
 
         # Break up exterior buildings
-        exterior_polys = region.cut_out(int_polygon)
+        exterior_polys = region.cut_out(wall_polygon)
 
     # Overrides District's determine Rating
     @staticmethod

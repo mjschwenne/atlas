@@ -516,8 +516,8 @@ class Polygon:
         """
         # Case 1: Vertical Line.
         # If p3's y-coordinate is within the y-range of this line segment, return if they have the same x-coordinate
-        if round(p1.get_x(), 8) == round(p2.get_x(), 8) and min(p1.get_y(), p2.get_y()) <= p3.get_y() <= max(p1.get_y(),
-                                                                                                             p2.get_y()):
+        if round(p1.get_x(), 8) == round(p2.get_x(), 8) and \
+                min(p1.get_y(), p2.get_y()) <= p3.get_y() <= max(p1.get_y(), p2.get_y()):
             return round(p1.get_x(), 8) == round(p3.get_x(), 8)
         # Case 2: Horizontal Line.
         # If p3's x-coordinate is within the x-range of this line segment, return if they have the same y-coordinate
@@ -845,6 +845,25 @@ class Polygon:
                 return v1, v2
         return None
 
+    def is_rectangle(self):
+        """
+        Check a given polygon to see if it is a rectangle
+
+        Returns
+        -------
+        bool
+            True if the polygon is a rectangle
+        """
+        pi2 = math.pi/2
+        pi = math.pi
+        for i in range(0, len(self.vertices)):
+            v1 = self.vertices[i]
+            v2 = self.vertices[(i + 1) % len(self.vertices)]
+            ang = abs(math.atan2((v1.get_y() - v2.get_y()), (v1.get_x() - v2.get_x())))
+            if ang != pi and ang != pi2 and ang != 0:
+                return False
+        return True
+
     def rectangle_inside(self, p1, p2):
         """
         Finds a rectangle given an edge of the polygon
@@ -863,6 +882,8 @@ class Polygon:
         """
         if p1 not in self.vertices or p2 not in self.vertices:
             return Polygon([])
+        if self.is_rectangle():
+            return self
 
         ang = math.atan2((p1.get_y() - p2.get_y()), (p1.get_x() - p2.get_x())) + (math.pi / 2)
 
@@ -939,6 +960,19 @@ class Polygon:
         return self.cut_gap(i_1, i_2, gap)
 
     def on_edge(self, p):
+        """
+        Checks to see if a given point p is on any edge of the polygon
+
+        Parameters
+        ----------
+        p : Point
+            The point to check to see if it is on any edge of the polygon
+
+        Returns
+        -------
+        bool
+            True if p is on any edge of the polygon
+        """
         for i in range(0, len(self.vertices)):
             v1 = self.vertices[i]
             v2 = self.vertices[(i + 1) % len(self.vertices)]
@@ -947,10 +981,74 @@ class Polygon:
         return False
 
     def inside(self, larger_polygon):
+        """
+        Checks a given polygon to see if it is in a larger polygon
+
+        Parameters
+        ----------
+        larger_polygon : Polygon
+            The larger polygon that could contain the given polygon
+
+        Returns
+        -------
+        bool
+            True if the given polygon is in larger_polygon
+        """
         for v in self.vertices:
             if not larger_polygon.is_contained(v):
                 return False
         return True
+
+    def scale_of_polygon(self, scalar):
+        """
+        Scales a polygon by a scalar and returns a new scaled polygon centered on the original polygon's center
+
+        Parameters
+        ----------
+        scalar : float
+            The scalar to scale the polygon by (could be positive or negative for shrink or grow)
+
+        Returns
+        -------
+        Polygon
+            The new scaled polygon centered on the original polygon's center
+        """
+        scale_poly_vertices = []
+        for p in self.vertices:
+            scale_poly_vertices.append(
+                Point((p.get_x() * scalar) + (self.get_center().get_x() * scalar),
+                      (p.get_y() * scalar) + (
+                              self.get_center().get_y() * scalar)))
+        return Polygon(scale_poly_vertices)
+
+    def move_polygon_by_center(self, left_right_distance, up_down_distance):
+        """
+        Moves a polygon's center by left_right_distance left or right, and up_down_distance up or down.
+
+        Parameters
+        ----------
+        left_right_distance : float
+            the distance to move the center of the polygon by left or right
+        up_down_distance : float
+            the distance to move the center of the polygon by up or down
+        """
+        for v in self.vertices:
+            v.set_x(v.get_x() + left_right_distance)
+            v.set_y(v.get_y() + up_down_distance)
+
+    def move_center_to(self, p):
+        """
+        Moves a polygon's center to a given point p
+
+        Parameters
+        ----------
+        p : Point
+            The new center for the polygon
+        """
+        center = self.get_center()
+        left_right_distance = p.get_x() - center.get_x()
+        up_down_distance = p.get_y() - center.get_y()
+        self.move_polygon_by_center(left_right_distance, up_down_distance)
 
     def __eq__(self, other):
         """
