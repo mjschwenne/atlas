@@ -39,7 +39,7 @@ class ResizingCanvas(tk.Canvas):
 
         event: the resizing of the window
         """
-        
+
         # determine the ratio of old width/height to new width/height
         wscale = event.width / self.width
         hscale = event.height / self.height
@@ -51,7 +51,6 @@ class ResizingCanvas(tk.Canvas):
 
 
 def main():
-
     def draw_region(map_canvas, region_type, points):
         """
         command to draw a region as specified on the map,
@@ -165,9 +164,9 @@ def main():
         i = 0
         for i in range(len(verts)):
             if i % 2 == 0:
-                map_canvas.create_text(verts[i], verts[i + 1], text=select_random_name(string[int(i/2)]), font=("TkTextFont", 10), fill=color[int(i/2)])
+                map_canvas.create_text(verts[i], verts[i + 1], text=select_random_name(string[int(i / 2)]),
+                                       font=("TkTextFont", 10), fill=color[int(i / 2)])
         return
-
 
     def draw_map(map_canvas):
         """
@@ -261,21 +260,21 @@ def main():
                 color.append('black')
             verts = []
             for v in reg.get_vertices():
-                verts.append(((v.get_x() + 250) / 2)-low_w)
-                verts.append(((v.get_y() + 250) / 2)-low_h)
+                verts.append(((v.get_x() + 250) / 2) - low_w)
+                verts.append(((v.get_y() + 250) / 2) - low_h)
             draw_region(map_canvas, switch_val, verts)
             for build in reg.buildings:
                 verts = []
                 for v in build.get_vertices():
-                    verts.append(((v.get_x() + 250) / 2)-low_w)
-                    verts.append(((v.get_y() + 250) / 2)-low_h)
+                    verts.append(((v.get_x() + 250) / 2) - low_w)
+                    verts.append(((v.get_y() + 250) / 2) - low_h)
                 draw_region(map_canvas, 12, verts)
         center_verts = []
         for reg in reg_list:
-            center_verts.append(((reg.get_center().get_x() + 250) / 2)-low_w)
-            center_verts.append(((reg.get_center().get_y() + 250) / 2)-low_h)
+            center_verts.append(((reg.get_center().get_x() + 250) / 2) - low_w)
+            center_verts.append(((reg.get_center().get_y() + 250) / 2) - low_h)
         label_regions(map_canvas, center_verts, string, color)
-        map_canvas.scale("all", 0, 0, map_canvas.width/w, map_canvas.height/h)
+        map_canvas.scale("all", 0, 0, map_canvas.width / w, map_canvas.height / h)
         return
 
     def help_msg():
@@ -285,9 +284,11 @@ def main():
         info = Toplevel()
         info.title('Help Window')
         info.iconbitmap('../../images/Atlas.ico')
-        Label(info, text="ATLAS Help Window", font="Helvetica 16 bold", bg="#a3a3a3").pack(side=TOP)
-        Label(info, text="This is filler text till I know what to write here").pack()
-        Button(info, text="Close", command=info.destroy).pack()
+        Label(info, text="ATLAS Help Window", font="Helvetica 16 bold", bg="#a3a3a3", width=32).grid(row=0)
+        Label(info, text="If you want a Randomly generated map hit the GENERATE button.\n "
+                         "If you want to personalize what happens in the map hit the EDIT button.\n "
+                         "If you want to save hit the SAVE button.").grid(row=1, sticky=W)
+        Button(info, text="Close", command=info.destroy).grid(row=10)
 
     def key_msg():
         """
@@ -342,10 +343,10 @@ def main():
 
             global user_info
             user_info = (var1.get(), var6.get(), var7.get(), var8.get(),
-                        var9.get(), var10.get(), var11.get(), var12.get(),
-                        var13.get(), var14.get(), var15.get(), var16.get(),
-                        var17.get(), var18.get(), var19.get(), var20.get(),
-                        var21.get(), var22.get())
+                         var9.get(), var10.get(), var11.get(), var12.get(),
+                         var13.get(), var14.get(), var15.get(), var16.get(),
+                         var17.get(), var18.get(), var19.get(), var20.get(),
+                         var21.get(), var22.get())
             print(user_info)
 
         Label(edit, text="Directions:", font="Helvetica 16 bold", bg="#a3a3a3", width=27).grid(row=0, sticky=W)
@@ -405,7 +406,7 @@ def main():
 
         def reset_info():
             global user_info
-            user_info= [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+            user_info = [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
             print(user_info)
 
         # Creates the Go and Quit button
@@ -433,7 +434,7 @@ def main():
     welcome.title('Welcome Window')
     Label(welcome, text="Welcome to ATLAS", font="Helvetica 16 bold", bg="#a3a3a3", width=24).grid(row=0, sticky=W)
     Label(welcome, text="Hello user, thank you for downloading our map generator.\n").grid(row=1, sticky=W)
-    Label(welcome, text=" Directions:",  font="Helvetica 16 bold", bg="#a3a3a3", width=24).grid(row=3, sticky=W)
+    Label(welcome, text=" Directions:", font="Helvetica 16 bold", bg="#a3a3a3", width=24).grid(row=3, sticky=W)
     Label(welcome, text="To create a random map click generate.").grid(row=4, sticky=W)
     Label(welcome, text="To create your own map click edit.").grid(row=5, sticky=W)
     Label(welcome, text="If you need help click the help button.").grid(row=6, sticky=W)
