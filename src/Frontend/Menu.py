@@ -1,7 +1,7 @@
-import random
 import tkinter as tk
-from tkinter.filedialog import asksaveasfile
+from tkinter.filedialog import asksaveasfilename
 from tkinter import *
+from PIL import ImageGrab
 
 from src.Backend.Constructor import Constructor
 from src.Backend.District import *
@@ -421,9 +421,14 @@ def main():
         files = [('All Files', '*.*'),
                  ('PNG', '*.png'),
                  ('Text Document', '*.txt')]
-        file = asksaveasfile(filetypes=files, defaultextension=files)
-        if not files:
-            return
+        file = asksaveasfilename(filetypes=files, defaultextension=files)
+        x = canvas.winfo_rootx()
+        y = canvas.winfo_rooty()
+        x1 = canvas.winfo_rootx() + canvas.winfo_x()
+        y1 = canvas.winfo_rooty() + canvas.winfo_y()
+        print(f"First Coordinate ({x}, {y}), Second Coordinate: ({x1}, {y1})")
+        ImageGrab.grab().save(file)
+        return
 
     # create the window object
     window = tk.Tk()
