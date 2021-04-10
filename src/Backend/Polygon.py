@@ -791,6 +791,32 @@ class Polygon:
         return False
 
     @staticmethod
+    def intersect_segment_alt(p1, p2, p3, p4):
+        """
+        Returns True if two line segments defined by 4 points intersect
+
+        Parameters
+        ----------
+        p1 : Point
+            First point in the first line segment
+        p2 : Point
+            Second point in the second line segment
+        p3 : Point
+            First point in the second line segment
+        p4 : Point
+            Second point in the second line segment
+
+        Returns
+        -------
+        bool
+            True if the two line segments intersect
+        """
+        inter = Polygon.intersection(p1, p2, p3, p4)
+        if inter is not None and (Polygon.in_segment(p1, p2, inter) and Polygon.in_segment(p3, p4, inter)):
+            return True
+        return False
+
+    @staticmethod
     def find_ext_point(furthest_point, ang, initial_p):
         """
         Find an extreme point given a furthest_point, an angle, and an initial point
@@ -842,6 +868,31 @@ class Polygon:
             v2 = self.vertices[(i + 1) % len(self.vertices)]
 
             if Polygon.intersect_segment(v1, v2, p, ext_p) and not self.in_segment(v1, v2, p):
+                return v1, v2
+        return None
+
+    def find_intersecting_edges(self, p, ext_p):
+        """
+        Given a line segment this method returns edges that that line segment intersects, this is used because of an
+        edge case in the find_intersecting_edges
+
+        Parameters
+        ----------
+        p : point
+            the first point of the line segment
+        ext_p : Point
+            the second point of the line segment
+
+        Returns
+        -------
+        list of list of points
+            the edge on the polygon that the line segment crosses
+        """
+        for i in range(0, len(self.vertices)):
+            v1 = self.vertices[i]
+            v2 = self.vertices[(i + 1) % len(self.vertices)]
+
+            if Polygon.intersect_segment_alt(v1, v2, p, ext_p) and not self.in_segment(v1, v2, p):
                 return v1, v2
         return None
 
@@ -928,6 +979,7 @@ class Polygon:
         list of Polygons
             the parts of the original polygon without the interior polygon
         """
+        poly_list = []
         if not interior_polygon.inside(self):
             return None
         running_poly = self
@@ -936,11 +988,22 @@ class Polygon:
             v2 = interior_polygon.vertices[(i + 1) % len(interior_polygon.vertices)]
             ang = math.atan2((v1.get_y() - v2.get_y()), (v1.get_x() - v2.get_x()))
             if not (v1 in self.vertices and v2 in self.vertices):
-                running_poly.easy_cut(v1, ang, 0)
+                new_polys = running_poly.easy_cut(v1, ang, 0)
+                if new_polys[0].area() > new_polys[1].area():
+                    running_poly = new_polys[0]
+                    poly_list.append(new_polys[1])
+                else:
+                    running_poly = new_polys[1]
+                    poly_list.append(new_polys[0])
+        return poly_list
+
+    def cut_out_gap(self, interior_polygon, scalar):
+        new_interior_polygon = interior_polygon.scale_of_polygon(scalar)
+        return self.cut_out(new_interior_polygon)
 
     def easy_cut(self, p, ang, gap):
         if self.on_edge(p):
-            return self.cut_gap(p, ang, gap)
+            return self.split(p, ang, gap)
         furthest_point = self.furthest_point(p)
 
         ext_1 = Polygon.find_ext_point(furthest_point, ang, p)
@@ -951,8 +1014,8 @@ class Polygon:
         u.set_y(u.get_y() / mag)
         ext_2 = Point(ext_1.get_x() + dist * u.get_x(), ext_1.get_y() + dist * u.get_y())
 
-        edge1 = self.find_intersecting_edge(p, ext_1)
-        edge2 = self.find_intersecting_edge(p, ext_2)
+        edge1 = self.find_intersecting_edges(p, ext_1)
+        edge2 = self.find_intersecting_edges(p, ext_2)
 
         i_1 = Polygon.intersection(p, ext_1, edge1[0], edge1[1])
         i_2 = Polygon.intersection(p, ext_1, edge2[0], edge2[1])
@@ -1014,12 +1077,14 @@ class Polygon:
             The new scaled polygon centered on the original polygon's center
         """
         scale_poly_vertices = []
+        if scalar == 1:
+            return self
+        center = self.get_center()
         for p in self.vertices:
-            scale_poly_vertices.append(
-                Point((p.get_x() * scalar) + (self.get_center().get_x() * scalar),
-                      (p.get_y() * scalar) + (
-                              self.get_center().get_y() * scalar)))
-        return Polygon(scale_poly_vertices)
+            scale_poly_vertices.append(Point((p.get_x() * scalar), (p.get_y() * scalar)))
+        poly = Polygon(scale_poly_vertices)
+        poly.move_center_to(center)
+        return poly
 
     def move_polygon_by_center(self, left_right_distance, up_down_distance):
         """

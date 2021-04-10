@@ -351,7 +351,9 @@ class Castle(District):
         region.buildings.append(castle)
 
         # Break up exterior buildings
-        exterior_polys = region.cut_out(wall_polygon)
+        exterior_polys = region.cut_out_gap(wall_polygon, 1.1)
+        for p in exterior_polys:
+            self.generate_buildings(region, p, 0.8, 0.1, 1000)
 
     # Overrides District's determine Rating
     @staticmethod
