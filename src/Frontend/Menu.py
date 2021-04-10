@@ -307,7 +307,6 @@ def main():
         """
         edit = Toplevel()
         edit.title('Edit Window')
-        edit.geometry('250x700')
         edit.iconbitmap('../../images/Atlas.ico')
         edit.rowconfigure(25, weight=2)
 
@@ -349,51 +348,60 @@ def main():
                         var21.get(), var22.get())
             print(user_info)
 
+        Label(edit, text="Directions:", font="Helvetica 16 bold", bg="#a3a3a3", width=27).grid(row=0, sticky=W)
+        Label(edit, text="To generate your own map select how many districts.\n Then select what types of districts "
+                         "you what on your map.\n If you put a checkmark in the box it will be included in the map.\n"
+              ).grid(row=1, sticky=W)
+        Label(edit, text="After you have made your selections hit the GO button.\n "
+                         "If you want to reset to original settings hit the RESET button.\n "
+                         "If you want to exit hit the QUIT button.").grid(row=2, sticky=W)
+
         # Handles the first question in edit window and sets a variable to it
-        Label(edit, text="How Many Districts?", font="Helvetica 16 bold", bg="#a3a3a3").grid(row=0, sticky=W)
+        Label(edit, text="How Many Districts?", font="Helvetica 16 bold", bg="#a3a3a3", width=27).grid(row=4, sticky=W)
         var1 = IntVar()
-        Checkbutton(edit, text="10", variable=var1, onvalue=1).grid(row=1, sticky=W)
-        Checkbutton(edit, text="25", variable=var1, onvalue=2).grid(row=2, sticky=W)
-        Checkbutton(edit, text="50", variable=var1, onvalue=3).grid(row=3, sticky=W)
-        Checkbutton(edit, text="75", variable=var1, onvalue=4).grid(row=4, sticky=W)
-        Checkbutton(edit, text="100", variable=var1, onvalue=5).grid(row=5, sticky=W)
+        Checkbutton(edit, text="10", variable=var1, onvalue=1).grid(row=5, sticky=W)
+        Checkbutton(edit, text="25", variable=var1, onvalue=2).grid(row=6, sticky=W)
+        Checkbutton(edit, text="50", variable=var1, onvalue=3).grid(row=7, sticky=W)
+        Checkbutton(edit, text="75", variable=var1, onvalue=4).grid(row=8, sticky=W)
+        Checkbutton(edit, text="100", variable=var1, onvalue=5).grid(row=9, sticky=W)
 
         # Handles second question and variables for each of the options
-        Label(edit, text="What Type of Districts?", font="Helvetica 16 bold", bg="#a3a3a3").grid(row=6, sticky=W)
+        Label(edit, text="What Type of Districts?", font="Helvetica 16 bold", bg="#a3a3a3", width=27).grid(row=10,
+                                                                                                           sticky=W)
         var6 = IntVar()
-        Checkbutton(edit, text="Armory", variable=var6).grid(row=7, sticky=W)
+        Checkbutton(edit, text="Armory", variable=var6).grid(row=11, sticky=W)
         var7 = IntVar()
-        Checkbutton(edit, text="Building", variable=var7).grid(row=8, sticky=W)
+        Checkbutton(edit, text="Building", variable=var7).grid(row=12, sticky=W)
         var8 = IntVar()
-        Checkbutton(edit, text="Castle", variable=var8).grid(row=9, sticky=W)
+        Checkbutton(edit, text="Castle", variable=var8).grid(row=13, sticky=W)
         var9 = IntVar()
-        Checkbutton(edit, text="Cathedral", variable=var9).grid(row=10, sticky=W)
+        Checkbutton(edit, text="Cathedral", variable=var9).grid(row=14, sticky=W)
         var10 = IntVar()
-        Checkbutton(edit, text="Courtyard", variable=var10).grid(row=11, sticky=W)
+        Checkbutton(edit, text="Courtyard", variable=var10).grid(row=15, sticky=W)
         var11 = IntVar()
-        Checkbutton(edit, text="Farmland", variable=var11).grid(row=12, sticky=W)
+        Checkbutton(edit, text="Farmland", variable=var11).grid(row=16, sticky=W)
         var12 = IntVar()
-        Checkbutton(edit, text="Gate", variable=var12).grid(row=13, sticky=W)
+        Checkbutton(edit, text="Gate", variable=var12).grid(row=17, sticky=W)
         var13 = IntVar()
-        Checkbutton(edit, text="Housing High ", variable=var13).grid(row=14, sticky=W)
+        Checkbutton(edit, text="Housing High ", variable=var13).grid(row=18, sticky=W)
         var14 = IntVar()
-        Checkbutton(edit, text="Housing Low", variable=var14).grid(row=15, sticky=W)
+        Checkbutton(edit, text="Housing Low", variable=var14).grid(row=19, sticky=W)
         var15 = IntVar()
-        Checkbutton(edit, text="Housing Mid", variable=var15).grid(row=16, sticky=W)
+        Checkbutton(edit, text="Housing Mid", variable=var15).grid(row=20, sticky=W)
         var16 = IntVar()
-        Checkbutton(edit, text="Industrial", variable=var16).grid(row=17, sticky=W)
+        Checkbutton(edit, text="Industrial", variable=var16).grid(row=21, sticky=W)
         var17 = IntVar()
-        Checkbutton(edit, text="Market", variable=var17).grid(row=18, sticky=W)
+        Checkbutton(edit, text="Market", variable=var17).grid(row=22, sticky=W)
         var18 = IntVar()
-        Checkbutton(edit, text="Open Land", variable=var18).grid(row=19, sticky=W)
+        Checkbutton(edit, text="Open Land", variable=var18).grid(row=23, sticky=W)
         var19 = IntVar()
-        Checkbutton(edit, text="Park", variable=var19).grid(row=20, sticky=W)
+        Checkbutton(edit, text="Park", variable=var19).grid(row=24, sticky=W)
         var20 = IntVar()
-        Checkbutton(edit, text="Precinct", variable=var20).grid(row=21, sticky=W)
+        Checkbutton(edit, text="Precinct", variable=var20).grid(row=25, sticky=W)
         var21 = IntVar()
-        Checkbutton(edit, text="Shops", variable=var21).grid(row=22, sticky=W)
+        Checkbutton(edit, text="Shops", variable=var21).grid(row=26, sticky=W)
         var22 = IntVar()
-        Checkbutton(edit, text="Slums", variable=var22).grid(row=23, sticky=W)
+        Checkbutton(edit, text="Slums", variable=var22).grid(row=27, sticky=W)
 
         def reset_info():
             global user_info
@@ -401,9 +409,9 @@ def main():
             print(user_info)
 
         # Creates the Go and Quit button
-        Button(edit, text='Go', command=lambda: [var_states(), draw_map(canvas)]).grid(row=25, sticky=W, pady=4, padx=4)
-        Button(edit, text='Reset', command=lambda: [reset_info(), draw_map(canvas)]).grid(row=25, pady=4, padx=4)
-        Button(edit, text='Quit', command=edit.destroy).grid(row=25, sticky=E, pady=4, padx=4)
+        Button(edit, text='Go', command=lambda: [var_states(), draw_map(canvas)]).grid(row=30, sticky=W, pady=4, padx=4)
+        Button(edit, text='Reset', command=lambda: [reset_info(), draw_map(canvas)]).grid(row=30, pady=4, padx=4)
+        Button(edit, text='Quit', command=edit.destroy).grid(row=30, sticky=E, pady=4, padx=4)
 
     def save_file():
         """
@@ -423,12 +431,13 @@ def main():
     # creates the welcome window
     welcome = tk.Toplevel(window)
     welcome.title('Welcome Window')
-    Label(welcome, text="Welcome to ATLAS", font="Helvetica 16 bold", bg="#a3a3a3").pack(side=TOP)
-    Label(welcome, text="Hello user, thank you for downloading our map generator.\n").pack(side=TOP)
-    Label(welcome, text=" Directions:\n\n\n").pack(side=LEFT)
-    Label(welcome, text="To create a random map click generate.").pack()
-    Label(welcome, text="To create your own map click edit.").pack()
-    Button(welcome, text="Close", command=welcome.destroy).pack(side=BOTTOM)
+    Label(welcome, text="Welcome to ATLAS", font="Helvetica 16 bold", bg="#a3a3a3", width=24).grid(row=0, sticky=W)
+    Label(welcome, text="Hello user, thank you for downloading our map generator.\n").grid(row=1, sticky=W)
+    Label(welcome, text=" Directions:",  font="Helvetica 16 bold", bg="#a3a3a3", width=24).grid(row=3, sticky=W)
+    Label(welcome, text="To create a random map click generate.").grid(row=4, sticky=W)
+    Label(welcome, text="To create your own map click edit.").grid(row=5, sticky=W)
+    Label(welcome, text="If you need help click the help button.").grid(row=6, sticky=W)
+    Button(welcome, text="Close", command=welcome.destroy).grid(row=7)
 
     # sets the icons in the corner to our logo
     window.iconbitmap('../../images/Atlas.ico')
