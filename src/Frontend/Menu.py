@@ -416,18 +416,21 @@ def main():
 
     def save_file():
         """
-        sets up ability to save
+        Saves the current map as a png.
+
+        Support for .txt, which would allow the map to be reloaded and possibly edited is planned so long as we have
+        edit options.
         """
-        files = [('All Files', '*.*'),
-                 ('PNG', '*.png'),
+        files = [('PNG', '*.png'),
+                 ('All Files', '*.*'),
                  ('Text Document', '*.txt')]
         file = asksaveasfilename(filetypes=files, defaultextension=files)
         x = canvas.winfo_rootx()
         y = canvas.winfo_rooty()
-        x1 = canvas.winfo_rootx() + canvas.winfo_x()
-        y1 = canvas.winfo_rooty() + canvas.winfo_y()
-        print(f"First Coordinate ({x}, {y}), Second Coordinate: ({x1}, {y1})")
-        ImageGrab.grab().save(file)
+        w = x + canvas.width
+        h = y + canvas.height
+
+        ImageGrab.grab(bbox=(x, y, w, h)).save(file)
         return
 
     # create the window object
