@@ -395,9 +395,14 @@ def main():
         var22 = IntVar()
         Checkbutton(edit, text="Slums", variable=var22).grid(row=23, sticky=W)
 
+        def reset_info():
+            global user_info
+            user_info= [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+            print(user_info)
+
         # Creates the Go and Quit button
         Button(edit, text='Go', command=lambda: [var_states(), draw_map(canvas)]).grid(row=25, sticky=W, pady=4, padx=4)
-        Button(edit, text='Reset').grid(row=25, pady=4, padx=4)
+        Button(edit, text='Reset', command=lambda: [reset_info(), draw_map(canvas)]).grid(row=25, pady=4, padx=4)
         Button(edit, text='Quit', command=edit.destroy).grid(row=25, sticky=E, pady=4, padx=4)
 
     def save_file():
