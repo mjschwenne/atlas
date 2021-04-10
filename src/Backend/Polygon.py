@@ -989,16 +989,18 @@ class Polygon:
         for i in range(0, len(interior_polygon.vertices)):
             v1 = interior_polygon.vertices[i]
             v2 = interior_polygon.vertices[(i + 1) % len(interior_polygon.vertices)]
-            v3 = interior_polygon.vertices[(i + 2) % len(interior_polygon.vertices)]
             ang = math.atan2((v1.get_y() - v2.get_y()), (v1.get_x() - v2.get_x()))
             if not (v1 in self.vertices and v2 in self.vertices):
                 new_polys = running_poly.easy_cut(v1, ang, 0)
-                if new_polys[0].is_contained(v3):
-                    running_poly = new_polys[0]
-                    poly_list.append(new_polys[1])
-                else:
+                print_list("Poly0", new_polys[0].vertices)
+                print_list("Poly1", new_polys[1].vertices)
+                if interior_polygon.inside(new_polys[1]):
                     running_poly = new_polys[1]
                     poly_list.append(new_polys[0])
+                else:
+                    running_poly = new_polys[0]
+                    poly_list.append(new_polys[1])
+                print_list("Running Poly", running_poly.vertices)
         return poly_list
 
     def cut_out_gap(self, interior_polygon, scalar):
@@ -1080,6 +1082,7 @@ class Polygon:
         Polygon
             The new scaled polygon centered on the original polygon's center
         """
+
         scale_poly_vertices = []
         if scalar == 1:
             return self
@@ -1088,6 +1091,7 @@ class Polygon:
             scale_poly_vertices.append(Point((p.get_x() * scalar), (p.get_y() * scalar)))
         poly = Polygon(scale_poly_vertices)
         poly.move_center_to(center)
+
         return poly
 
     def move_polygon_by_center(self, left_right_distance, up_down_distance):

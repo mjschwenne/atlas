@@ -597,7 +597,7 @@ class TestPolygon(unittest.TestCase):
     def test_cut_out_gap_1(self):
         poly = Polygon(self.s1ver)
         polys = poly.cut_out_gap(Polygon([Point(0.25, 0.25), Point(0.75, 0.25), Point(0.85, 0.5), Point(0.75, 0.75),
-                                          Point(0.25, 0.75)]), 1.1)
+                                          Point(0.25, 0.75)]), 0.8)
         for p in polys:
             x_list = []
             y_list = []
@@ -610,9 +610,37 @@ class TestPolygon(unittest.TestCase):
         plt.show()
         self.assertEqual(5, len(polys))
 
+    def test_cut_out_gap_2(self):
+        poly = Polygon([Point(-6, 12), Point(6,12), Point(6, -2), Point(-6, -2)])
+        polys = poly.cut_out_gap(Polygon([Point(0, 0), Point(-2, 1), Point(-4, 3), Point(-5, 5), Point(-4, 7),
+                                          Point(-2, 9), Point(0, 10), Point(2, 9), Point(4, 7), Point(5, 5), Point(4, 3)
+                                          , Point(2, 1)]), 0.9)
+        for p in polys:
+            x_list = []
+            y_list = []
+            for v in p.vertices:
+                x_list.append(v.get_x())
+                y_list.append(v.get_y())
+            x_list.append(p.vertices[0].get_x())
+            y_list.append(p.vertices[0].get_y())
+            plt.plot(x_list, y_list)
+        plt.show()
+        self.assertEqual(12, len(polys))
+
     def test_is_rectangle_1(self):
         poly = Polygon(self.s1ver)
         self.assertEqual(True, poly.is_rectangle())
+
+    def test_scale_of_polygon(self):
+        poly = Polygon(self.s1ver)
+        poly2 = Polygon([Point(-0.05, -0.05), Point(-0.05, 1.05), Point(1.05, 1.05), Point(1.05, -0.05)])
+        poly3 = poly.scale_of_polygon(1.1)
+        for i in range(0, len(poly3.vertices)):
+            if not poly3.vertices[i] == poly2.vertices[i]:
+                print(poly3.vertices[i])
+                print(poly2.vertices[i])
+                self.assertEqual(True, False)
+        self.assertTrue(True)
 
 if __name__ == '__main__':
     unittest.main()
