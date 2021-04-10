@@ -1,3 +1,4 @@
+import random
 import tkinter as tk
 from tkinter.filedialog import asksaveasfile
 from tkinter import *
@@ -105,7 +106,7 @@ def main():
             15: "#003378",  # Dark Blue - Courtyard
             16: "#046113"  # Dark Green - Park
         }
-        map_canvas.create_polygon(*points, fill=switcher.get(region_type, "#ebd5b3"))
+        map_canvas.create_polygon(*points, fill=switcher.get(region_type, "#ebd5b3"), outline='black')
 
     def find_map_bounds(verts):
         """
@@ -133,6 +134,25 @@ def main():
                     highest_height = verts[i]
         return lowest_width, highest_width, lowest_height, highest_height
 
+    def select_random_name(string):
+        final_string = string
+        try:
+            file = open(string + ".txt", "r")
+            lines = file.readlines()
+            chosen_line = random.randint(0, len(lines) - 1)
+        except OSError as err:
+            return final_string
+        except ValueError:
+            return final_string
+        if lines[chosen_line] is None:
+            file.close()
+            return final_string
+        else:
+            print(lines[chosen_line])
+            final_string = lines[chosen_line]
+            file.close()
+        return final_string
+
     def label_regions(map_canvas, verts, string, color):
         """
 
@@ -145,7 +165,7 @@ def main():
         i = 0
         for i in range(len(verts)):
             if i % 2 == 0:
-                map_canvas.create_text(verts[i], verts[i + 1], text=string[int(i/2)], font=("TkTextFont", 10), fill=color[int(i/2)])
+                map_canvas.create_text(verts[i], verts[i + 1], text=select_random_name(string[int(i/2)]), font=("TkTextFont", 10), fill=color[int(i/2)])
         return
 
 
@@ -190,7 +210,7 @@ def main():
             if isinstance(dis, HousingHigh):
                 switch_val = 3
                 string.append("Housing")
-                color.append('white')
+                color.append('black')
             if isinstance(dis, Slum):
                 switch_val = 4
                 string.append("Slums")
@@ -254,7 +274,7 @@ def main():
         for reg in reg_list:
             center_verts.append(((reg.get_center().get_x() + 250) / 2)-low_w)
             center_verts.append(((reg.get_center().get_y() + 250) / 2)-low_h)
-            label_regions(map_canvas, center_verts, string, color)
+        label_regions(map_canvas, center_verts, string, color)
         map_canvas.scale("all", 0, 0, map_canvas.width/w, map_canvas.height/h)
         return
 
