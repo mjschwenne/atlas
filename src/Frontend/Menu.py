@@ -311,7 +311,6 @@ def main():
         edit.iconbitmap('../../images/Atlas.ico')
         edit.rowconfigure(25, weight=2)
 
-
         def var_states():
             """
             handles the printing of the edited
@@ -397,7 +396,8 @@ def main():
         Checkbutton(edit, text="Slums", variable=var22).grid(row=23, sticky=W)
 
         # Creates the Go and Quit button
-        Button(edit, text='Go', command=var_states).grid(row=25, sticky=W, pady=4, padx=4)
+        Button(edit, text='Go', command=lambda: [var_states(), draw_map(canvas)]).grid(row=25, sticky=W, pady=4, padx=4)
+        Button(edit, text='Reset').grid(row=25, pady=4, padx=4)
         Button(edit, text='Quit', command=edit.destroy).grid(row=25, sticky=E, pady=4, padx=4)
 
     def save_file():
