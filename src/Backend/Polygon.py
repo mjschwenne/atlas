@@ -553,7 +553,8 @@ class Polygon:
         List of Polygons
             A list of polygons from the resulting split
         """
-        ext_p = Polygon.find_ext_point(self.furthest_point(p), ang, p)
+        x = self.furthest_point(p)
+        ext_p = Polygon.find_ext_point(x, ang, p)
 
         edge = self.find_intersecting_edge(p, ext_p)
 
@@ -835,17 +836,19 @@ class Polygon:
         Point
             the extreme point
         """
+        simple_dist = initial_p.simple_distance(furthest_point)
         if (ang % (math.pi / 2)) == 0 and (ang % math.pi) != 0:
-            return Point(initial_p.get_x(), furthest_point.get_y())
+            return Point(initial_p.get_x(), initial_p.get_y()+simple_dist)
         elif (ang % math.pi) == 0:
-            return Point(furthest_point.get_x(), initial_p.get_y())
+            return Point(initial_p.get_x()+simple_dist, initial_p.get_y())
         else:
             m = round(math.tan(ang), 8)
             n = initial_p.get_y() - (m * initial_p.get_x())
             if furthest_point.get_x() != initial_p.get_x():
-                return Point(furthest_point.get_x(), n + m * furthest_point.get_x())
+                p = Point(furthest_point.get_x(), n + m * furthest_point.get_x())
             else:
-                return Point((furthest_point.get_y() - n) / m, furthest_point.get_y())
+                p = Point((furthest_point.get_y() - n) / m, furthest_point.get_y())
+            return p
 
     def find_intersecting_edge(self, p, ext_p):
         """
@@ -986,10 +989,11 @@ class Polygon:
         for i in range(0, len(interior_polygon.vertices)):
             v1 = interior_polygon.vertices[i]
             v2 = interior_polygon.vertices[(i + 1) % len(interior_polygon.vertices)]
+            v3 = interior_polygon.vertices[(i + 2) % len(interior_polygon.vertices)]
             ang = math.atan2((v1.get_y() - v2.get_y()), (v1.get_x() - v2.get_x()))
             if not (v1 in self.vertices and v2 in self.vertices):
                 new_polys = running_poly.easy_cut(v1, ang, 0)
-                if new_polys[0].area() > new_polys[1].area():
+                if new_polys[0].is_contained(v3):
                     running_poly = new_polys[0]
                     poly_list.append(new_polys[1])
                 else:

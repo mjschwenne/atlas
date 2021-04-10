@@ -581,7 +581,7 @@ class TestPolygon(unittest.TestCase):
 
     def test_cut_out_1(self):
         poly = Polygon(self.s1ver)
-        polys = poly.cut_out(Polygon([Point(0.25, 0.25), Point(0.75, 0.25), Point(0.75, 0.75), Point(0.25, 0.75)]))
+        polys = poly.cut_out(Polygon([Point(0.25, 0.25), Point(0.75, 0.25), Point(0.85, 0.5), Point(0.75, 0.75), Point(0.25, 0.75)]))
         for p in polys:
             x_list = []
             y_list = []
@@ -592,12 +592,12 @@ class TestPolygon(unittest.TestCase):
             y_list.append(p.vertices[0].get_y())
             plt.plot(x_list, y_list)
         plt.show()
-        self.assertEqual(4, len(polys))
+        self.assertEqual(5, len(polys))
 
     def test_cut_out_gap_1(self):
         poly = Polygon(self.s1ver)
-        polys = poly.cut_out_gap(Polygon([Point(0.25, 0.25), Point(0.75, 0.25), Point(0.75, 0.75), Point(0.25, 0.75)]),
-                                 1)
+        polys = poly.cut_out_gap(Polygon([Point(0.25, 0.25), Point(0.75, 0.25), Point(0.85, 0.5), Point(0.75, 0.75),
+                                          Point(0.25, 0.75)]), 1.1)
         for p in polys:
             x_list = []
             y_list = []
@@ -608,7 +608,7 @@ class TestPolygon(unittest.TestCase):
             y_list.append(p.vertices[0].get_y())
             plt.plot(x_list, y_list)
         plt.show()
-        self.assertEqual(4, len(polys))
+        self.assertEqual(5, len(polys))
 
     def test_is_rectangle_1(self):
         poly = Polygon(self.s1ver)
