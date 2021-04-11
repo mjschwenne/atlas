@@ -547,22 +547,8 @@ class Cathedral(District):
 class Courtyard(District):
 
     def generate_district(self, region):
-        center = region.get_center()
-        points = []
-        for point in region.vertices:
-            length = center.get_x() - point.get_x()
-            if length > 0:
-                new_x = center.get_x() - abs((length * 0.25))
-            else:
-                new_x = center.get_x() + abs((length * 0.25))
-            length = center.get_y() - point.get_y()
-            if length > 0:
-                new_y = center.get_y() - abs((length * 0.25))
-            else:
-                new_y = center.get_y() + abs((length * 0.25))
-            points.append(Point(new_x, new_y))
-
-        region.buildings.append(Polygon(points))
+        center = region.scale_of_polygon(random.uniform(0.04, 0.01))
+        region.buildings.append(center)
 
     # Overrides District's determine Rating
     @staticmethod
