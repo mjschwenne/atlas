@@ -333,10 +333,8 @@ class Armory(BasicDistrict):
             elif isinstance(dis, Precinct):
                 rating += 10
 
-        if region.in_walls(wall):
-            rating += 10
-        if region.in_city(city):
-            rating += 10
+        if not region.in_walls(wall):
+            return -10
 
         return rating
 
@@ -490,10 +488,10 @@ class Cathedral(District):
                 rating += 10
             elif isinstance(dis, Park):
                 rating += 10
-        if region.in_city(city):
-            rating += 10
-        if region.in_walls(wall):
-            rating += 20
+
+        if not region.in_walls(wall):
+            return -10
+
         return rating
 
 
@@ -545,10 +543,9 @@ class Courtyard(District):
                 rating += 10
             elif isinstance(dis, Park):
                 rating += 10
-        if region.in_city(city):
-            rating += 10
-        if region.in_walls(wall):
-            rating += 20
+
+        if not region.in_walls(wall):
+            return -10
         return rating
 
 
@@ -578,6 +575,10 @@ class Farmland(District):
 
         """
         rating = 0
+
+        if region.in_walls(wall):
+            return -100
+
         for reg in neighbor_regions:
             dis = reg.get_district()
             if isinstance(dis, HousingLow):
@@ -592,10 +593,7 @@ class Farmland(District):
                 rating += 10
             elif isinstance(dis, Park):
                 rating += 10
-        if region.in_city(city):
-            rating -= 20
-        if region.in_walls(wall):
-            return -10
+
         return rating
 
 
@@ -631,7 +629,7 @@ class Gate(District):
                 break
         if not on_gate:
             return -10
-        if not region.in_city(city):
+        if not region.in_walls(wall):
             return -10
         return 100
 
@@ -662,6 +660,10 @@ class HousingHigh(BasicDistrict):
 
         """
         rating = 0
+
+        if not region.in_walls(wall):
+            return -10
+
         for reg in neighbor_regions:
             dis = reg.get_district()
             if isinstance(dis, HousingHigh):
@@ -688,10 +690,7 @@ class HousingHigh(BasicDistrict):
                 rating += -10
             elif isinstance(dis, Park):
                 rating += 10
-        if region.in_city(city):
-            rating += 30
-        if region.in_walls(wall):
-            rating += 50
+
         return rating
 
 
@@ -721,6 +720,10 @@ class HousingMid(BasicDistrict):
 
         """
         rating = 0
+
+        if not region.in_walls(wall):
+            return -10
+
         for reg in neighbor_regions:
             dis = reg.get_district()
             if isinstance(dis, HousingHigh):
@@ -741,10 +744,7 @@ class HousingMid(BasicDistrict):
                 rating += -10
             elif isinstance(dis, Park):
                 rating += 10
-        if region.in_city(city):
-            rating += 30
-        if region.in_walls(wall):
-            rating += 20
+
         return rating
 
 
@@ -774,6 +774,10 @@ class HousingLow(BasicDistrict):
 
         """
         rating = 0
+
+        if not region.in_walls(wall):
+            return -10
+
         for reg in neighbor_regions:
             dis = reg.get_district()
             if isinstance(dis, HousingHigh):
@@ -792,8 +796,7 @@ class HousingLow(BasicDistrict):
                 rating += -20
             elif isinstance(dis, Precinct):
                 rating += 10
-        if region.in_city(city):
-            rating += 30
+
         return rating
 
 
@@ -823,6 +826,10 @@ class Industrial(BasicDistrict):
 
         """
         rating = 0
+
+        if not region.in_walls(wall):
+            return -10
+
         for reg in neighbor_regions:
             dis = reg.get_district()
             if isinstance(dis, HousingHigh):
@@ -851,8 +858,7 @@ class Industrial(BasicDistrict):
                 rating += 20
             elif isinstance(dis, Park):
                 rating += -30
-        if region.in_walls(wall):
-            rating += -30
+
         return rating
 
 
@@ -891,6 +897,10 @@ class Market(District):
 
         """
         rating = 0
+
+        if not region.in_walls(wall):
+            return -10
+
         for reg in neighbor_regions:
             dis = reg.get_district()
             if isinstance(dis, HousingHigh):
@@ -915,6 +925,7 @@ class Market(District):
                 rating += 10
             elif isinstance(dis, Gate):
                 rating += 10
+
         return rating
 
 
@@ -994,35 +1005,18 @@ class Park(District):
             The rating of the region for the district
 
         """
-        rating = 0
+        rating = -10
         for reg in neighbor_regions:
             dis = reg.get_district()
             if isinstance(dis, HousingHigh):
                 rating += 10
-            elif isinstance(dis, HousingMid):
-                rating += 10
-            elif isinstance(dis, Industrial):
-                rating += -30
-            elif isinstance(dis, Shops):
-                rating += 10
+            elif isinstance(dis, HousingLow):
+                rating -= 10
             elif isinstance(dis, Slum):
-                rating += -10
-            elif isinstance(dis, Farmland):
-                rating += 10
-            elif isinstance(dis, Market):
-                rating += 10
-            elif isinstance(dis, Cathedral):
-                rating += 10
-            elif isinstance(dis, Castle):
-                rating += 10
-            elif isinstance(dis, Openland):
-                rating += 10
-            elif isinstance(dis, Park):
-                rating += 10
-        if region.in_city(city):
-            rating += 10
-        if region.in_walls(wall):
-            rating += -50
+                rating -= 10
+            elif isinstance(dis, Industrial):
+                rating -= 10
+
         return rating
 
 
@@ -1068,10 +1062,8 @@ class Precinct(District):
                 rating += 10
             elif isinstance(dis, Precinct):
                 rating += -10
-        if region.in_city(city):
-            rating += 10
-        if region.in_walls(wall):
-            rating += 10
+        if not region.in_walls(wall):
+            return -10
         return rating
 
 
@@ -1123,10 +1115,10 @@ class Shops(BasicDistrict):
                 rating += 10
             elif isinstance(dis, Park):
                 rating += 10
-        if region.in_city(city):
-            rating += 20
-        if region.in_walls(wall):
-            rating += 30
+
+        if not region.in_walls(wall):
+            return -10
+
         return rating
 
 

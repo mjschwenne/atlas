@@ -211,7 +211,10 @@ class Constructor:
 
         # if no valid districts makes it OpenLand
         if len(values) == 0:
-            reg.set_district(Openland())
+            if reg.in_walls(wall):
+                reg.set_district(HousingLow(0.6, 0.1, 50))
+            else:
+                reg.set_district(Openland())
         else:
             # randomly selects a district based on the weights/ratings of the districts
             dist = random.choices(districts, k=1, weights=values)
