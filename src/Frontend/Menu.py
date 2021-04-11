@@ -28,6 +28,7 @@ class ResizingCanvas(tk.Canvas):
         self.width = self.winfo_reqwidth()
         self.permheight = self.winfo_reqheight()
         self.permwidth = self.winfo_reqwidth()
+        self.text_height = 6
 
     def resize(self, event):
         """
@@ -48,6 +49,10 @@ class ResizingCanvas(tk.Canvas):
         self.height = event.height
         # rescale all the objects
         self.scale("all", 0, 0, wscale, hscale)
+        #font = self.itemcget("text", "font").split()
+        self.text_height = self.text_height * wscale
+        self.itemconfigure("text", font=("TkTextFont", round(self.text_height)))
+        print(self.text_height)
         return
 
 
@@ -148,12 +153,11 @@ def main():
             file.close()
             return final_string
         else:
-            print(lines[chosen_line])
             final_string = lines[chosen_line]
             file.close()
         return final_string
 
-    def label_regions(map_canvas, verts, string, color):
+    def label_regions(map_canvas, center_verts, width, string, color):
         """
 
         :param map_canvas:
@@ -163,10 +167,11 @@ def main():
         :return:
         """
         i = 0
-        for i in range(len(verts)):
+        for i in range(len(center_verts)):
             if i % 2 == 0:
-                map_canvas.create_text(verts[i], verts[i + 1], text=select_random_name(string[int(i / 2)]),
-                                       font=("TkTextFont", 10), fill=color[int(i / 2)])
+                map_canvas.create_text(center_verts[i], center_verts[i + 1], text=select_random_name(string[int(i / 2)])
+                                       , font=("TkTextFont", 6), fill=color[int(i / 2)], tags='text'
+                                       , width=width[i], anchor=tk.CENTER)
         return
 
     def draw_map(map_canvas):
@@ -210,7 +215,7 @@ def main():
             if isinstance(dis, HousingHigh):
                 switch_val = 3
                 string.append("Housing")
-                color.append('black')
+                color.append('red')
             if isinstance(dis, Slum):
                 switch_val = 4
                 string.append("Slums")
@@ -271,10 +276,19 @@ def main():
                     verts.append(((v.get_y() + 250) / 2) - low_h)
                 draw_region(map_canvas, 12, verts)
         center_verts = []
+        widths = []
         for reg in reg_list:
+            width_verts = []
+            for vertex in reg.get_vertices():
+                width_verts.append(((vertex.get_x() + 250) / 2) - low_w)
+                width_verts.append(((vertex.get_y() + 250) / 2) - low_h)
+            low_rw, high_rw, low_rh, high_rh = find_map_bounds(width_verts)
+            widths.append(high_rw - low_rw)
+            widths.append(high_rh - low_rh)
             center_verts.append(((reg.get_center().get_x() + 250) / 2) - low_w)
             center_verts.append(((reg.get_center().get_y() + 250) / 2) - low_h)
-        label_regions(map_canvas, center_verts, string, color)
+        print(widths)
+        label_regions(map_canvas, center_verts, widths, string, color)
         map_canvas.scale("all", 0, 0, map_canvas.width / w, map_canvas.height / h)
         return
 
