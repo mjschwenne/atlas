@@ -224,7 +224,7 @@ class BasicDistrict(District):
         self.min_building_size = min_building_size
 
     def generate_district(self, region):
-        self.generate_buildings(region, region)
+        self.generate_buildings(region, region.scale_of_polygon(0.95))
 
     def generate_buildings(self, region, section):
         """
@@ -370,7 +370,7 @@ class Castle(District):
         # Break up exterior buildings
         exterior_polys = region.cut_out_gap_2(wall_polygon, 1.2)
         for p in exterior_polys:
-            self.generate_buildings(region, p.scale_of_polygon(0.95), 0.6, 0.2, 1000)
+            self.generate_buildings(region, p.scale_of_polygon(0.95), 0.6, 0.2, 50)
 
     # Overrides District's determine Rating
     @staticmethod
@@ -439,7 +439,7 @@ class Cathedral(District):
         region.buildings.append(center)
         polys = region.cut_out_2(center)
         for e in polys:
-            self.generate_buildings(region, e.scale_of_polygon(0.85), 0.5, 0.1, 1500)
+            self.generate_buildings(region, e.scale_of_polygon(0.85), 0.5, 0.1, 70)
 
 
     # Overrides District's determine Rating
@@ -865,7 +865,7 @@ class Market(District):
         region.buildings.append(center_poly)
         exterior_parts = region.cut_out_2(interior_poly)
         for e in exterior_parts:
-            self.generate_buildings(region, e.scale_of_polygon(0.95), 0.5, 0.1, 1500)
+            self.generate_buildings(region, e.scale_of_polygon(0.95), 0.5, 0.1, 30)
 
     # Overrides District's determine Rating
     @staticmethod

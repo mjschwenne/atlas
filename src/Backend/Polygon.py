@@ -950,6 +950,9 @@ class Polygon:
         i_p1 = Polygon.intersection(p1, ext_p1, edge_p1[0], edge_p1[1])
         i_p2 = Polygon.intersection(p2, ext_p2, edge_p2[0], edge_p2[1])
 
+        if i_p1 is None or i_p2 is None:
+            return Polygon([])
+
         dist_p1_i = p1.simple_distance(i_p1)
         dist_p2_i = p2.simple_distance(i_p2)
 

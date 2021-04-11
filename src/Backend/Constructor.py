@@ -131,7 +131,7 @@ class Constructor:
             armory_val = Armory.determine_rating(reg, neighbors, wall, city)
             if armory_val >= 0:
                 values.append(armory_val + 10)
-                districts.append(Armory(0.8, 0.8, 14000))
+                districts.append(Armory(0.6, 0.1, 100))
         if options[3] == 1:
             castle_val = Castle.determine_rating(reg, neighbors, regions, wall, city)  # special case, needs all regions not
             # just neighbors
@@ -157,17 +157,17 @@ class Constructor:
             housinghigh_val = HousingHigh.determine_rating(reg, neighbors, wall, city)
             if housinghigh_val >= 0:
                 values.append(housinghigh_val + 10)
-                districts.append(HousingHigh(0.2, 0.5, 12000))
+                districts.append(HousingHigh(0.4, 0.4, 120))
         if options[10] == 1:
             housingmid_val = HousingMid.determine_rating(reg, neighbors, wall, city)
             if housingmid_val >= 0:
                 values.append(housingmid_val + 10)
-                districts.append(HousingMid(0.5, 0.4, 8000))
+                districts.append(HousingMid(0.5, 0.2, 80))
         if options[9] == 1:
             housinglow_val = HousingLow.determine_rating(reg, neighbors, wall, city)
             if housinglow_val >= 0:
                 values.append(housinglow_val + 10)
-                districts.append(HousingLow(0.5, 0.3, 400))
+                districts.append(HousingLow(0.6, 0.1, 50))
         if options[12] == 1:
             market_val = Market.determine_rating(reg, neighbors, wall, city)
             if market_val >= 0:
@@ -182,17 +182,17 @@ class Constructor:
             slum_val = Slum.determine_rating(reg, neighbors, wall, city)
             if slum_val >= 0:
                 values.append(slum_val + 10)
-                districts.append(Slum(0.8, 0.01, 1000))
+                districts.append(Slum(0.8, 0.01, 15))
         if options[11] == 1:
             industrial_val = Industrial.determine_rating(reg, neighbors, wall, city)
             if industrial_val >= 0:
                 values.append(industrial_val + 10)
-                districts.append(Industrial(0.1, 0.1, 16000))
+                districts.append(Industrial(0.3, 0.1, 90))
         if options[16] == 1:
             shops_val = Shops.determine_rating(reg, neighbors, wall, city)
             if shops_val >= 0:
                 values.append(shops_val + 10)
-                districts.append(Shops(0.2, 0.2, 10000))
+                districts.append(Shops(0.4, 0.2, 40))
         if options[5] == 1:
             courtyard_val = Courtyard.determine_rating(reg, neighbors, wall, city)
             if courtyard_val >= 0:
