@@ -116,6 +116,23 @@ class District:
             rating -= 100
         return rating
 
+    def generate(self, region, chaos_level, probability_of_empty_space, min_building_size):
+        """
+        Splits a given region into buildings randomly
+
+        Parameters
+        ----------
+        chaos_level : float
+            The chaos_value for how chaotic the buildings are
+        probability_of_empty_space : float
+            The amount of empty space to be made
+        min_building_size : float
+            The minimum building size
+        region : Region
+            The Region to split into buildings that stores the buildings list
+        """
+        self.generate_buildings(region, region, chaos_level, probability_of_empty_space, min_building_size)
+
     def generate_buildings(self, region, section, chaos_level, probability_of_empty_space, min_building_size):
         """
         Splits a given region into buildings randomly
@@ -351,9 +368,9 @@ class Castle(District):
         region.buildings.append(castle)
 
         # Break up exterior buildings
-        exterior_polys = region.cut_out_gap(wall_polygon, 1.1)
+        exterior_polys = region.cut_out_gap_2(wall_polygon, 1.2)
         for p in exterior_polys:
-            self.generate_buildings(region, p, 0.8, 0.1, 1000)
+            self.generate_buildings(region, p.scale_of_polygon(0.95), 0.6, 0.2, 1000)
 
     # Overrides District's determine Rating
     @staticmethod
@@ -903,23 +920,13 @@ class Industrial(BasicDistrict):
 class Market(District):
 
     def generate_district(self, region):
-        center = region.get_center()
-        points = []
-        for point in region.vertices:
-            length = center.get_x() - point.get_x()
-            if length > 0:
-                new_x = center.get_x() - abs((length * 0.65))
-            else:
-                new_x = center.get_x() + abs((length * 0.65))
-            length = center.get_y() - point.get_y()
-            if length > 0:
-                new_y = center.get_y() - abs((length * 0.65))
-            else:
-                new_y = center.get_y() + abs((length * 0.65))
-            points.append(Point(new_x, new_y))
-
-        new_poly = Polygon(points)
-        self.generate_buildings(region, new_poly, 0.5, 0.05, 100)
+        random.seed()
+        interior_poly = region.scale_of_polygon(random.uniform(0.4, 0.7))
+        center_poly = region.scale_of_polygon(random.uniform(0.01, 0.04))
+        region.buildings.append(center_poly)
+        exterior_parts = region.cut_out_2(interior_poly)
+        for e in exterior_parts:
+            self.generate_buildings(region, e.scale_of_polygon(0.95), 0.5, 0.1, 1500)
 
     # Overrides District's determine Rating
     @staticmethod

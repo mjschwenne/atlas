@@ -642,5 +642,159 @@ class TestPolygon(unittest.TestCase):
                 self.assertEqual(True, False)
         self.assertTrue(True)
 
+    def test_easy_cut_2(self):
+        poly = Polygon([Point(2, 8), Point(8, 5), Point(8, 1), Point(7, -2), Point(4, -5), Point(-3, -3), Point(-3, 4)])
+        in_poly = poly.scale_of_polygon(0.5)
+
+        x_list = []
+        y_list = []
+        for v in poly.vertices:
+            x_list.append(v.get_x())
+            y_list.append(v.get_y())
+        x_list.append(poly.vertices[0].get_x())
+        y_list.append(poly.vertices[0].get_y())
+        plt.plot(x_list, y_list)
+
+        x_list = []
+        y_list = []
+        for v in in_poly.vertices:
+            x_list.append(v.get_x())
+            y_list.append(v.get_y())
+        x_list.append(in_poly.vertices[0].get_x())
+        y_list.append(in_poly.vertices[0].get_y())
+        plt.plot(x_list, y_list)
+
+        polys = poly.easy_cut(Point(2.206, 4.672), 2.677945044588987, 0)
+
+        for p in polys:
+            x_list = []
+            y_list = []
+            for v in p.vertices:
+                x_list.append(v.get_x())
+                y_list.append(v.get_y())
+            x_list.append(p.vertices[0].get_x())
+            y_list.append(p.vertices[0].get_y())
+            plt.plot(x_list, y_list)
+        plt.show()
+        self.assertEqual(5, len(polys))
+
+    def test_easy_cut_3(self):
+        poly = Polygon([Point(2, 8), Point(8, 5), Point(8, 1), Point(7, -2), Point(4, -5), Point(-3, -3), Point(-3, 4)])
+        in_poly = poly.scale_of_polygon(0.5)
+
+        x_list = []
+        y_list = []
+        for v in poly.vertices:
+            x_list.append(v.get_x())
+            y_list.append(v.get_y())
+        x_list.append(poly.vertices[0].get_x())
+        y_list.append(poly.vertices[0].get_y())
+        plt.plot(x_list, y_list)
+
+        x_list = []
+        y_list = []
+        for v in in_poly.vertices:
+            x_list.append(v.get_x())
+            y_list.append(v.get_y())
+        x_list.append(in_poly.vertices[0].get_x())
+        y_list.append(in_poly.vertices[0].get_y())
+        plt.plot(x_list, y_list)
+
+        polys = poly.easy_cut(Point(4.935, -0.495), 0.7853981633974478, 0)
+
+        for p in polys:
+            x_list = []
+            y_list = []
+            for v in p.vertices:
+                x_list.append(v.get_x())
+                y_list.append(v.get_y())
+            x_list.append(p.vertices[0].get_x())
+            y_list.append(p.vertices[0].get_y())
+            plt.plot(x_list, y_list)
+        plt.show()
+        self.assertEqual(5, len(polys))
+
+    def test_cut_out_2(self):
+        poly = Polygon([Point(2, 8), Point(8, 5), Point(8, 1), Point(7, -2), Point(4, -5), Point(-3, -3), Point(-3, 4)])
+        in_poly = poly.scale_of_polygon(0.5)
+
+        x_list = []
+        y_list = []
+        for v in poly.vertices:
+            x_list.append(v.get_x())
+            y_list.append(v.get_y())
+        x_list.append(poly.vertices[0].get_x())
+        y_list.append(poly.vertices[0].get_y())
+        plt.plot(x_list, y_list)
+
+        x_list = []
+        y_list = []
+        for v in in_poly.vertices:
+            x_list.append(v.get_x())
+            y_list.append(v.get_y())
+        x_list.append(in_poly.vertices[0].get_x())
+        y_list.append(in_poly.vertices[0].get_y())
+        plt.plot(x_list, y_list)
+
+        polys = poly.cut_out_2(in_poly)
+
+        for p in polys:
+            x_list = []
+            y_list = []
+            for v in p.vertices:
+                x_list.append(v.get_x())
+                y_list.append(v.get_y())
+            x_list.append(p.vertices[0].get_x())
+            y_list.append(p.vertices[0].get_y())
+            plt.plot(x_list, y_list)
+        plt.show()
+        self.assertEqual(5, len(polys))
+
+    def test_cut_out_gap_3(self):
+        poly = Polygon([Point(2, 8), Point(8, 5), Point(8, 1), Point(7, -2), Point(4, -5), Point(-3, -3), Point(-3, 4)])
+        in_poly = poly.scale_of_polygon(0.5)
+
+        x_list = []
+        y_list = []
+        for v in poly.vertices:
+            x_list.append(v.get_x())
+            y_list.append(v.get_y())
+        x_list.append(poly.vertices[0].get_x())
+        y_list.append(poly.vertices[0].get_y())
+        plt.plot(x_list, y_list)
+
+        x_list = []
+        y_list = []
+        for v in in_poly.vertices:
+            x_list.append(v.get_x())
+            y_list.append(v.get_y())
+        x_list.append(in_poly.vertices[0].get_x())
+        y_list.append(in_poly.vertices[0].get_y())
+        plt.plot(x_list, y_list)
+
+        polys = poly.cut_out_gap_2(in_poly, 1.1)
+
+        for p in polys:
+            x_list = []
+            y_list = []
+            for v in p.vertices:
+                x_list.append(v.get_x())
+                y_list.append(v.get_y())
+            x_list.append(p.vertices[0].get_x())
+            y_list.append(p.vertices[0].get_y())
+            plt.plot(x_list, y_list)
+        plt.show()
+        self.assertEqual(5, len(polys))
+
+    def test_is_bordering_2(self):
+        poly = Polygon([Point(2, 8), Point(8, 5), Point(8, 1), Point(7, -2), Point(4, -5), Point(-3, -3), Point(-3, 4)])
+        rect = poly.rectangle_inside(Point(2, 8), Point(8, 5))
+        self.assertTrue(rect.is_bordering(poly))
+
+    def test_is_bordering_3(self):
+        poly = Polygon([Point(2, 8), Point(8, 5), Point(8, 1), Point(7, -2), Point(4, -5), Point(-3, -3), Point(-3, 4)])
+        rect = poly.rectangle_inside(Point(2, 8), Point(8, 5))
+        self.assertTrue(poly.is_bordering(rect))
+
 if __name__ == '__main__':
     unittest.main()

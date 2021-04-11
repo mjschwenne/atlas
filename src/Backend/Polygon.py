@@ -968,6 +968,54 @@ class Polygon:
             new_p = Point(p2.get_x() + dist_p1_i * u.get_x(), p2.get_y() + dist_p1_i * u.get_y())
             return Polygon([p1, i_p1, new_p, p2])
 
+    def furthest_conglomerate_point(self, p):
+        """
+        Finds a point that has the furthest x value among all points in the polygon and has the furthest y value among
+        all points in the polygon
+
+        Parameters
+        ----------
+        p : Point
+            the point to find the furthest point from
+        """
+        x = p.get_x()
+        y = p.get_y()
+        max_point = Point(self.vertices[0].get_x(), self.vertices[0].get_y())
+        max_x_dist = x - max_point.get_x()
+        max_y_dist = y - max_point.get_y()
+        for v in self.vertices:
+            if max_x_dist < x - v.get_x():
+                max_point.set_x(v.get_x())
+                max_x_dist = x - v.get_x()
+            if max_y_dist < y - v.get_y():
+                max_point.set_y(v.get_y())
+                max_y_dist = x - v.get_y()
+        return max_point
+
+    def furthest_bounding_point(self, p):
+        # make bounding polygon
+        g_x = self.vertices[0].get_x()
+        g_y = self.vertices[0].get_y()
+        l_x = self.vertices[0].get_x()
+        l_y = self.vertices[0].get_y()
+        for v in self.vertices:
+            x = v.get_x()
+            y = v.get_y()
+            if x > g_x:
+                g_x = x
+            if x < l_x:
+                l_x = x
+            if y > g_y:
+                g_y = y
+            if y < l_y:
+                l_y = y
+        bound = Polygon([Point(l_x, l_y), Point(g_x, l_y), Point(g_x, g_y), Point(l_x, g_y)])
+        return bound.furthest_point(p)
+
+    def crazy_far_furthest_point(self, p):
+        larger = self.scale_of_polygon(10)
+        return larger.furthest_conglomerate_point(p)
+
     def cut_out(self, interior_polygon):
         """
         Cuts a larger polygon into parts without an interior polygon part
@@ -991,7 +1039,7 @@ class Polygon:
             v2 = interior_polygon.vertices[(i + 1) % len(interior_polygon.vertices)]
             ang = math.atan2((v1.get_y() - v2.get_y()), (v1.get_x() - v2.get_x()))
             if not (v1 in self.vertices and v2 in self.vertices):
-                new_polys = running_poly.easy_cut(v1, ang, 0)
+                new_polys = running_poly.split(v1, ang, 0)
                 print_list("Poly0", new_polys[0].vertices)
                 print_list("Poly1", new_polys[1].vertices)
                 if interior_polygon.inside(new_polys[1]):
@@ -1003,15 +1051,61 @@ class Polygon:
                 print_list("Running Poly", running_poly.vertices)
         return poly_list
 
-    def cut_out_gap(self, interior_polygon, scalar):
+    def cut_out_2(self, interior_polygon):
+        """
+        Cuts out a shape from a larger polygon if the interior polygon is a scaled down version of the larger polygon
+
+        Parameters
+        ----------
+        interior_polygon : Polygon
+            the scaled down version of the larger polygon to cut out
+
+        Returns
+        -------
+        list of Polygons
+            the cut out parts on the exterior of the larger polygon
+        """
+        if len(self.vertices) != len(interior_polygon.vertices):
+            return None
+        # make vertices pairs
+        vertices_pairs = []
+        for i in range(0, len(self.vertices)):
+            v = self.vertices[i]
+            p = interior_polygon.vertices[i]
+            vertices_pairs.append((v, p))
+
+        # make exterior polys
+        poly_list = []
+        for i in range(0, len(vertices_pairs)):
+            p1 = vertices_pairs[i]
+            p2 = vertices_pairs[(i + 1) % len(vertices_pairs)]
+            poly_list.append(Polygon([p1[0], p1[1], p2[1], p2[0]]))
+        return poly_list
+
+    def cut_out_gap_2(self, interior_polygon, scalar):
+        """
+        Cuts out a shape from a larger polygon if the interior polygon is a scaled down version of the larger polygon
+        with a gap
+
+        Parameters
+        ----------
+        interior_polygon : Polygon
+            the scaled down version of the larger polygon to cut out
+        scalar : float
+            the scalar to put on the interior polygon to make the gap
+
+        Returns
+        -------
+        list of Polygons
+            the cut out parts on the exterior of the larger polygon
+        """
         new_interior_polygon = interior_polygon.scale_of_polygon(scalar)
-        return self.cut_out(new_interior_polygon)
+        return self.cut_out_2(new_interior_polygon)
 
     def easy_cut(self, p, ang, gap):
         if self.on_edge(p):
             return self.split(p, ang, gap)
         furthest_point = self.furthest_point(p)
-
         ext_1 = Polygon.find_ext_point(furthest_point, ang, p)
         dist = ext_1.simple_distance(p) * 2
         u = Point(p.get_x() - ext_1.get_x(), p.get_y() - ext_1.get_y())
