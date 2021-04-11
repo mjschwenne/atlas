@@ -1217,6 +1217,19 @@ class Polygon:
         up_down_distance = p.get_y() - center.get_y()
         self.move_polygon_by_center(left_right_distance, up_down_distance)
 
+    def longest_side_and_length(self):
+        longest = [0, 0, 0]
+
+        vertices = self.vertices
+        for i in range(0, len(vertices)):
+            dist = vertices[i].simple_distance(vertices[(i+1) % len(vertices)])
+            if longest[0] < dist:
+                longest[0] = dist
+                longest[1] = vertices[i]
+                longest[2] = vertices[(i+1) % len(vertices)]
+
+        return longest
+
     def __eq__(self, other):
         """
         Test to see if another Polygon is equal to this one.
