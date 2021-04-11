@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter.filedialog import asksaveasfilename
 from tkinter import *
-from PIL import ImageGrab
+from PIL import ImageGrab, Image
+import os
 
 from src.Backend.Constructor import Constructor
 from src.Backend.District import *
@@ -436,11 +437,15 @@ def main():
                  ('All Files', '*.*'),
                  ('Text Document', '*.txt')]
         file = asksaveasfilename(filetypes=files, defaultextension=files)
-        x = canvas.winfo_rootx()
-        y = canvas.winfo_rooty()
-        w = x + canvas.width
-        h = y + canvas.height
-        ImageGrab.grab(bbox=(x, y, w, h)).save(file)
+        # x = canvas.winfo_rootx()
+        # y = canvas.winfo_rooty()
+        # w = x + canvas.width
+        # h = y + canvas.height
+        # print(f"Grabbing screen from ({x}, {y}) to ({w}, {h})")
+        # ImageGrab.grab(bbox=(x, y, w, h)).save(file)
+        canvas.postscript(file="./postscript.ps")
+        Image.open("./postscript.ps").save(file)
+        os.remove("./postscript.ps")
         return
 
     # create the window object
