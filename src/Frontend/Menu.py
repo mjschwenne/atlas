@@ -429,7 +429,6 @@ def main():
         y = canvas.winfo_rooty()
         w = x + canvas.width
         h = y + canvas.height
-
         ImageGrab.grab(bbox=(x, y, w, h)).save(file)
         return
 

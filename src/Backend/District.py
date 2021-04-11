@@ -437,11 +437,9 @@ class Cathedral(District):
     def generate_district(self, region):
         center = region.scale_of_polygon(random.uniform(0.2, 0.3))
         region.buildings.append(center)
-        lsl = region.longest_side_and_length()
-        print(lsl[0])
-        polys = region.cut_out_gap_2(center, (lsl[0] * random.uniform(0.2, 0.3)))
+        polys = region.cut_out_2(center)
         for e in polys:
-            self.generate_buildings(region, e.scale_of_polygon(0.95), 0.5, 0.1, 1500)
+            self.generate_buildings(region, e.scale_of_polygon(0.85), 0.5, 0.1, 1500)
 
 
     # Overrides District's determine Rating
