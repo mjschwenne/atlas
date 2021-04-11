@@ -142,7 +142,7 @@ def main():
     def select_random_name(string):
         final_string = string
         try:
-            file = open(string + ".txt", "r")
+            file = open("names/" + string + ".txt", "r")
             lines = file.readlines()
             chosen_line = random.randint(0, len(lines) - 1)
         except OSError as err:
@@ -171,7 +171,7 @@ def main():
             if i % 2 == 0:
                 map_canvas.create_text(center_verts[i], center_verts[i + 1], text=select_random_name(string[int(i / 2)])
                                        , font=("TkTextFont", 6), fill=color[int(i / 2)], tags='text'
-                                       , width=width[i], anchor=tk.CENTER)
+                                       , anchor=tk.CENTER) #width=width[i],
         return
 
     def draw_map(map_canvas):
