@@ -597,7 +597,7 @@ class Farmland(District):
         return rating
 
 
-class Gate(District):
+class Gate(BasicDistrict):
 
     # Overrides District's determine Rating
     @staticmethod
@@ -1021,6 +1021,16 @@ class Park(District):
 
 
 class Precinct(District):
+
+    def generate_district(self, region):
+        center = region.scale_of_polygon(random.uniform(0.2, 0.3))
+        move_scale = region.get_perimeter() * 0.03
+        center.move_polygon_by_center(random.uniform(-move_scale, move_scale),
+                                      random.uniform(-move_scale, move_scale))
+        region.buildings.append(center)
+        polys = region.cut_out_2(center)
+        for e in polys:
+            self.generate_buildings(region, e.scale_of_polygon(0.8), 0.4, 0.2, 50)
 
     # Overrides District's determine Rating
     @staticmethod

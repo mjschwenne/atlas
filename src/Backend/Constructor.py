@@ -61,6 +61,8 @@ class Constructor:
                     reg.get_district().generate_district(reg)
                 elif isinstance(reg.get_district(), Cathedral):
                     reg.get_district().generate_district(reg)
+                elif isinstance(reg.get_district(), Precinct):
+                    reg.get_district().generate_district(reg)
         print(datetime.now())
         return regions
 
@@ -152,7 +154,7 @@ class Constructor:
             gate_val = Gate.determine_rating(reg, neighbors, wall, city)
             if gate_val >= 0:
                 values.append(gate_val + 10)
-                districts.append(Gate())
+                districts.append(Gate(0.7, 0.04, 20))
         if options[8] == 1:
             housinghigh_val = HousingHigh.determine_rating(reg, neighbors, wall, city)
             if housinghigh_val >= 0:
