@@ -260,6 +260,72 @@ class TestPolygon(unittest.TestCase):
         """
         self.assertEqual(False, self.poly_ex_1.is_contained(Point(1, 1)))
 
+    def test_poly_is_contained_2_1(self):
+        """
+        The first test in an exhaustive test of is_contained on poly_ex_1 for point (-8, 5)
+        """
+        self.assertEqual(False, self.poly_ex_1.is_contained_2(Point(-8, 5)))
+
+    def test_poly_is_contained_2_2(self):
+        """
+        The second test in an exhaustive test of is_contained on poly_ex_1 for point (-12, 2)
+        """
+        self.assertEqual(False, self.poly_ex_1.is_contained_2(Point(-12, 2)))
+
+    def test_poly_is_contained_2_3(self):
+        """
+        The third test in an exhaustive test of is_contained on poly_ex_1 for point (-8, 2)
+        """
+        self.assertEqual(True, self.poly_ex_1.is_contained_2(Point(-8, 2)))
+
+    def test_poly_is_contained_2_4(self):
+        """
+        The fourth test in an exhaustive test of is_contained on poly_ex_1 for point (-9, -1)
+        """
+        self.assertEqual(False, self.poly_ex_1.is_contained_2(Point(-9, -1)))
+
+    def test_poly_is_contained_2_5(self):
+        """
+        The fifth test in an exhaustive test of is_contained on poly_ex_1 for point (-5, -1)
+        """
+        self.assertEqual(True, self.poly_ex_1.is_contained_2(Point(-5, -1)))
+
+    def test_poly_is_contained_2_6(self):
+        """
+        The sixth test in an exhaustive test of is_contained on poly_ex_1 for point (-3.5, -1)
+        """
+        self.assertEqual(True, self.poly_ex_1.is_contained_2(Point(-3.5, -1)))
+
+    def test_poly_is_contained_2_7(self):
+        """
+        The seventh test in an exhaustive test of is_contained on poly_ex_1 for point (-5, 2)
+        """
+        self.assertEqual(True, self.poly_ex_1.is_contained_2(Point(-5, 2)))
+
+    def test_poly_is_contained_2_8(self):
+        """
+        The eighth test in an exhaustive test of is_contained on poly_ex_1 for point (-5, 1)
+        """
+        self.assertEqual(True, self.poly_ex_1.is_contained_2(Point(-5, 1)))
+
+    def test_poly_is_contained_2_9(self):
+        """
+        The ninth test in an exhaustive test of is_contained on poly_ex_1 for point (-4, 4)
+        """
+        self.assertEqual(True, self.poly_ex_1.is_contained_2(Point(-4, 4)))
+
+    def test_poly_is_contained_2_10(self):
+        """
+        The 10th test in an exhaustive test of is_contained on poly_ex_1 for point (1, 2)
+        """
+        self.assertEqual(False, self.poly_ex_1.is_contained_2(Point(1, 2)))
+
+    def test_poly_is_contained_2_11(self):
+        """
+        The 11th test in an exhaustive test of is_contained on poly_ex_1 for point (1, 1)
+        """
+        self.assertEqual(False, self.poly_ex_1.is_contained_2(Point(1, 1)))
+
     def test_bounding_box_bug(self):
         """
         First test of edge case found in Voronoi.py
