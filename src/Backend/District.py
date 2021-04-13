@@ -352,7 +352,7 @@ class Castle(District):
 
         max_area_poly = wall_polygon.rectangle_inside(wall_polygon.vertices[0], wall_polygon.vertices[1])
         max_area = max_area_poly.area()
-        for i in range(0, len(wall_polygon.vertices)):
+        for i in range(1, len(wall_polygon.vertices)):
             v1 = wall_polygon.vertices[i]
             v2 = wall_polygon.vertices[(i + 1) % len(wall_polygon.vertices)]
             new_poly = wall_polygon.rectangle_inside(v1, v2)
@@ -368,7 +368,7 @@ class Castle(District):
         # Break up exterior buildings
         exterior_polys = region.cut_out_gap_2(wall_polygon, 1.2)
         for p in exterior_polys:
-            self.generate_buildings(region, p.scale_of_polygon(0.95), 0.6, 0.2, 50)
+            self.generate_buildings(region, p.scale_of_polygon(0.9), 0.6, 0.2, 50)
 
     # Overrides District's determine Rating
     @staticmethod

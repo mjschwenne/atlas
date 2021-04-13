@@ -198,8 +198,8 @@ class DistrictGenerationTests(unittest.TestCase):
         self.assertEqual(True, True)
 
     def test_castle_district_generation_2(self):
-        region = Region(Castle(), [Point(200, 800), Point(800, 500), Point(800, 100), Point(700, -200),
-                                   Point(400, -500), Point(-300, -300), Point(-300, 400)], False, False)
+        region = Region(Castle(), [Point(20, 80), Point(80, 50), Point(80, 10), Point(70, -20),
+                                   Point(40, -50), Point(-30, -30), Point(-30, 40)], False, False)
         region.get_district().generate_district(region)
 
         buildings = region.buildings
