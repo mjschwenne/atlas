@@ -862,5 +862,47 @@ class TestPolygon(unittest.TestCase):
         rect = poly.rectangle_inside(Point(2, 8), Point(8, 5))
         self.assertTrue(poly.is_bordering(rect))
 
+    def test_is_contained_farm(self):
+        bug_point = Point(88.992, -6.42)
+        wall = Polygon([Point(116.829, -71.724), Point(40.128, 108.207), Point(-61.608, 136.867),
+                        Point(-101.976, 110.547), Point(-144.196, 39.086), Point(-126.228, -92.155),
+                        Point(-48.001, -141.752), Point(111.945, -109.57)])
+        self.assertEqual(True, wall.is_contained(bug_point))
+
+    def test_intersects_farm(self):
+        p1 = Point(116.829, -71.724)
+        q1 = Point(40.128, 108.207)
+        p2 = Point(88.992, -6.40)
+        q2 = Point(116.829, -6.42)
+        self.assertEqual(True, Polygon.intersects(p1, q1, p2, q2))
+
+    def test_inside_1(self):
+        wall = Polygon([Point(0, 130), Point(-110, 90), Point(-140, 0), Point(-10, -120), Point(60, -120),
+                        Point(120, -100), Point(140, -60), Point(120, -10)])
+        center = Polygon([Point(20, 50), Point(40, -20), Point(0, -40), Point(-40, -20), Point(-40, 40)])
+        outer_in_1 = Polygon([Point(0, -40), Point(40, -20), Point(120, -100), Point(60, -20), Point(-10, -120)])
+        outer_in_2 = Polygon([Point(0, -40), Point(-10, -120), Point(-140, 0), Point(-40, -20)])
+        outer_in_3 = Polygon([Point(-140, 0), Point(-110, 90), Point(-40, 40), Point(-40, -20)])
+        outer_in_4 = Polygon([Point(-40, 40), Point(-110, 90), Point(0, 130), Point(20, 50)])
+        outer_in_5 = Polygon([Point(0, 130), Point(120, -10), Point(140, -60),
+                              Point(120, -100), Point(40, -20), Point(20, 50)])
+        outer_1 = Polygon([Point(0, 130), Point(0, 190), Point(140, 190), Point(140,-60)])
+
+        wall2 = Polygon([Point(116.829, -71.724), Point(40.128, 108.207), Point(-61.608, 136.867),
+                         Point(-101.976, 110.547), Point(-144.196, 39.086), Point(-126.228, -92.155),
+                         Point(-48.001, -141.752), Point(111.945, -109.57)])
+        farm1 = Polygon([Point(111.945, -109.57), Point(116.829, -71.724), Point(88.992, -6.42),
+                         Point(41.334, -26.522), Point(20.32, -48.148), Point(33.673, -125.319)])
+        farm2 = Polygon([Point(41.334, -26.522), Point(88.992, -6.42), Point(76.829, 22.111),
+                         Point(67.621, 43.712), Point(18.626, 26.361), Point(19.128, -8.703)])
+        # self.assertEqual(True, center.inside(wall))
+        # self.assertEqual(True, outer_in_1.inside(wall))
+        # self.assertEqual(True, outer_in_2.inside(wall))
+        # self.assertEqual(True, outer_in_3.inside(wall))
+        # self.assertEqual(True, outer_in_4.inside(wall))
+        # self.assertEqual(True, outer_in_5.inside(wall))
+        self.assertEqual(True, farm1.inside(wall2))
+        self.assertEqual(True, farm2.inside(wall2))
+
 if __name__ == '__main__':
     unittest.main()
