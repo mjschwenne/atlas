@@ -85,7 +85,7 @@ class District:
         return self.min_building_size
 
     @staticmethod
-    def determine_rating(region, neighbor_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall):
         """
         Determines the likely hood a given district will be in a region
 
@@ -97,8 +97,6 @@ class District:
             Every other region
         wall : Wall
             The wall of the city
-        city : Polygon
-            The Polygon Representing the City
 
         Returns
         -------
@@ -110,8 +108,6 @@ class District:
         for reg in neighbor_regions:
             if isinstance(reg.get_district(), District):
                 rating += 1
-        if region.in_city(city):
-            rating -= 100
         if region.in_walls(wall):
             rating -= 100
         return rating
@@ -224,6 +220,14 @@ class BasicDistrict(District):
         self.min_building_size = min_building_size
 
     def generate_district(self, region):
+        """
+        Generates the buildings for the district within the middle 95% of the area
+
+        Parameters
+        ----------
+        region : Region
+            The region to assign buildings to
+        """
         self.generate_buildings(region, region.scale_of_polygon(0.95))
 
     def generate_buildings(self, region, section):
@@ -294,7 +298,7 @@ class Armory(BasicDistrict):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, neighbor_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall):
         """
         Determines the likely hood a given district will be in a region
 
@@ -306,9 +310,6 @@ class Armory(BasicDistrict):
             Every other region
         wall : Wall
             The wall of the city
-        city : Polygon
-            The Polygon Representing the City
-
         Returns
         -------
         integer
@@ -341,6 +342,14 @@ class Armory(BasicDistrict):
 
 class Castle(District):
     def generate_district(self, region):
+        """
+        Generates the buildings for the district
+
+        Parameters
+        ----------
+        region : Region
+            The region to assign buildings to
+        """
         # Generate interior polygon used to generate castle structure (is castle walls)
         random.seed()
 
@@ -372,7 +381,7 @@ class Castle(District):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, neighbors, other_regions, wall, city):
+    def determine_rating(region, neighbors, other_regions, wall):
         """
         Determines the likely hood a given district will be in a region
 
@@ -386,8 +395,6 @@ class Castle(District):
             Every other region
         wall : Wall
             The wall of the city
-        city : Polygon
-            The Polygon Representing the City
 
         Returns
         -------
@@ -433,16 +440,23 @@ class Castle(District):
 class Cathedral(District):
 
     def generate_district(self, region):
+        """
+        Generates the buildings for the district
+
+        Parameters
+        ----------
+        region : Region
+            The region to assign buildings to
+        """
         center = region.scale_of_polygon(random.uniform(0.2, 0.3))
         region.buildings.append(center)
         polys = region.cut_out_2(center)
         for e in polys:
             self.generate_buildings(region, e.scale_of_polygon(0.85), 0.5, 0.1, 70)
 
-
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, neighbor_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall):
         """
         Determines the likely hood a given district will be in a region
 
@@ -454,8 +468,6 @@ class Cathedral(District):
             Every other region
         wall : Wall
             The wall of the city
-        city : Polygon
-            The Polygon Representing the City
 
         Returns
         -------
@@ -498,12 +510,20 @@ class Cathedral(District):
 class Courtyard(District):
 
     def generate_district(self, region):
+        """
+        Generates the buildings for the district
+
+        Parameters
+        ----------
+        region : Region
+            The region to assign buildings to
+        """
         center = region.scale_of_polygon(random.uniform(0.04, 0.01))
         region.buildings.append(center)
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, neighbor_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall):
         """
         Determines the likely hood a given district will be in a region
 
@@ -515,8 +535,6 @@ class Courtyard(District):
             Every other region
         wall : Wall
             The wall of the city
-        city : Polygon
-            The Polygon Representing the City
 
         Returns
         -------
@@ -553,7 +571,7 @@ class Farmland(District):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, neighbor_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall):
         """
         Determines the likely hood a given district will be in a region
 
@@ -565,8 +583,6 @@ class Farmland(District):
             Every other region
         wall : Wall
             The wall of the city
-        city : Polygon
-            The Polygon Representing the City
 
         Returns
         -------
@@ -601,7 +617,7 @@ class Gate(BasicDistrict):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, neighbor_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall):
         """
         Determines the likely hood a given district will be in a region
 
@@ -613,8 +629,6 @@ class Gate(BasicDistrict):
             Every other region
         wall : Wall
             The wall of the city
-        city : Polygon
-            The Polygon Representing the City
 
         Returns
         -------
@@ -638,7 +652,7 @@ class HousingHigh(BasicDistrict):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, neighbor_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall):
         """
         Determines the likely hood a given district will be in a region
 
@@ -650,8 +664,6 @@ class HousingHigh(BasicDistrict):
             Every other region
         wall : Wall
             The wall of the city
-        city : Polygon
-            The Polygon Representing the City
 
         Returns
         -------
@@ -698,7 +710,7 @@ class HousingMid(BasicDistrict):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, neighbor_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall):
         """
         Determines the likely hood a given district will be in a region
 
@@ -710,8 +722,6 @@ class HousingMid(BasicDistrict):
             Every other region
         wall : Wall
             The wall of the city
-        city : Polygon
-            The Polygon Representing the City
 
         Returns
         -------
@@ -752,7 +762,7 @@ class HousingLow(BasicDistrict):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, neighbor_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall):
         """
         Determines the likely hood a given district will be in a region
 
@@ -764,8 +774,6 @@ class HousingLow(BasicDistrict):
             Every other region
         wall : Wall
             The wall of the city
-        city : Polygon
-            The Polygon Representing the City
 
         Returns
         -------
@@ -804,7 +812,7 @@ class Industrial(BasicDistrict):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, neighbor_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall):
         """
         Determines the likely hood a given district will be in a region
 
@@ -816,8 +824,6 @@ class Industrial(BasicDistrict):
             Every other region
         wall : Wall
             The wall of the city
-        city : Polygon
-            The Polygon Representing the City
 
         Returns
         -------
@@ -865,6 +871,14 @@ class Industrial(BasicDistrict):
 class Market(District):
 
     def generate_district(self, region):
+        """
+        Generates the buildings for the district
+
+        Parameters
+        ----------
+        region : Region
+            The region to assign buildings to
+        """
         random.seed()
         interior_poly = region.scale_of_polygon(random.uniform(0.4, 0.7))
         center_poly = region.scale_of_polygon(random.uniform(0.01, 0.04))
@@ -875,7 +889,7 @@ class Market(District):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, neighbor_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall):
         """
         Determines the likely hood a given district will be in a region
 
@@ -887,8 +901,7 @@ class Market(District):
             Every other region
         wall : Wall
             The wall of the city
-        city : Polygon
-            The Polygon Representing the City
+
 
         Returns
         -------
@@ -933,7 +946,7 @@ class Openland(District):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, neighbor_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall):
         """
         Determines the likely hood a given district will be in a region
 
@@ -945,8 +958,6 @@ class Openland(District):
             Every other region
         wall : Wall
             The wall of the city
-        city : Polygon
-            The Polygon Representing the City
 
         Returns
         -------
@@ -973,10 +984,8 @@ class Openland(District):
                 rating += 10
             elif isinstance(dis, Park):
                 rating += 10
-        if region.in_city(city):
-            rating += -40
         if region.in_walls(wall):
-            rating += -100
+            return -10
         return rating
 
 
@@ -984,7 +993,7 @@ class Park(District):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, neighbor_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall):
         """
         Determines the likely hood a given district will be in a region
 
@@ -996,8 +1005,6 @@ class Park(District):
             Every other region
         wall : Wall
             The wall of the city
-        city : Polygon
-            The Polygon Representing the City
 
         Returns
         -------
@@ -1023,6 +1030,14 @@ class Park(District):
 class Precinct(District):
 
     def generate_district(self, region):
+        """
+        Generates the buildings for the district
+
+        Parameters
+        ----------
+        region : Region
+            The region to assign buildings to
+        """
         center = region.scale_of_polygon(random.uniform(0.2, 0.3))
         move_scale = region.get_perimeter() * 0.03
         center.move_polygon_by_center(random.uniform(-move_scale, move_scale),
@@ -1034,7 +1049,7 @@ class Precinct(District):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, neighbor_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall):
         """
         Determines the likely hood a given district will be in a region
 
@@ -1046,14 +1061,11 @@ class Precinct(District):
             Every other region
         wall : Wall
             The wall of the city
-        city : Polygon
-            The Polygon Representing the City
 
         Returns
         -------
         integer
             The rating of the region for the district
-
         """
         rating = 0
         for reg in neighbor_regions:
@@ -1081,7 +1093,7 @@ class Shops(BasicDistrict):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, neighbor_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall):
         """
         Determines the likely hood a given district will be in a region
 
@@ -1093,8 +1105,6 @@ class Shops(BasicDistrict):
             Every other region
         wall : Wall
             The wall of the city
-        city : Polygon
-            The Polygon Representing the City
 
         Returns
         -------
@@ -1136,7 +1146,7 @@ class Slum(BasicDistrict):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, neighbor_regions, wall, city):
+    def determine_rating(region, neighbor_regions, wall):
         """
         Determines the likely hood a given district will be in a region
 
@@ -1148,8 +1158,6 @@ class Slum(BasicDistrict):
             Every other region
         wall : Wall
             The wall of the city
-        city : Polygon
-            The Polygon Representing the City
 
         Returns
         -------

@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from src.Backend.District import *
 from src.Backend.Voronoi import Voronoi
 from src.Backend.Infrastructure import Infrastructure
@@ -66,12 +64,8 @@ class Constructor:
         # creates a wall and city, which modifies the graph to have the wall be a convex hull of points and shifts
         # the graph so the wall does not intersect any regions
         wall = Infrastructure(regions, vor.graph, bounding_polygon)
-        wall2 = Infrastructure(regions, vor.graph, bounding_polygon)
-        city = Polygon(wall2.get_vertices())
 
-
-
-        self.assign_districts(regions, wall, city, options)
+        self.assign_districts(regions, wall, options)
 
         # generates buildings if enabled
         if options[2] == 1:
@@ -91,7 +85,7 @@ class Constructor:
         return regions
 
     @staticmethod
-    def assign_districts(regions, wall, city, options):
+    def assign_districts(regions, wall, options):
         """
         Assigns the provided regions a district at sudo-random order, taking into account the wall and city bounds
 
@@ -103,8 +97,6 @@ class Constructor:
             Regions to have districts assigned
         wall : Infrastructure
             The wall of the city
-        city : Polygon
-            The polygon representing the city bounds
         """
 
         # Clears out the previously stored regions if any
@@ -113,7 +105,7 @@ class Constructor:
 
         # Assigns a district to each Region
         for reg in regions:
-            Constructor.assign_district(reg, regions, wall, city, options)
+            Constructor.assign_district(reg, regions, wall, options)
 
         # Loops over the districts to do an initial placement of districts, and sees if a district must be forced placed
         # due to a lack of an any districts being valid
@@ -122,11 +114,11 @@ class Constructor:
         for reg in regions:
             neighbors = reg.get_neighbors()
             if isinstance(reg.get_district(), Castle):
-                rating = reg.get_district().determine_rating(reg, neighbors, regions, wall, city)
+                rating = reg.get_district().determine_rating(reg, neighbors, regions, wall)
             else:
-                rating = reg.get_district().determine_rating(reg, neighbors, wall, city)
+                rating = reg.get_district().determine_rating(reg, neighbors, wall)
             if rating < 0:
-                force = Constructor.assign_district(reg, regions, wall, city, options)
+                force = Constructor.assign_district(reg, regions, wall, options)
                 change = True
                 if force:
                     forced += 1
@@ -138,17 +130,17 @@ class Constructor:
             for reg in regions:
                 neighbors = reg.get_neighbors()
                 if isinstance(reg.get_district(), Castle):
-                    rating = reg.get_district().determine_rating(reg, neighbors, regions, wall, city)
+                    rating = reg.get_district().determine_rating(reg, neighbors, regions, wall)
                 else:
-                    rating = reg.get_district().determine_rating(reg, neighbors, wall, city)
+                    rating = reg.get_district().determine_rating(reg, neighbors, wall)
                 if rating < 0:
-                    force = Constructor.assign_district(reg, regions, wall, city, options)
+                    force = Constructor.assign_district(reg, regions, wall, options)
                     change = True
                     if force:
                         forced += 1
 
     @staticmethod
-    def assign_district(reg, regions, wall, city, options):
+    def assign_district(reg, regions, wall, options):
         """
         Assigns a district to a region based on Ratings
 
@@ -162,8 +154,6 @@ class Constructor:
             All of the Regions on the map
         wall : Infrastructure
             The City wall
-        city : Polygon
-            The polygon representing the city limits
         """
 
         # Gets the rating for every District
@@ -173,83 +163,83 @@ class Constructor:
 
         # if a district is a valid option, it gets its score, and adds it to the list
         if options[1] == 1:
-            armory_val = Armory.determine_rating(reg, neighbors, wall, city)
+            armory_val = Armory.determine_rating(reg, neighbors, wall)
             if armory_val >= 0:
                 values.append(armory_val + 10)
                 districts.append(Armory(0.6, 0.1, 100))
         if options[3] == 1:
-            castle_val = Castle.determine_rating(reg, neighbors, regions, wall, city)  # special case, needs all
+            castle_val = Castle.determine_rating(reg, neighbors, regions, wall)  # special case, needs all
             # regions not just neighbors
             if castle_val >= 0:
                 values.append(castle_val + 10)
                 districts.append(Castle())
         if options[4] == 1:
-            cathedral_val = Cathedral.determine_rating(reg, neighbors, wall, city)
+            cathedral_val = Cathedral.determine_rating(reg, neighbors, wall)
             if cathedral_val >= 0:
                 values.append(cathedral_val + 10)
                 districts.append(Cathedral())
         if options[6] == 1:
-            farmland_val = Farmland.determine_rating(reg, neighbors, wall, city)
+            farmland_val = Farmland.determine_rating(reg, neighbors, wall)
             if farmland_val >= 0:
                 values.append(farmland_val + 10)
                 districts.append(Farmland())
         if options[7] == 1:
-            gate_val = Gate.determine_rating(reg, neighbors, wall, city)
+            gate_val = Gate.determine_rating(reg, neighbors, wall)
             if gate_val >= 0:
                 values.append(gate_val + 10)
                 districts.append(Gate(0.7, 0.04, 20))
         if options[8] == 1:
-            housinghigh_val = HousingHigh.determine_rating(reg, neighbors, wall, city)
+            housinghigh_val = HousingHigh.determine_rating(reg, neighbors, wall)
             if housinghigh_val >= 0:
                 values.append(housinghigh_val + 10)
                 districts.append(HousingHigh(0.4, 0.4, 120))
         if options[10] == 1:
-            housingmid_val = HousingMid.determine_rating(reg, neighbors, wall, city)
+            housingmid_val = HousingMid.determine_rating(reg, neighbors, wall)
             if housingmid_val >= 0:
                 values.append(housingmid_val + 10)
                 districts.append(HousingMid(0.5, 0.2, 80))
         if options[9] == 1:
-            housinglow_val = HousingLow.determine_rating(reg, neighbors, wall, city)
+            housinglow_val = HousingLow.determine_rating(reg, neighbors, wall)
             if housinglow_val >= 0:
                 values.append(housinglow_val + 10)
                 districts.append(HousingLow(0.6, 0.1, 50))
         if options[12] == 1:
-            market_val = Market.determine_rating(reg, neighbors, wall, city)
+            market_val = Market.determine_rating(reg, neighbors, wall)
             if market_val >= 0:
                 values.append(market_val + 10)
                 districts.append(Market())
         if options[15] == 1:
-            precinct_val = Precinct.determine_rating(reg, neighbors, wall, city)
+            precinct_val = Precinct.determine_rating(reg, neighbors, wall)
             if precinct_val >= 0:
                 values.append(precinct_val + 10)
                 districts.append(Precinct())
         if options[17] == 1:
-            slum_val = Slum.determine_rating(reg, neighbors, wall, city)
+            slum_val = Slum.determine_rating(reg, neighbors, wall)
             if slum_val >= 0:
                 values.append(slum_val + 10)
                 districts.append(Slum(0.8, 0.01, 15))
         if options[11] == 1:
-            industrial_val = Industrial.determine_rating(reg, neighbors, wall, city)
+            industrial_val = Industrial.determine_rating(reg, neighbors, wall)
             if industrial_val >= 0:
                 values.append(industrial_val + 10)
                 districts.append(Industrial(0.3, 0.1, 90))
         if options[16] == 1:
-            shops_val = Shops.determine_rating(reg, neighbors, wall, city)
+            shops_val = Shops.determine_rating(reg, neighbors, wall)
             if shops_val >= 0:
                 values.append(shops_val + 10)
                 districts.append(Shops(0.4, 0.2, 40))
         if options[5] == 1:
-            courtyard_val = Courtyard.determine_rating(reg, neighbors, wall, city)
+            courtyard_val = Courtyard.determine_rating(reg, neighbors, wall)
             if courtyard_val >= 0:
                 values.append(courtyard_val + 10)
                 districts.append(Courtyard())
         if options[13] == 1:
-            openland_val = Openland.determine_rating(reg, neighbors, wall, city)
+            openland_val = Openland.determine_rating(reg, neighbors, wall)
             if openland_val >= 0:
                 values.append(openland_val + 10)
                 districts.append(Openland())
         if options[14] == 1:
-            park_val = Park.determine_rating(reg, neighbors, wall, city)
+            park_val = Park.determine_rating(reg, neighbors, wall)
             if park_val >= 0:
                 values.append(park_val + 10)
                 districts.append(Park())
