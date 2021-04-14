@@ -59,15 +59,17 @@ class Constructor:
         for poly in polygons:
             regions.append(Region(None, poly.get_vertices(), False, False))
 
+        # finds each regions neighboring regions
+        for reg in regions:
+             reg.find_neighbors(regions)
+
         # creates a wall and city, which modifies the graph to have the wall be a convex hull of points and shifts
         # the graph so the wall does not intersect any regions
         wall = Infrastructure(regions, vor.graph, bounding_polygon)
         wall2 = Infrastructure(regions, vor.graph, bounding_polygon)
         city = Polygon(wall2.get_vertices())
 
-        # finds each regions neighboring regions
-        for reg in regions:
-            reg.find_neighbors(regions)
+
 
         self.assign_districts(regions, wall, city, options)
 
