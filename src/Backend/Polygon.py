@@ -43,49 +43,6 @@ def _three_point_orientation(p1, p2, p3):
         return 2
 
 
-def _intersects(p1, q1, p2, q2):
-    """
-    Returns true if line segment from p1 to q1 intersects line segment from p2 to q2
-
-    Parameters
-    ----------
-    p1 : Point
-        The first point in the first line segment
-    q1 : Point
-        The second point in the first line segment
-    p2 : Point
-        The first point in the second line segment
-    q2 : Point
-        The second point in the second line segment
-
-    Returns
-    -------
-    bool
-        True if the line segment from p1 to q1 intersects line segment from p2 to q2
-    """
-    p1_q1_p2_or = _three_point_orientation(p1, q1, p2)  # Orientation between p1, q1, p2
-    p1_q1_q2_or = _three_point_orientation(p1, q1, q2)  # Orientation between p1, q1, p2
-
-    p2_q2_p1_or = _three_point_orientation(p2, q2, p1)  # Orientation between p2, q2, p1
-    p2_q2_q1_or = _three_point_orientation(p2, q2, q1)  # Orientation between p2, q2, q1
-
-    # General case
-    if p1_q1_p2_or != p1_q1_q2_or and p2_q2_p1_or != p2_q2_q1_or:
-        return True
-
-    # Special cases
-    if p1_q1_p2_or == 0 and Polygon.in_segment(p1, q1, p2):
-        return True
-    if p1_q1_q2_or == 0 and Polygon.in_segment(p1, q1, q2):
-        return True
-    if p2_q2_p1_or == 0 and Polygon.in_segment(p2, q2, p1):
-        return True
-    if p2_q2_q1_or == 0 and Polygon.in_segment(p2, q2, q1):
-        return True
-
-    return False
-
-
 def clockwise_order(vertices):
     """
     Given a list of vertices, return them ordered in clockwise order
@@ -212,6 +169,49 @@ class Polygon:
         perm += self.vertices[length].simple_distance(self.vertices[0])
 
         return perm
+
+    @staticmethod
+    def intersects(p1, q1, p2, q2):
+        """
+        Returns true if line segment from p1 to q1 intersects line segment from p2 to q2
+
+        Parameters
+        ----------
+        p1 : Point
+            The first point in the first line segment
+        q1 : Point
+            The second point in the first line segment
+        p2 : Point
+            The first point in the second line segment
+        q2 : Point
+            The second point in the second line segment
+
+        Returns
+        -------
+        bool
+            True if the line segment from p1 to q1 intersects line segment from p2 to q2
+        """
+        p1_q1_p2_or = _three_point_orientation(p1, q1, p2)  # Orientation between p1, q1, p2
+        p1_q1_q2_or = _three_point_orientation(p1, q1, q2)  # Orientation between p1, q1, p2
+
+        p2_q2_p1_or = _three_point_orientation(p2, q2, p1)  # Orientation between p2, q2, p1
+        p2_q2_q1_or = _three_point_orientation(p2, q2, q1)  # Orientation between p2, q2, q1
+
+        # General case
+        if p1_q1_p2_or != p1_q1_q2_or and p2_q2_p1_or != p2_q2_q1_or:
+            return True
+
+        # Special cases
+        if p1_q1_p2_or == 0 and Polygon.in_segment(p1, q1, p2):
+            return True
+        if p1_q1_q2_or == 0 and Polygon.in_segment(p1, q1, q2):
+            return True
+        if p2_q2_p1_or == 0 and Polygon.in_segment(p2, q2, p1):
+            return True
+        if p2_q2_q1_or == 0 and Polygon.in_segment(p2, q2, q1):
+            return True
+
+        return False
 
     def get_center(self):
         """
