@@ -1,4 +1,3 @@
-import random
 from datetime import datetime
 
 from src.Backend.District import *
@@ -23,8 +22,21 @@ class Constructor:
     """
 
     def generate_map(self, options):
-        print(datetime.now())
+        """
+        Generates a random map, with the provided options.
+
+        Parameters
+        ----------
+        options : list of ints
+            The user options that control what districts are allowed, and if buildings are made
+        Returns
+        -------
+
+        """
+        # creates a fixed bounding polygon size
         bounding_polygon = Polygon([Point(250, 250), Point(250, -250), Point(-250, -250), Point(-250, 250)])
+
+        # decides how many districts are generated
         num_district = 10
         var1 = options[0]
         if var1 == 2:
@@ -35,20 +47,31 @@ class Constructor:
             num_district = 75
         elif var1 == 5:
             num_district = 100
+
+        # creates the Voronoi diagram with the required dimensions and then relaxes it twice
         vor = Voronoi(num_district, bounding_polygon)
         vor.relax()
         vor.relax()
 
+        # gets the polygons and makes them into regions
         polygons = vor.polygons
         regions = []
         for poly in polygons:
             regions.append(Region(None, poly.get_vertices(), False, False))
-        for reg in regions:
-            reg.find_neighbors(regions)
+
+        # creates a wall and city, which modifies the graph to have the wall be a convex hull of points and shifts
+        # the graph so the wall does not intersect any regions
         wall = Infrastructure(regions, vor.graph, bounding_polygon)
         wall2 = Infrastructure(regions, vor.graph, bounding_polygon)
         city = Polygon(wall2.get_vertices())
+
+        # finds each regions neighboring regions
+        for reg in regions:
+            reg.find_neighbors(regions)
+
         self.assign_districts(regions, wall, city, options)
+
+        # generates buildings if enabled
         if options[2] == 1:
             for reg in regions:
                 if isinstance(reg.get_district(), BasicDistrict):
@@ -63,7 +86,6 @@ class Constructor:
                     reg.get_district().generate_district(reg)
                 elif isinstance(reg.get_district(), Precinct):
                     reg.get_district().generate_district(reg)
-        print(datetime.now())
         return regions
 
     @staticmethod
@@ -91,7 +113,8 @@ class Constructor:
         for reg in regions:
             Constructor.assign_district(reg, regions, wall, city, options)
 
-        # Loops over the districts to ensure valid placement at every location until all assignments are valid
+        # Loops over the districts to do an initial placement of districts, and sees if a district must be forced placed
+        # due to a lack of an any districts being valid
         change = False
         forced = 0
         for reg in regions:
@@ -106,7 +129,8 @@ class Constructor:
                 if force:
                     forced += 1
 
-        # used to prevent infinite running when minimal districts allowed
+        # checks to make sure all placements are either valid or were forced into its spot, if there were any changes
+        # it will keep checking and making changes til none are forced or no changes are made
         while change and forced == 0:
             change = False
             for reg in regions:
@@ -145,14 +169,15 @@ class Constructor:
         values = []
         districts = []
 
+        # if a district is a valid option, it gets its score, and adds it to the list
         if options[1] == 1:
             armory_val = Armory.determine_rating(reg, neighbors, wall, city)
             if armory_val >= 0:
                 values.append(armory_val + 10)
                 districts.append(Armory(0.6, 0.1, 100))
         if options[3] == 1:
-            castle_val = Castle.determine_rating(reg, neighbors, regions, wall, city)  # special case, needs all regions not
-            # just neighbors
+            castle_val = Castle.determine_rating(reg, neighbors, regions, wall, city)  # special case, needs all
+            # regions not just neighbors
             if castle_val >= 0:
                 values.append(castle_val + 10)
                 districts.append(Castle())
