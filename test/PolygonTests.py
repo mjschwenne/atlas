@@ -3,6 +3,7 @@ import unittest
 import math
 
 from src.Backend.Polygon import Polygon
+import src.Backend.Polygon as Poly
 from src.Backend.Point import Point
 
 import matplotlib.pyplot as plt
@@ -260,72 +261,6 @@ class TestPolygon(unittest.TestCase):
         """
         self.assertEqual(False, self.poly_ex_1.is_contained(Point(1, 1)))
 
-    def test_poly_is_contained_2_1(self):
-        """
-        The first test in an exhaustive test of is_contained on poly_ex_1 for point (-8, 5)
-        """
-        self.assertEqual(False, self.poly_ex_1.is_contained_2(Point(-8, 5)))
-
-    def test_poly_is_contained_2_2(self):
-        """
-        The second test in an exhaustive test of is_contained on poly_ex_1 for point (-12, 2)
-        """
-        self.assertEqual(False, self.poly_ex_1.is_contained_2(Point(-12, 2)))
-
-    def test_poly_is_contained_2_3(self):
-        """
-        The third test in an exhaustive test of is_contained on poly_ex_1 for point (-8, 2)
-        """
-        self.assertEqual(True, self.poly_ex_1.is_contained_2(Point(-8, 2)))
-
-    def test_poly_is_contained_2_4(self):
-        """
-        The fourth test in an exhaustive test of is_contained on poly_ex_1 for point (-9, -1)
-        """
-        self.assertEqual(False, self.poly_ex_1.is_contained_2(Point(-9, -1)))
-
-    def test_poly_is_contained_2_5(self):
-        """
-        The fifth test in an exhaustive test of is_contained on poly_ex_1 for point (-5, -1)
-        """
-        self.assertEqual(True, self.poly_ex_1.is_contained_2(Point(-5, -1)))
-
-    def test_poly_is_contained_2_6(self):
-        """
-        The sixth test in an exhaustive test of is_contained on poly_ex_1 for point (-3.5, -1)
-        """
-        self.assertEqual(True, self.poly_ex_1.is_contained_2(Point(-3.5, -1)))
-
-    def test_poly_is_contained_2_7(self):
-        """
-        The seventh test in an exhaustive test of is_contained on poly_ex_1 for point (-5, 2)
-        """
-        self.assertEqual(True, self.poly_ex_1.is_contained_2(Point(-5, 2)))
-
-    def test_poly_is_contained_2_8(self):
-        """
-        The eighth test in an exhaustive test of is_contained on poly_ex_1 for point (-5, 1)
-        """
-        self.assertEqual(True, self.poly_ex_1.is_contained_2(Point(-5, 1)))
-
-    def test_poly_is_contained_2_9(self):
-        """
-        The ninth test in an exhaustive test of is_contained on poly_ex_1 for point (-4, 4)
-        """
-        self.assertEqual(True, self.poly_ex_1.is_contained_2(Point(-4, 4)))
-
-    def test_poly_is_contained_2_10(self):
-        """
-        The 10th test in an exhaustive test of is_contained on poly_ex_1 for point (1, 2)
-        """
-        self.assertEqual(False, self.poly_ex_1.is_contained_2(Point(1, 2)))
-
-    def test_poly_is_contained_2_11(self):
-        """
-        The 11th test in an exhaustive test of is_contained on poly_ex_1 for point (1, 1)
-        """
-        self.assertEqual(False, self.poly_ex_1.is_contained_2(Point(1, 1)))
-
     def test_bounding_box_bug(self):
         """
         First test of edge case found in Voronoi.py
@@ -563,7 +498,8 @@ class TestPolygon(unittest.TestCase):
 
     def test_in_segment(self):
         self.assertEqual(200.00000000, round(200.00000000000003, 8))
-        self.assertEqual(True, Polygon.in_segment(Point(-200, 200), Point(200, 200), Point(-179.9948605683313, 200.00000000000003)))
+        self.assertEqual(True, Polygon.in_segment(Point(-200, 200), Point(200, 200),
+                                                  Point(-179.9948605683313, 200.00000000000003)))
 
     def test_rectangle_in_1(self):
         poly = Polygon(self.s1ver)
@@ -647,7 +583,8 @@ class TestPolygon(unittest.TestCase):
 
     def test_cut_out_1(self):
         poly = Polygon(self.s1ver)
-        polys = poly.cut_out(Polygon([Point(0.25, 0.25), Point(0.75, 0.25), Point(0.85, 0.5), Point(0.75, 0.75), Point(0.25, 0.75)]))
+        polys = poly.cut_out(
+            Polygon([Point(0.25, 0.25), Point(0.75, 0.25), Point(0.85, 0.5), Point(0.75, 0.75), Point(0.25, 0.75)]))
         for p in polys:
             x_list = []
             y_list = []
@@ -677,10 +614,10 @@ class TestPolygon(unittest.TestCase):
         self.assertEqual(5, len(polys))
 
     def test_cut_out_gap_2(self):
-        poly = Polygon([Point(-6, 12), Point(6,12), Point(6, -2), Point(-6, -2)])
+        poly = Polygon([Point(-6, 12), Point(6, 12), Point(6, -2), Point(-6, -2)])
         polys = poly.cut_out_gap(Polygon([Point(0, 0), Point(-2, 1), Point(-4, 3), Point(-5, 5), Point(-4, 7),
                                           Point(-2, 9), Point(0, 10), Point(2, 9), Point(4, 7), Point(5, 5), Point(4, 3)
-                                          , Point(2, 1)]), 0.9)
+                                             , Point(2, 1)]), 0.9)
         for p in polys:
             x_list = []
             y_list = []
@@ -872,9 +809,9 @@ class TestPolygon(unittest.TestCase):
     def test_intersects_farm(self):
         p1 = Point(116.829, -71.724)
         q1 = Point(40.128, 108.207)
-        p2 = Point(88.992, -6.40)
+        p2 = Point(88.992, -6.42)
         q2 = Point(116.829, -6.42)
-        self.assertEqual(True, Polygon.intersects(p1, q1, p2, q2))
+        self.assertEqual(True, Poly._intersects(p1, q1, p2, q2))
 
     def test_inside_1(self):
         wall = Polygon([Point(0, 130), Point(-110, 90), Point(-140, 0), Point(-10, -120), Point(60, -120),
@@ -886,7 +823,7 @@ class TestPolygon(unittest.TestCase):
         outer_in_4 = Polygon([Point(-40, 40), Point(-110, 90), Point(0, 130), Point(20, 50)])
         outer_in_5 = Polygon([Point(0, 130), Point(120, -10), Point(140, -60),
                               Point(120, -100), Point(40, -20), Point(20, 50)])
-        outer_1 = Polygon([Point(0, 130), Point(0, 190), Point(140, 190), Point(140,-60)])
+        outer_1 = Polygon([Point(0, 130), Point(0, 190), Point(140, 190), Point(140, -60)])
 
         wall2 = Polygon([Point(116.829, -71.724), Point(40.128, 108.207), Point(-61.608, 136.867),
                          Point(-101.976, 110.547), Point(-144.196, 39.086), Point(-126.228, -92.155),
@@ -903,6 +840,11 @@ class TestPolygon(unittest.TestCase):
         # self.assertEqual(True, outer_in_5.inside(wall))
         self.assertEqual(True, farm1.inside(wall2))
         self.assertEqual(True, farm2.inside(wall2))
+
+    def test_is_contained_voronoi_crash_case(self):
+        bounding_box = Polygon([Point(-200, 200), Point(200, 200), Point(200, -200), Point(-200, -200)])
+        self.assertEqual(True, bounding_box.is_contained(Point(-64.81280162899874, -96.50447600402764)))
+
 
 if __name__ == '__main__':
     unittest.main()

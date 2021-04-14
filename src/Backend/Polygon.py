@@ -43,6 +43,51 @@ def _three_point_orientation(p1, p2, p3):
         return 2
 
 
+def _intersects(p1, p2, q1, q2):
+    """
+    Returns true if line segment from p1 to q1 intersects line segment from p2 to q2
+
+    Parameters
+    ----------
+    p1 : Point
+        The first point in the first line segment
+    p2 : Point
+        The second point in the first line segment
+    q1 : Point
+        The first point in the second line segment
+    q2 : Point
+        The second point in the second line segment
+
+    Returns
+    -------
+    bool
+        True if the line segment from p1 to q1 intersects line segment from p2 to q2
+    """
+    # Convert the points into ndarrays
+    p_start = np.array([[p1.get_x()], [p1.get_y()]])
+    p_end = np.array([[p2.get_x()], [p2.get_y()]])
+    q_start = np.array([[q1.get_x()], [q1.get_y()]])
+    q_end = np.array([[q2.get_x()], [q2.get_y()]])
+    # Create the coefficient and constant matrices
+    a = np.concatenate((p_end - p_start, np.array([[-1]]) * (q_end - q_start)), axis=1)
+    b = q_start - p_start
+    # Solve AX = b
+    try:
+        intersection = np.linalg.solve(a, b)
+    except np.linalg.LinAlgError:
+        # The two segments are parallel, but possibly collinear (parts of the same line)
+        # If the two segments are collinear and overlapping then one of the endpoints of one is 'wrapped'
+        # by endpoints of the other. If they are collinear and not overlapping then they are not in the same
+        # segment and we return false after the else.
+        if Polygon.in_segment(p1, p2, q1) or Polygon.in_segment(p1, p2, q1):
+            return True
+    else:
+        if 0 <= intersection[0][0] <= 1 and 0 <= intersection[1][0] <= 1:
+            return True
+
+    return False
+
+
 def clockwise_order(vertices):
     """
     Given a list of vertices, return them ordered in clockwise order
@@ -169,49 +214,6 @@ class Polygon:
         perm += self.vertices[length].simple_distance(self.vertices[0])
 
         return perm
-
-    @staticmethod
-    def intersects(p1, q1, p2, q2):
-        """
-        Returns true if line segment from p1 to q1 intersects line segment from p2 to q2
-
-        Parameters
-        ----------
-        p1 : Point
-            The first point in the first line segment
-        q1 : Point
-            The second point in the first line segment
-        p2 : Point
-            The first point in the second line segment
-        q2 : Point
-            The second point in the second line segment
-
-        Returns
-        -------
-        bool
-            True if the line segment from p1 to q1 intersects line segment from p2 to q2
-        """
-        p1_q1_p2_or = _three_point_orientation(p1, q1, p2)  # Orientation between p1, q1, p2
-        p1_q1_q2_or = _three_point_orientation(p1, q1, q2)  # Orientation between p1, q1, p2
-
-        p2_q2_p1_or = _three_point_orientation(p2, q2, p1)  # Orientation between p2, q2, p1
-        p2_q2_q1_or = _three_point_orientation(p2, q2, q1)  # Orientation between p2, q2, q1
-
-        # General case
-        if p1_q1_p2_or != p1_q1_q2_or and p2_q2_p1_or != p2_q2_q1_or:
-            return True
-
-        # Special cases
-        if p1_q1_p2_or == 0 and Polygon.in_segment(p1, q1, p2):
-            return True
-        if p1_q1_q2_or == 0 and Polygon.in_segment(p1, q1, q2):
-            return True
-        if p2_q2_p1_or == 0 and Polygon.in_segment(p2, q2, p1):
-            return True
-        if p2_q2_q1_or == 0 and Polygon.in_segment(p2, q2, q1):
-            return True
-
-        return False
 
     def get_center(self):
         """
@@ -418,75 +420,6 @@ class Polygon:
 
         # If the ray intersected an odd amount of times the point is inside, if not it is outside
         return intersect_count % 2 == 1
-
-    def is_contained_2(self, point):
-        """
-        A rewritten version of `is_contained()` using a modified version of the ray-casting algorithm using
-        parametrized linear equations to detect and bound intersections.
-
-        Similar to __find_bounds in Voronoi
-
-        Parameters
-        ----------
-        point : Point
-            The point we wish to determine is inside or outside the polygon
-
-        Returns
-        -------
-        bool
-            True if the point is inside or on the edge of this polygon
-        """
-        if point in self.vertices:
-            return True
-
-        # Use point to create a ray pointing due right
-        ray_start = np.array([[point.get_x()], [point.get_y()]])
-        ray_slope = np.array([[1], [0]])
-        # Test with each line segment in the vertex list of the polygon
-        intersection_count = 0
-        # To avoid double intersections, track which vertices we intersect at the vertex
-        problem_set = set()
-        len_vertices = len(self.vertices)
-        for v in range(len_vertices):
-            # Create the line segment for this edge of the polygon
-            vertex = self.vertices[v]
-            next_vertex = self.vertices[(v + 1) % len_vertices]
-            segment_start = np.array([[vertex.get_x()], [vertex.get_y()]])
-            segment_end = np.array([[next_vertex.get_x()], [next_vertex.get_y()]])
-
-            # Create the coefficient matrix of the system of equations
-            a = np.concatenate((ray_slope, np.array([[-1]]) * (segment_end - segment_start)), axis=1)
-            # Create constant matrix
-            b = segment_start - ray_start
-            print(f"Testing ({point.get_x()}, {point.get_y()}) against segment ({self.vertices[v].get_x()},{self.vertices[v].get_y()}) --- ({self.vertices[next_vertex].get_x()},{self.vertices[next_vertex].get_y()})")
-            try:
-                intersection = np.linalg.solve(a, b)
-            except np.linalg.LinAlgError:
-                print("Singular matrix")
-                if Polygon.in_segment(self.vertices[v], self.vertices[next_vertex], point) and \
-                        (self.vertices[v] not in problem_set and self.vertices[next_vertex] not in problem_set):
-                    problem_set.add(self.vertices[v])
-                    problem_set.add(self.vertices[next_vertex])
-                    print("Accepted Intersection")
-                    intersection_count += 1
-            else:
-                print(f"Intersection detected with t for ray at {intersection[0][0]} and t for segment at {intersection[1][0]}")
-                print(f"{a} \n*\n {intersection} \n=\n {b}")
-                if round(intersection[0][0], 8) >= 0 and 0 <= round(intersection[1][0], 8) <= 1:
-                    if round(intersection[1][0], 8) == 0. and self.vertices[v] not in problem_set:
-                        problem_set.add(self.vertices[v])
-                        print("Accepted Intersection")
-                        intersection_count += 1
-                    elif round(intersection[1][0], 8) == 1 and self.vertices[next_vertex] not in problem_set:
-                        problem_set.add(self.vertices[next_vertex])
-                        print("Accepted Intersection")
-                        intersection_count += 1
-                    elif self.vertices[v] not in problem_set and self.vertices[next_vertex] not in problem_set:
-                        print("Accepted Intersection")
-                        intersection_count += 1
-
-        print(f"Intersection Count for ({point.get_x()}, {point.get_y()}) was {intersection_count}. Return {intersection_count % 2 == 1}")
-        return intersection_count % 2 == 1
 
     def is_bordering(self, other):
         """
@@ -908,9 +841,9 @@ class Polygon:
         """
         simple_dist = initial_p.simple_distance(furthest_point)
         if (ang % (math.pi / 2)) == 0 and (ang % math.pi) != 0:
-            return Point(initial_p.get_x(), initial_p.get_y()+simple_dist)
+            return Point(initial_p.get_x(), initial_p.get_y() + simple_dist)
         elif (ang % math.pi) == 0:
-            return Point(initial_p.get_x()+simple_dist, initial_p.get_y())
+            return Point(initial_p.get_x() + simple_dist, initial_p.get_y())
         else:
             m = round(math.tan(ang), 8)
             n = initial_p.get_y() - (m * initial_p.get_x())
@@ -978,7 +911,7 @@ class Polygon:
         bool
             True if the polygon is a rectangle
         """
-        pi2 = math.pi/2
+        pi2 = math.pi / 2
         pi = math.pi
         for i in range(0, len(self.vertices)):
             v1 = self.vertices[i]
@@ -1295,11 +1228,11 @@ class Polygon:
 
         vertices = self.vertices
         for i in range(0, len(vertices)):
-            dist = vertices[i].simple_distance(vertices[(i+1) % len(vertices)])
+            dist = vertices[i].simple_distance(vertices[(i + 1) % len(vertices)])
             if longest[0] < dist:
                 longest[0] = dist
                 longest[1] = vertices[i]
-                longest[2] = vertices[(i+1) % len(vertices)]
+                longest[2] = vertices[(i + 1) % len(vertices)]
 
         return longest
 
