@@ -92,8 +92,22 @@ class Constructor:
             Constructor.assign_district(reg, regions, wall, city, options)
 
         # Loops over the districts to ensure valid placement at every location until all assignments are valid
-        change = True
-        while change:
+        change = False
+        forced = 0
+        for reg in regions:
+            neighbors = reg.get_neighbors()
+            if isinstance(reg.get_district(), Castle):
+                rating = reg.get_district().determine_rating(reg, neighbors, regions, wall, city)
+            else:
+                rating = reg.get_district().determine_rating(reg, neighbors, wall, city)
+            if rating < 0:
+                force = Constructor.assign_district(reg, regions, wall, city, options)
+                change = True
+                if force:
+                    forced += 1
+
+        # used to prevent infinite running when minimal districts allowed
+        while change and forced == 0:
             change = False
             for reg in regions:
                 neighbors = reg.get_neighbors()
@@ -102,8 +116,10 @@ class Constructor:
                 else:
                     rating = reg.get_district().determine_rating(reg, neighbors, wall, city)
                 if rating < 0:
-                    Constructor.assign_district(reg, regions, wall, city, options)
+                    force = Constructor.assign_district(reg, regions, wall, city, options)
                     change = True
+                    if force:
+                        forced += 1
 
     @staticmethod
     def assign_district(reg, regions, wall, city, options):
@@ -217,7 +233,9 @@ class Constructor:
                 reg.set_district(HousingLow(0.6, 0.1, 50))
             else:
                 reg.set_district(Openland())
+            return True
         else:
             # randomly selects a district based on the weights/ratings of the districts
             dist = random.choices(districts, k=1, weights=values)
             reg.set_district(dist[0])
+            return False
