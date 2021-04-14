@@ -1,4 +1,5 @@
 import math
+import numpy as np
 from src.Backend.Point import Point
 
 
@@ -417,6 +418,60 @@ class Polygon:
 
         # If the ray intersected an odd amount of times the point is inside, if not it is outside
         return intersect_count % 2 == 1
+
+    def is_contained_2(self, point):
+        """
+        A rewritten version of `is_contained()` using a modified version of the ray-casting algorithm using
+        parametrized linear equations to detect and bound intersections.
+
+        Similar to __find_bounds in Voronoi
+
+        Parameters
+        ----------
+        point : Point
+            The point we wish to determine is inside or outside the polygon
+
+        Returns
+        -------
+        bool
+            True if the point is inside or on the edge of this polygon
+        """
+        if point in self.vertices:
+            return True
+
+        # Use point to create a ray pointing due right
+        ray_start = np.array([[point.get_x()], [point.get_y()]])
+        ray_slope = np.array([[1], [0]])
+        # Test with each line segment in the vertex list of the polygon
+        intersection_count = 0
+        len_vertices = len(self.vertices)
+        for v in range(len_vertices):
+            # Create the line segment for this edge of the polygon
+            next_vertex = (v + 1) % len_vertices
+            segment_start = np.array([[self.vertices[v].get_x()], [self.vertices[v].get_y()]])
+            segment_end = np.array([[self.vertices[next_vertex].get_x()], [self.vertices[next_vertex].get_y()]])
+
+            # Create the coefficient matrix of the system of equations
+            a = np.concatenate((ray_slope, np.array([[-1]]) * (segment_end - segment_start)), axis=1)
+            # Create constant matrix
+            b = segment_start - ray_start
+
+            try:
+                intersection = np.linalg.solve(a, b)
+            except np.linalg.LinAlgError:
+                print("Singular matrix")
+                if Polygon.in_segment(self.vertices[v], self.vertices[next_vertex], point):
+                    print("Accepted Intersection")
+                    intersection_count += 1
+            else:
+                print(f"Intersection detected with t for ray at {intersection[0][0]} and t for segment ({self.vertices[v].get_x()},{self.vertices[v].get_y()}) -- ({self.vertices[next_vertex].get_x()},{self.vertices[next_vertex].get_y()}) at {intersection[1][0]}")
+                print(f"{a} \n*\n {intersection} \n=\n {b}")
+                if round(intersection[0][0], 8) >= 0 and 0 <= round(intersection[1][0], 8) <= 1:
+                    print("Accepted Intersection")
+                    intersection_count += 1
+
+        print(f"Intersection Count for ({point.get_x()}, {point.get_y()}) was {intersection_count}. Return {intersection_count % 2 == 1}")
+        return intersection_count % 2 == 1
 
     def is_bordering(self, other):
         """
