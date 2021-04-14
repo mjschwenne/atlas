@@ -9,6 +9,8 @@ from src.Backend.District import *
 
 user_info = [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 customize_info = [0, 1]
+map_regions = []
+
 
 class ResizingCanvas(tk.Canvas):
     """
@@ -28,7 +30,7 @@ class ResizingCanvas(tk.Canvas):
         self.width = self.winfo_reqwidth()
         self.permheight = self.winfo_reqheight()
         self.permwidth = self.winfo_reqwidth()
-        self.text_height = 6
+        self.text_height = 2
 
     def resize(self, event):
         """
@@ -52,7 +54,6 @@ class ResizingCanvas(tk.Canvas):
         #font = self.itemcget("text", "font").split()
         self.text_height = self.text_height * wscale
         self.itemconfigure("text", font=("TkTextFont", round(self.text_height)))
-        print(self.text_height)
         return
 
 
@@ -157,7 +158,7 @@ def main():
             file.close()
         return final_string
 
-    def label_regions(map_canvas, center_verts, width, string, color):
+    def label_regions(map_canvas, center_verts, string, color):
         """
 
         :param map_canvas:
@@ -169,9 +170,12 @@ def main():
         i = 0
         for i in range(len(center_verts)):
             if i % 2 == 0:
-                map_canvas.create_text(center_verts[i], center_verts[i + 1], text=select_random_name(string[int(i / 2)])
-                                       , font=("TkTextFont", 6), fill=color[int(i / 2)], tags='text'
-                                       , anchor=tk.CENTER) #width=width[i],
+                map_regions.append(select_random_name(string[int(i / 2)]))
+                map_canvas.create_rectangle(center_verts[i] - 2, center_verts[i + 1] - 2, center_verts[i] + 2,
+                                            center_verts[i + 1] + 2, fill="#ebd5b3", tags='label')
+                map_canvas.create_text(center_verts[i], center_verts[i + 1], text=int(i / 2) + 1
+                                       , font=("TkTextFont", int(map_canvas.text_height)), fill=color[int(i / 2)],
+                                       tags=('text', 'label'), anchor=tk.CENTER)
         return
 
     def draw_map(map_canvas):
@@ -180,6 +184,7 @@ def main():
         :param map_canvas: The canvas to be drawn on
         :return: null
         """
+        map_regions.clear()
         map_canvas.delete("all")
         reg_list = Constructor().generate_map(user_info)
 
@@ -215,7 +220,7 @@ def main():
             if isinstance(dis, HousingHigh):
                 switch_val = 3
                 string.append("Housing")
-                color.append('red')
+                color.append('black')
             if isinstance(dis, Slum):
                 switch_val = 4
                 string.append("Slums")
@@ -276,19 +281,10 @@ def main():
                     verts.append(((v.get_y() + 250) / 2) - low_h)
                 draw_region(map_canvas, 12, verts)
         center_verts = []
-        widths = []
         for reg in reg_list:
-            width_verts = []
-            for vertex in reg.get_vertices():
-                width_verts.append(((vertex.get_x() + 250) / 2) - low_w)
-                width_verts.append(((vertex.get_y() + 250) / 2) - low_h)
-            low_rw, high_rw, low_rh, high_rh = find_map_bounds(width_verts)
-            widths.append(high_rw - low_rw)
-            widths.append(high_rh - low_rh)
             center_verts.append(((reg.get_center().get_x() + 250) / 2) - low_w)
             center_verts.append(((reg.get_center().get_y() + 250) / 2) - low_h)
-        print(widths)
-        label_regions(map_canvas, center_verts, widths, string, color)
+        label_regions(map_canvas, center_verts, string, color)
         map_canvas.scale("all", 0, 0, map_canvas.width / w, map_canvas.height / h)
         return
 
@@ -314,8 +310,19 @@ def main():
         key.geometry('400x400')
         key.iconbitmap('../../images/Atlas.ico')
         Label(key, text="ATLAS District Key", font="Helvetica 16 bold", bg="#a3a3a3").pack(side=TOP)
-        Label(key, text="This is filler text till I know what to write here").pack()
-        Button(key, text="Close", command=key.destroy).pack()
+        scrollbar = Scrollbar(key)
+        scrollbar.pack(side=RIGHT, fill='y')
+        region_list = Listbox(key, yscrollcommand=scrollbar.set)
+        region_list.pack(side=LEFT, fill=BOTH, expand=1, padx=5, pady=5)
+        scrollbar.config(command=region_list.yview)
+        if not map_regions:
+            region_list.insert(END, "No Map has been Generated")
+        else:
+            i = 0
+            for name in map_regions:
+                i += 1
+                region_list.insert(END, str(i) + ". " + name)
+
 
     def edit_msg():
         """
