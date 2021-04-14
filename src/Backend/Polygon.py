@@ -444,31 +444,46 @@ class Polygon:
         ray_slope = np.array([[1], [0]])
         # Test with each line segment in the vertex list of the polygon
         intersection_count = 0
+        # To avoid double intersections, track which vertices we intersect at the vertex
+        problem_set = set()
         len_vertices = len(self.vertices)
         for v in range(len_vertices):
             # Create the line segment for this edge of the polygon
-            next_vertex = (v + 1) % len_vertices
-            segment_start = np.array([[self.vertices[v].get_x()], [self.vertices[v].get_y()]])
-            segment_end = np.array([[self.vertices[next_vertex].get_x()], [self.vertices[next_vertex].get_y()]])
+            vertex = self.vertices[v]
+            next_vertex = self.vertices[(v + 1) % len_vertices]
+            segment_start = np.array([[vertex.get_x()], [vertex.get_y()]])
+            segment_end = np.array([[next_vertex.get_x()], [next_vertex.get_y()]])
 
             # Create the coefficient matrix of the system of equations
             a = np.concatenate((ray_slope, np.array([[-1]]) * (segment_end - segment_start)), axis=1)
             # Create constant matrix
             b = segment_start - ray_start
-
+            print(f"Testing ({point.get_x()}, {point.get_y()}) against segment ({self.vertices[v].get_x()},{self.vertices[v].get_y()}) --- ({self.vertices[next_vertex].get_x()},{self.vertices[next_vertex].get_y()})")
             try:
                 intersection = np.linalg.solve(a, b)
             except np.linalg.LinAlgError:
                 print("Singular matrix")
-                if Polygon.in_segment(self.vertices[v], self.vertices[next_vertex], point):
+                if Polygon.in_segment(self.vertices[v], self.vertices[next_vertex], point) and \
+                        (self.vertices[v] not in problem_set and self.vertices[next_vertex] not in problem_set):
+                    problem_set.add(self.vertices[v])
+                    problem_set.add(self.vertices[next_vertex])
                     print("Accepted Intersection")
                     intersection_count += 1
             else:
-                print(f"Intersection detected with t for ray at {intersection[0][0]} and t for segment ({self.vertices[v].get_x()},{self.vertices[v].get_y()}) -- ({self.vertices[next_vertex].get_x()},{self.vertices[next_vertex].get_y()}) at {intersection[1][0]}")
+                print(f"Intersection detected with t for ray at {intersection[0][0]} and t for segment at {intersection[1][0]}")
                 print(f"{a} \n*\n {intersection} \n=\n {b}")
                 if round(intersection[0][0], 8) >= 0 and 0 <= round(intersection[1][0], 8) <= 1:
-                    print("Accepted Intersection")
-                    intersection_count += 1
+                    if round(intersection[1][0], 8) == 0. and self.vertices[v] not in problem_set:
+                        problem_set.add(self.vertices[v])
+                        print("Accepted Intersection")
+                        intersection_count += 1
+                    elif round(intersection[1][0], 8) == 1 and self.vertices[next_vertex] not in problem_set:
+                        problem_set.add(self.vertices[next_vertex])
+                        print("Accepted Intersection")
+                        intersection_count += 1
+                    elif self.vertices[v] not in problem_set and self.vertices[next_vertex] not in problem_set:
+                        print("Accepted Intersection")
+                        intersection_count += 1
 
         print(f"Intersection Count for ({point.get_x()}, {point.get_y()}) was {intersection_count}. Return {intersection_count % 2 == 1}")
         return intersection_count % 2 == 1

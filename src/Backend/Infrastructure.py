@@ -48,7 +48,7 @@ def bfs_path(G, source, destination):
     return queue
 
 
-def move_vertex(region, vertex, new_vertex,vert_dict):
+def move_vertex(region, vertex, new_vertex, vert_dict):
     """
     Move the vertex in the region, and update that same vertex in the neighbours of the region
 
