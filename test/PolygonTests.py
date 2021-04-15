@@ -554,11 +554,12 @@ class TestPolygon(unittest.TestCase):
         self.assertEqual(True, True)
 
     def test_intersect_segment(self):
-        p1 = Point(78.087, 78.087)
-        p2 = Point(328.087, 78.087)
-        p3 = Point(328.087, 328.087)
-        p4 = Point(328.087, 78.087)
-        self.assertEqual(True, Polygon.intersect_segment(p2, p1, p4, p3))
+        p1 = Point(80, 80)
+        p2 = Point(400, 200)
+        p3 = Point(80, 400)
+        p4 = Point(400, 0)
+        does_intersect, intersection = Poly._intersects(p2, p1, p4, p3)
+        self.assertEqual(True, does_intersect)
 
     def test_intersecting_edge_1(self):
         poly = Polygon([Point(78.087, 78.087), Point(328.087, 78.087), Point(328.087, 328.087), Point(78.087, 328.087)])
@@ -599,7 +600,7 @@ class TestPolygon(unittest.TestCase):
 
     def test_cut_out_gap_1(self):
         poly = Polygon(self.s1ver)
-        polys = poly.cut_out_gap(Polygon([Point(0.25, 0.25), Point(0.75, 0.25), Point(0.85, 0.5), Point(0.75, 0.75),
+        polys = poly.cut_out_gap_2(Polygon([Point(0.25, 0.25), Point(0.75, 0.25), Point(0.85, 0.5), Point(0.75, 0.75),
                                           Point(0.25, 0.75)]), 0.8)
         for p in polys:
             x_list = []
@@ -615,7 +616,7 @@ class TestPolygon(unittest.TestCase):
 
     def test_cut_out_gap_2(self):
         poly = Polygon([Point(-6, 12), Point(6, 12), Point(6, -2), Point(-6, -2)])
-        polys = poly.cut_out_gap(Polygon([Point(0, 0), Point(-2, 1), Point(-4, 3), Point(-5, 5), Point(-4, 7),
+        polys = poly.cut_out_gap_2(Polygon([Point(0, 0), Point(-2, 1), Point(-4, 3), Point(-5, 5), Point(-4, 7),
                                           Point(-2, 9), Point(0, 10), Point(2, 9), Point(4, 7), Point(5, 5), Point(4, 3)
                                              , Point(2, 1)]), 0.9)
         for p in polys:
