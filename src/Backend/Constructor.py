@@ -55,7 +55,7 @@ class Constructor:
         polygons = vor.polygons
         regions = []
         for poly in polygons:
-            regions.append(Region(None, poly.get_vertices(), False, False))
+            regions.append(Region(None, poly.get_vertices()))
 
         # finds each regions neighboring regions
         for reg in regions:
