@@ -37,7 +37,7 @@
 <span id="region-module"></span><h1>Region module<a class="headerlink" href="#module-Region" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="Region.Region">
-<em class="property">class </em><code class="sig-prename descclassname">Region.</code><code class="sig-name descname">Region</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">district</span></em>, <em class="sig-param"><span class="n">vertices</span></em>, <em class="sig-param"><span class="n">is_water</span></em>, <em class="sig-param"><span class="n">has_river</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Region.Region" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">Region.</code><code class="sig-name descname">Region</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">district</span></em>, <em class="sig-param"><span class="n">vertices</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Region.Region" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">src.Backend.Polygon.Polygon</span></code></p>
 <p>Region storing a list of Vertices and a District with functions to determine what the Region is in</p>
 <dl class="field-list simple">
@@ -46,10 +46,6 @@
 <dt><strong>district</strong><span class="classifier">District</span></dt><dd><p>The district of the Region</p>
 </dd>
 <dt><strong>vertices</strong><span class="classifier">list of Points</span></dt><dd><p>The points that define the boarders of the Region</p>
-</dd>
-<dt><strong>is_water</strong><span class="classifier">bool</span></dt><dd><p>True if the Region is water, otherwise false</p>
-</dd>
-<dt><strong>has_river</strong><span class="classifier">bool</span></dt><dd><p>True if the region contains a river, otherwise false</p>
 </dd>
 </dl>
 </dd>
@@ -73,26 +69,31 @@
 <tr class="row-even"><td><p><strong>set_vertices(new_vertices)</strong></p></td>
 <td><p>Sets the vertices value of the Region</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>get_is_water()</strong></p></td>
-<td><p>Gets the is_water value of the Region</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>set_is_water(new_is_water)</strong></p></td>
-<td><p>Sets the is_water value of the Region</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>get_has_river()</strong></p></td>
-<td><p>Gets the has_river value of the Region</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>set_has_river()</strong></p></td>
-<td><p>Sets the has_river value of the Region</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>in_city(city)</strong></p></td>
-<td><p>Determines if the Region is inside the provided City</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>in_wall(wall)</strong></p></td>
+<tr class="row-odd"><td><p><strong>in_wall(wall)</strong></p></td>
 <td><p>Determines if the Region is inside the provided wall</p></td>
 </tr>
 </tbody>
 </table>
+<dl class="py method">
+<dt id="Region.Region.find_neighbors">
+<code class="sig-name descname">find_neighbors</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">regions</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Region.Region.find_neighbors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the neighboring regions of the polygon</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>regions</strong><span class="classifier">list of Regions</span></dt><dd><p>All other regions on the map</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>neighbors:</dt><dd><p>A list of neighboring regions</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt id="Region.Region.get_district">
 <code class="sig-name descname">get_district</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Region.Region.get_district" title="Permalink to this definition">¶</a></dt>
@@ -108,27 +109,12 @@
 </dd></dl>
 
 <dl class="py method">
-<dt id="Region.Region.get_has_river">
-<code class="sig-name descname">get_has_river</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Region.Region.get_has_river" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets the value of ‘has_river’ of a Region</p>
-<dl class="field-list simple">
+<dt id="Region.Region.get_neighbors">
+<code class="sig-name descname">get_neighbors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Region.Region.get_neighbors" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><dl class="simple">
-<dt>bool</dt><dd><p>Returns the value of ‘has_river’ of a Region</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Region.Region.get_is_water">
-<code class="sig-name descname">get_is_water</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Region.Region.get_is_water" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets the value of ‘is_water’ of a Region</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><dl class="simple">
-<dt>bool</dt><dd><p>Returns the value of ‘is_water’ of a Region</p>
+<dt>List</dt><dd><p>Returns a list of the neighbors</p>
 </dd>
 </dl>
 </dd>
@@ -204,34 +190,6 @@
 </dd></dl>
 
 <dl class="py method">
-<dt id="Region.Region.set_has_river">
-<code class="sig-name descname">set_has_river</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_has_river</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Region.Region.set_has_river" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets the value of ‘has_river’ for a Region</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>new_has_river</strong><span class="classifier">bool</span></dt><dd><p>The new value of ‘has_river’</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Region.Region.set_is_water">
-<code class="sig-name descname">set_is_water</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_is_water</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Region.Region.set_is_water" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets the value of ‘is_water’ for a Region</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>new_is_water</strong><span class="classifier">bool</span></dt><dd><p>The new value of ‘is_water’</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt id="Region.Region.set_vertices">
 <code class="sig-name descname">set_vertices</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_vertices</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Region.Region.set_vertices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the value of ‘vertices’ for a Region</p>
@@ -268,15 +226,15 @@
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Constructor.html">Constructor module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="District.html">District module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Infrastructure.html">Infrastructure module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Menu.html">Menu module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Pathfinder.html">Pathfinder module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Point.html">Point module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Polygon.html">Polygon module</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Region module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Voronoi.html">Voronoi module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Wall.html">Wall module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Constructor.html">Constructor module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Menu.html">Menu module</a></li>
 </ul>
 
 <div class="relations">

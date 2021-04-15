@@ -11,15 +11,15 @@ Documentation is updated on Tuesdays and Fridays.
    :maxdepth: 2
    :caption: Contents:
 
+   Constructor
    District
+   Infrastructure
+   Menu
    Pathfinder
    Point
    Polygon
    Region
    Voronoi
-   Wall
-   Constructor
-   Menu
 
 Indices and tables
 ==================

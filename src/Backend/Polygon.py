@@ -692,6 +692,7 @@ class Polygon:
     def intersection(p1, p2, p3, p4):
         """
         Finds the point of intersection given twp line segments
+
         Parameters
         ----------
         p1 : Point

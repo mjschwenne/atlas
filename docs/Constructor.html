@@ -15,8 +15,8 @@
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Menu module" href="Menu.html" />
-    <link rel="prev" title="Wall module" href="Wall.html" />
+    <link rel="next" title="District module" href="District.html" />
+    <link rel="prev" title="Welcome to Atlas’s documentation!" href="index.html" />
    
   <link rel="stylesheet" href="static/custom.css" type="text/css" />
   
@@ -48,28 +48,31 @@ information into something that the front end can handle</p>
 <col style="width: 46%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><strong>assign_districts(regions, wall, city)</strong></p></td>
+<tr class="row-odd"><td><p><strong>generate_map(options)</strong></p></td>
+<td><p>Generates a map</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>assign_districts(regions, wall, city)</strong></p></td>
 <td><p>Assigns the provided regions a district</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>assign_district(reg, regions, wall, city)</strong></p></td>
+<tr class="row-odd"><td><p><strong>assign_district(reg, regions, wall, city)</strong></p></td>
 <td><p>Assigns the region a district</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py method">
 <dt id="Constructor.Constructor.assign_district">
-<em class="property">static </em><code class="sig-name descname">assign_district</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reg</span></em>, <em class="sig-param"><span class="n">regions</span></em>, <em class="sig-param"><span class="n">wall</span></em>, <em class="sig-param"><span class="n">city</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Constructor.Constructor.assign_district" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="sig-name descname">assign_district</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reg</span></em>, <em class="sig-param"><span class="n">regions</span></em>, <em class="sig-param"><span class="n">wall</span></em>, <em class="sig-param"><span class="n">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Constructor.Constructor.assign_district" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assigns a district to a region based on Ratings</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
+<dt><strong>options</strong><span class="classifier">List of ints</span></dt><dd><p>User options</p>
+</dd>
 <dt><strong>reg</strong><span class="classifier">Region</span></dt><dd><p>Region to have a district assigned to it</p>
 </dd>
 <dt><strong>regions</strong><span class="classifier">List of Regions</span></dt><dd><p>All of the Regions on the map</p>
 </dd>
-<dt><strong>wall</strong><span class="classifier">Wall</span></dt><dd><p>The City wall</p>
-</dd>
-<dt><strong>city</strong><span class="classifier">Polygon</span></dt><dd><p>The polygon representing the city limits</p>
+<dt><strong>wall</strong><span class="classifier">Infrastructure</span></dt><dd><p>The City wall</p>
 </dd>
 </dl>
 </dd>
@@ -78,17 +81,33 @@ information into something that the front end can handle</p>
 
 <dl class="py method">
 <dt id="Constructor.Constructor.assign_districts">
-<em class="property">static </em><code class="sig-name descname">assign_districts</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">regions</span></em>, <em class="sig-param"><span class="n">wall</span></em>, <em class="sig-param"><span class="n">city</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Constructor.Constructor.assign_districts" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="sig-name descname">assign_districts</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">regions</span></em>, <em class="sig-param"><span class="n">wall</span></em>, <em class="sig-param"><span class="n">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Constructor.Constructor.assign_districts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assigns the provided regions a district at sudo-random order, taking into account the wall and city bounds</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
+<dt><strong>options</strong><span class="classifier">List of ints</span></dt><dd><p>Option input from user</p>
+</dd>
 <dt><strong>regions</strong><span class="classifier">List of regions</span></dt><dd><p>Regions to have districts assigned</p>
 </dd>
-<dt><strong>wall</strong><span class="classifier">Wall</span></dt><dd><p>The wall of the city</p>
+<dt><strong>wall</strong><span class="classifier">Infrastructure</span></dt><dd><p>The wall of the city</p>
 </dd>
-<dt><strong>city</strong><span class="classifier">Polygon</span></dt><dd><p>The polygon representing the city bounds</p>
+</dl>
 </dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Constructor.Constructor.generate_map">
+<code class="sig-name descname">generate_map</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Constructor.Constructor.generate_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a random map, with the provided options.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>options</strong><span class="classifier">list of ints</span></dt><dd><p>The user options that control what districts are allowed, and if buildings are made</p>
+</dd>
+<dt><strong>Returns</strong></dt><dd></dd>
+<dt><strong>——-</strong></dt><dd></dd>
 </dl>
 </dd>
 </dl>
@@ -117,23 +136,23 @@ information into something that the front end can handle</p>
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Constructor module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="District.html">District module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Infrastructure.html">Infrastructure module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Menu.html">Menu module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Pathfinder.html">Pathfinder module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Point.html">Point module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Polygon.html">Polygon module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Region.html">Region module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Voronoi.html">Voronoi module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Wall.html">Wall module</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Constructor module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Menu.html">Menu module</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="Wall.html" title="previous chapter">Wall module</a></li>
-      <li>Next: <a href="Menu.html" title="next chapter">Menu module</a></li>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to Atlas’s documentation!</a></li>
+      <li>Next: <a href="District.html" title="next chapter">District module</a></li>
   </ul></li>
 </ul>
 </div>
