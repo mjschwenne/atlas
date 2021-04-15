@@ -458,15 +458,15 @@ def main():
                  ('All Files', '*.*'),
                  ('Text Document', '*.txt')]
         file = asksaveasfilename(filetypes=files, defaultextension=files)
-        # x = canvas.winfo_rootx()
-        # y = canvas.winfo_rooty()
-        # w = x + canvas.width
-        # h = y + canvas.height
-        # print(f"Grabbing screen from ({x}, {y}) to ({w}, {h})")
-        # ImageGrab.grab(bbox=(x, y, w, h)).save(file)
-        canvas.postscript(file="./postscript.ps")
-        Image.open("./postscript.ps").save(file)
-        os.remove("./postscript.ps")
+        x = canvas.winfo_rootx()
+        y = canvas.winfo_rooty()
+        w = x + canvas.width
+        h = y + canvas.height
+        print(f"Grabbing screen from ({x}, {y}) to ({w}, {h})")
+        ImageGrab.grab(bbox=(x, y, w, h)).save(file)
+        # canvas.postscript(file="./postscript.ps")
+        # Image.open("./postscript.ps").save(file)
+        # os.remove("./postscript.ps")
         return
 
     # create the window object

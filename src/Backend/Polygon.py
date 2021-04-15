@@ -167,7 +167,7 @@ class Polygon:
             remove_vertices = [i for i in self.vertices if vertices.count(i) > 1]
             print_list("removed vertices", remove_vertices)
 
-    def set_vertices(self, vertices):
+    def set_vertices(self, vertices, reorder=False):
         """
         Sets the vertices of the polygon
 
@@ -175,8 +175,13 @@ class Polygon:
         ----------
         vertices : List of points
             The new vertices
+        reorder : bool
+            If ture, reorder the vertices into clockwise order
         """
-        self.vertices = vertices
+        if reorder:
+            self.vertices = clockwise_order(vertices)
+        else:
+            self.vertices = vertices
 
     def get_vertices(self):
         """

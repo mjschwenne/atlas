@@ -43,7 +43,13 @@ def bfs_path(G, source, destination):
     queue = deque()
     queue.append(destination)
     while queue[-1] != source:
-        queue.append(vertex_dict[queue[-1]])
+        try:
+            queue.append(vertex_dict[queue[-1]])
+        except KeyError:
+            print(f"Source: {source}, Dest: {destination}")
+            print(f"Key {queue[-1]} not found in")
+            print_dict("bfs", vertex_dict)
+            break
     queue.reverse()
     return queue
 
@@ -163,6 +169,9 @@ class Infrastructure(Polygon):
             self.__push_polygons(clipped_graph, start, end, vert_dict)
         # Merge the final clipped graph back into the regular graph
         graph = nx.relabel_nodes(graph, vert_dict)
+        # Update the wall vertices to contain the pushed vertices
+        self.vertices.extend(vert_dict.values())
+        self.set_vertices(self.vertices, True)
 
         # Finds the Roads and Gates
         center_poly = None
