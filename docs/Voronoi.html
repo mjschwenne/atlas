@@ -15,7 +15,6 @@
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Wall module" href="Wall.html" />
     <link rel="prev" title="Region module" href="Region.html" />
    
   <link rel="stylesheet" href="static/custom.css" type="text/css" />
@@ -37,7 +36,7 @@
 <span id="voronoi-module"></span><h1>Voronoi module<a class="headerlink" href="#module-Voronoi" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="Voronoi.Voronoi">
-<em class="property">class </em><code class="sig-prename descclassname">Voronoi.</code><code class="sig-name descname">Voronoi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">num_district</span></em>, <em class="sig-param"><span class="n">bounds</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Voronoi.Voronoi" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">Voronoi.</code><code class="sig-name descname">Voronoi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">num_district</span></em>, <em class="sig-param"><span class="n">bounds</span></em>, <em class="sig-param"><span class="n">seed</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Voronoi.Voronoi" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Generates and stores a Voronoi diagram as a graph and list of polygons</p>
 <dl class="field-list simple">
@@ -69,19 +68,11 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#Voronoi.Voronoi.generate_polygons" title="Voronoi.Voronoi.generate_polygons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_polygons</span></code></a>()</p></td>
 <td><p>Take the graph of the Voronoi diagram and generate the polygon tesselation of the plane.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#Voronoi.Voronoi.generate_seeds" title="Voronoi.Voronoi.generate_seeds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_seeds</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Voronoi.Voronoi.generate_seeds" title="Voronoi.Voronoi.generate_seeds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_seeds</span></code></a>([seed])</p></td>
 <td><p>Generate random Points which are used as seeds in the construction of a voronoi diagram.</p></td>
 </tr>
-</tbody>
-</table>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 47%" />
-<col style="width: 53%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><strong>relax</strong></p></td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#Voronoi.Voronoi.relax" title="Voronoi.Voronoi.relax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relax</span></code></a>()</p></td>
+<td><p>Finds the centroid of each polygons and sets that to be the seed point of the next generation of voronoi diagram</p></td>
 </tr>
 </tbody>
 </table>
@@ -124,7 +115,7 @@ vector by that amount and then add it to the position of the known end of the ra
 
 <dl class="py method">
 <dt id="Voronoi.Voronoi.generate_seeds">
-<code class="sig-name descname">generate_seeds</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Voronoi.Voronoi.generate_seeds" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">generate_seeds</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seed</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Voronoi.Voronoi.generate_seeds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate random Points which are used as seeds in the construction of a voronoi diagram.</p>
 <p>The notes are more concentrated in the middle of the map.</p>
 </dd></dl>
@@ -132,7 +123,8 @@ vector by that amount and then add it to the position of the known end of the ra
 <dl class="py method">
 <dt id="Voronoi.Voronoi.relax">
 <code class="sig-name descname">relax</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Voronoi.Voronoi.relax" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Finds the centroid of each polygons and sets that to be the seed point of the next generation of voronoi diagram</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -159,6 +151,16 @@ vector by that amount and then add it to the position of the known end of the ra
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py function">
+<dt id="Voronoi.print_dict">
+<code class="sig-prename descclassname">Voronoi.</code><code class="sig-name descname">print_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dict_name</span></em>, <em class="sig-param"><span class="n">points</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Voronoi.print_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="Voronoi.print_list">
+<code class="sig-prename descclassname">Voronoi.</code><code class="sig-name descname">print_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">list_name</span></em>, <em class="sig-param"><span class="n">points</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Voronoi.print_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt id="Voronoi.remove_vertices">
@@ -203,15 +205,15 @@ vector by that amount and then add it to the position of the known end of the ra
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Constructor.html">Constructor module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="District.html">District module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Infrastructure.html">Infrastructure module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Menu.html">Menu module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Pathfinder.html">Pathfinder module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Point.html">Point module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Polygon.html">Polygon module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Region.html">Region module</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Voronoi module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Wall.html">Wall module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Constructor.html">Constructor module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Menu.html">Menu module</a></li>
 </ul>
 
 <div class="relations">
@@ -219,7 +221,6 @@ vector by that amount and then add it to the position of the known end of the ra
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="Region.html" title="previous chapter">Region module</a></li>
-      <li>Next: <a href="Wall.html" title="next chapter">Wall module</a></li>
   </ul></li>
 </ul>
 </div>

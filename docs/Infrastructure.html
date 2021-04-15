@@ -1,0 +1,372 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Infrastructure module &#8212; Atlas 0.1 documentation</title>
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="static/documentation_options.js"></script>
+    <script src="static/jquery.js"></script>
+    <script src="static/underscore.js"></script>
+    <script src="static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Menu module" href="Menu.html" />
+    <link rel="prev" title="District module" href="District.html" />
+   
+  <link rel="stylesheet" href="static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-Infrastructure">
+<span id="infrastructure-module"></span><h1>Infrastructure module<a class="headerlink" href="#module-Infrastructure" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="Infrastructure.Infrastructure">
+<em class="property">class </em><code class="sig-prename descclassname">Infrastructure.</code><code class="sig-name descname">Infrastructure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">regions</span></em>, <em class="sig-param"><span class="n">graph</span></em>, <em class="sig-param"><span class="n">bounding_box</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Infrastructure.Infrastructure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">src.Backend.Polygon.Polygon</span></code></p>
+<p>This class represents the Infrastructure using a Polygon, Pathfinder, and a Graph</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>gates</strong><span class="classifier">List of Points</span></dt><dd><p>The location of the gates along the city wall</p>
+</dd>
+<dt><strong>roads</strong><span class="classifier">List of Lists of Points</span></dt><dd><p>Each list represents the points along a path which represents the main roads of the city</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">area</span></code>()</p></td>
+<td><p>Finds the area of the polygon</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut</span></code>(p1, p2)</p></td>
+<td><p>Cuts a polygon along two points</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut_gap</span></code>(p1, p2, gap)</p></td>
+<td><p>Cuts a polygon along two points</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut_out</span></code>(interior_polygon)</p></td>
+<td><p>Cuts a larger polygon into parts without an interior polygon part</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut_out_2</span></code>(interior_polygon)</p></td>
+<td><p>Cuts out a shape from a larger polygon if the interior polygon is a scaled down version of the larger polygon</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut_out_gap_2</span></code>(interior_polygon, scalar)</p></td>
+<td><p>Cuts out a shape from a larger polygon if the interior polygon is a scaled down version of the larger polygon with a gap</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_ext_point</span></code>(furthest_point, ang, initial_p)</p></td>
+<td><p>Find an extreme point given a furthest_point, an angle, and an initial point</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_intersecting_edge</span></code>(p, ext_p)</p></td>
+<td><p>Given a line segment this method returns an edge that that line segment intersects</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_intersecting_edges</span></code>(p, ext_p)</p></td>
+<td><p>Given a line segment this method returns edges that that line segment intersects, this is used because of an edge case in the find_intersecting_edges</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">furthest_conglomerate_point</span></code>(p)</p></td>
+<td><p>Finds a point that has the furthest x value among all points in the polygon and has the furthest y value among all points in the polygon</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">furthest_point</span></code>(point)</p></td>
+<td><p>Finds the furthest point in this polygon from a give point</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_center</span></code>()</p></td>
+<td><p>Finds the centroid of the polygon.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Infrastructure.Infrastructure.get_gates" title="Infrastructure.Infrastructure.get_gates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_gates</span></code></a>()</p></td>
+<td><p>Returns the List of Points that defines the Gates</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_perimeter</span></code>()</p></td>
+<td><p>Finds the perimeter of the polygon</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Infrastructure.Infrastructure.get_roads" title="Infrastructure.Infrastructure.get_roads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_roads</span></code></a>()</p></td>
+<td><p>Returns the List of Lists of Points that defines the main roads in the city</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertices</span></code>()</p></td>
+<td><p>Gets the vertices of the polygon</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">in_segment</span></code>(p1, p2, p3)</p></td>
+<td><p>Returns true if p3 is in the line segment from p1 to p2.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside</span></code>(larger_polygon)</p></td>
+<td><p>Checks a given polygon to see if it is in a larger polygon</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersect_segment</span></code>(p1, p2, p3, p4)</p></td>
+<td><p>Returns True if two line segments defined by 4 points intersect</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersect_segment_alt</span></code>(p1, p2, p3, p4)</p></td>
+<td><p>Returns True if two line segments defined by 4 points intersect</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersection</span></code>(p1, p2, p3, p4)</p></td>
+<td><p>Finds the point of intersection given twp line segments Parameters ———- p1 : Point     The first point in the first line segment p2 : Point     The second point in the first line segment p3 : Point     The first point in the second line segment p4 : Point     The second point in the second line segment</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_bordering</span></code>(other)</p></td>
+<td><p>Checks to see if a given polygon borders this polygon.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_contained</span></code>(point)</p></td>
+<td><p>Returns true if Point point is located on the edge of or in this Polygon.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_convex</span></code>()</p></td>
+<td><p>Returns true if the polygon is convex and has no intersecting lines.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_rectangle</span></code>()</p></td>
+<td><p>Check a given polygon to see if it is a rectangle</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_center_to</span></code>(p)</p></td>
+<td><p>Moves a polygon’s center to a given point p</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_polygon_by_center</span></code>(left_right_distance, …)</p></td>
+<td><p>Moves a polygon’s center by left_right_distance left or right, and up_down_distance up or down.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_edge</span></code>(p)</p></td>
+<td><p>Checks to see if a given point p is on any edge of the polygon</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">rectangle_inside</span></code>(p1, p2)</p></td>
+<td><p>Finds a rectangle given an edge of the polygon</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale_of_polygon</span></code>(scalar)</p></td>
+<td><p>Scales a polygon by a scalar and returns a new scaled polygon centered on the original polygon’s center</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_vertices</span></code>(vertices[, reorder])</p></td>
+<td><p>Sets the vertices of the polygon</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code>(p, ang, gap)</p></td>
+<td><p>splits a polygon along a point and an angle relative to edge of p</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_points</span></code>(polygons)</p></td>
+<td><p>Takes a list of polygons and converts it to a list of points</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polygon</span></code>(vertices)</p></td>
+<td><p>Returns a polygon given a list of lists, i.e. [[1, 2], [3, 4], [5, 6]] =&gt; polygon with those vertices.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 74%" />
+<col style="width: 26%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>crazy_far_furthest_point</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>easy_cut</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>furthest_bounding_point</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>longest_side_and_length</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="Infrastructure.Infrastructure.get_gates">
+<code class="sig-name descname">get_gates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Infrastructure.Infrastructure.get_gates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the List of Points that defines the Gates</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>List of Points</dt><dd><p>The List of Points that defines the Gates of the Wall</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Infrastructure.Infrastructure.get_roads">
+<code class="sig-name descname">get_roads</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Infrastructure.Infrastructure.get_roads" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the List of Lists of Points that defines the main roads in the city</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>List of List of Points</dt><dd><p>The List of Lists of Points that defines the main roads in the city</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="Infrastructure.bfs_path">
+<code class="sig-prename descclassname">Infrastructure.</code><code class="sig-name descname">bfs_path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">G</span></em>, <em class="sig-param"><span class="n">source</span></em>, <em class="sig-param"><span class="n">destination</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Infrastructure.bfs_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use a breadth first search to find the path from vertex <cite>source</cite> to vertex <cite>destination</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>G</strong><span class="classifier">nx.Graph</span></dt><dd><p>The graph to search</p>
+</dd>
+<dt><strong>source</strong><span class="classifier">Point</span></dt><dd><p>Origin point</p>
+</dd>
+<dt><strong>destination</strong><span class="classifier">Point</span></dt><dd><p>Destination point</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>deque</dt><dd><p>A queue with the path from <cite>source</cite> to <cite>destination</cite> already enqueued.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Infrastructure.move_vertex">
+<code class="sig-prename descclassname">Infrastructure.</code><code class="sig-name descname">move_vertex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">region</span></em>, <em class="sig-param"><span class="n">vertex</span></em>, <em class="sig-param"><span class="n">new_vertex</span></em>, <em class="sig-param"><span class="n">vert_dict</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Infrastructure.move_vertex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move the vertex in the region, and update that same vertex in the neighbours of the region</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>region</strong><span class="classifier">Region</span></dt><dd><p>The region whose vertex is being updated</p>
+</dd>
+<dt><strong>vertex</strong><span class="classifier">Point</span></dt><dd><p>Vertex of the region to be changed, which will also be updated in the neighbouring regions</p>
+</dd>
+<dt><strong>new_vertex</strong><span class="classifier">Point</span></dt><dd><p>The new location of the vertex</p>
+</dd>
+<dt><strong>vert_dict</strong><span class="classifier">Dict</span></dt><dd><p>A dictionary which will be used to move the nodes in the graph</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Infrastructure.print_dict">
+<code class="sig-prename descclassname">Infrastructure.</code><code class="sig-name descname">print_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dict_name</span></em>, <em class="sig-param"><span class="n">points</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Infrastructure.print_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="Infrastructure.print_list">
+<code class="sig-prename descclassname">Infrastructure.</code><code class="sig-name descname">print_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">list_name</span></em>, <em class="sig-param"><span class="n">points</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Infrastructure.print_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="Infrastructure.project_vector">
+<code class="sig-prename descclassname">Infrastructure.</code><code class="sig-name descname">project_vector</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">u</span></em>, <em class="sig-param"><span class="n">v</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Infrastructure.project_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Project vector <cite>u</cite> onto vector <cite>v</cite></p>
+<p>Convert the Points into np.array and then use</p>
+<div class="math notranslate nohighlight">
+\[ext\{proj\}_{\vec{v}}(\vec{u}) = \frac{\vec{u} \cdot \vec{v}}{||\vec{v}||^2} \times \vec{v}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>u</strong><span class="classifier">Point</span></dt><dd><p>Vector</p>
+</dd>
+<dt><strong>v</strong><span class="classifier">Point</span></dt><dd><p>Vector</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Point</dt><dd><p>The result of projecting u onto v</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Atlas</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Constructor.html">Constructor module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="District.html">District module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Infrastructure module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Menu.html">Menu module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Pathfinder.html">Pathfinder module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Point.html">Point module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Polygon.html">Polygon module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Region.html">Region module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Voronoi.html">Voronoi module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="District.html" title="previous chapter">District module</a></li>
+      <li>Next: <a href="Menu.html" title="next chapter">Menu module</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Thomas Grifka, Max Jorgensen, Matt Schwennesen, Emma Smith, Joe Teahen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="sources/Infrastructure.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

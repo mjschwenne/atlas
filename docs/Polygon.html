@@ -64,6 +64,30 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#Polygon.Polygon.cut_gap" title="Polygon.Polygon.cut_gap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut_gap</span></code></a>(p1, p2, gap)</p></td>
 <td><p>Cuts a polygon along two points</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Polygon.Polygon.cut_out" title="Polygon.Polygon.cut_out"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut_out</span></code></a>(interior_polygon)</p></td>
+<td><p>Cuts a larger polygon into parts without an interior polygon part</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Polygon.Polygon.cut_out_2" title="Polygon.Polygon.cut_out_2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut_out_2</span></code></a>(interior_polygon)</p></td>
+<td><p>Cuts out a shape from a larger polygon if the interior polygon is a scaled down version of the larger polygon</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Polygon.Polygon.cut_out_gap_2" title="Polygon.Polygon.cut_out_gap_2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut_out_gap_2</span></code></a>(interior_polygon, scalar)</p></td>
+<td><p>Cuts out a shape from a larger polygon if the interior polygon is a scaled down version of the larger polygon with a gap</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Polygon.Polygon.find_ext_point" title="Polygon.Polygon.find_ext_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_ext_point</span></code></a>(furthest_point, ang, initial_p)</p></td>
+<td><p>Find an extreme point given a furthest_point, an angle, and an initial point</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Polygon.Polygon.find_intersecting_edge" title="Polygon.Polygon.find_intersecting_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_intersecting_edge</span></code></a>(p, ext_p)</p></td>
+<td><p>Given a line segment this method returns an edge that that line segment intersects</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Polygon.Polygon.find_intersecting_edges" title="Polygon.Polygon.find_intersecting_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_intersecting_edges</span></code></a>(p, ext_p)</p></td>
+<td><p>Given a line segment this method returns edges that that line segment intersects, this is used because of an edge case in the find_intersecting_edges</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Polygon.Polygon.furthest_conglomerate_point" title="Polygon.Polygon.furthest_conglomerate_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">furthest_conglomerate_point</span></code></a>(p)</p></td>
+<td><p>Finds a point that has the furthest x value among all points in the polygon and has the furthest y value among all points in the polygon</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Polygon.Polygon.furthest_point" title="Polygon.Polygon.furthest_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">furthest_point</span></code></a>(point)</p></td>
+<td><p>Finds the furthest point in this polygon from a give point</p></td>
+</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#Polygon.Polygon.get_center" title="Polygon.Polygon.get_center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_center</span></code></a>()</p></td>
 <td><p>Finds the centroid of the polygon.</p></td>
 </tr>
@@ -76,29 +100,76 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#Polygon.Polygon.in_segment" title="Polygon.Polygon.in_segment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">in_segment</span></code></a>(p1, p2, p3)</p></td>
 <td><p>Returns true if p3 is in the line segment from p1 to p2.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#Polygon.Polygon.intersection" title="Polygon.Polygon.intersection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersection</span></code></a>(p1, p2, p3, p4)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#Polygon.Polygon.inside" title="Polygon.Polygon.inside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside</span></code></a>(larger_polygon)</p></td>
+<td><p>Checks a given polygon to see if it is in a larger polygon</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Polygon.Polygon.intersect_segment" title="Polygon.Polygon.intersect_segment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersect_segment</span></code></a>(p1, p2, p3, p4)</p></td>
+<td><p>Returns True if two line segments defined by 4 points intersect</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Polygon.Polygon.intersect_segment_alt" title="Polygon.Polygon.intersect_segment_alt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersect_segment_alt</span></code></a>(p1, p2, p3, p4)</p></td>
+<td><p>Returns True if two line segments defined by 4 points intersect</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Polygon.Polygon.intersection" title="Polygon.Polygon.intersection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersection</span></code></a>(p1, p2, p3, p4)</p></td>
 <td><p>Finds the point of intersection given twp line segments Parameters ———- p1 : Point     The first point in the first line segment p2 : Point     The second point in the first line segment p3 : Point     The first point in the second line segment p4 : Point     The second point in the second line segment</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#Polygon.Polygon.is_bordering" title="Polygon.Polygon.is_bordering"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_bordering</span></code></a>(other)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#Polygon.Polygon.is_bordering" title="Polygon.Polygon.is_bordering"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_bordering</span></code></a>(other)</p></td>
 <td><p>Checks to see if a given polygon borders this polygon.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#Polygon.Polygon.is_contained" title="Polygon.Polygon.is_contained"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_contained</span></code></a>(point)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Polygon.Polygon.is_contained" title="Polygon.Polygon.is_contained"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_contained</span></code></a>(point)</p></td>
 <td><p>Returns true if Point point is located on the edge of or in this Polygon.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#Polygon.Polygon.is_convex" title="Polygon.Polygon.is_convex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_convex</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#Polygon.Polygon.is_convex" title="Polygon.Polygon.is_convex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_convex</span></code></a>()</p></td>
 <td><p>Returns true if the polygon is convex and has no intersecting lines.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#Polygon.Polygon.set_vertices" title="Polygon.Polygon.set_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_vertices</span></code></a>(vertices)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Polygon.Polygon.is_rectangle" title="Polygon.Polygon.is_rectangle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_rectangle</span></code></a>()</p></td>
+<td><p>Check a given polygon to see if it is a rectangle</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Polygon.Polygon.move_center_to" title="Polygon.Polygon.move_center_to"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_center_to</span></code></a>(p)</p></td>
+<td><p>Moves a polygon’s center to a given point p</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Polygon.Polygon.move_polygon_by_center" title="Polygon.Polygon.move_polygon_by_center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_polygon_by_center</span></code></a>(left_right_distance, …)</p></td>
+<td><p>Moves a polygon’s center by left_right_distance left or right, and up_down_distance up or down.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Polygon.Polygon.on_edge" title="Polygon.Polygon.on_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_edge</span></code></a>(p)</p></td>
+<td><p>Checks to see if a given point p is on any edge of the polygon</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Polygon.Polygon.rectangle_inside" title="Polygon.Polygon.rectangle_inside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rectangle_inside</span></code></a>(p1, p2)</p></td>
+<td><p>Finds a rectangle given an edge of the polygon</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Polygon.Polygon.scale_of_polygon" title="Polygon.Polygon.scale_of_polygon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale_of_polygon</span></code></a>(scalar)</p></td>
+<td><p>Scales a polygon by a scalar and returns a new scaled polygon centered on the original polygon’s center</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Polygon.Polygon.set_vertices" title="Polygon.Polygon.set_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_vertices</span></code></a>(vertices[, reorder])</p></td>
 <td><p>Sets the vertices of the polygon</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#Polygon.Polygon.split" title="Polygon.Polygon.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a>(p, ang, gap)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#Polygon.Polygon.split" title="Polygon.Polygon.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a>(p, ang, gap)</p></td>
 <td><p>splits a polygon along a point and an angle relative to edge of p</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#Polygon.Polygon.to_points" title="Polygon.Polygon.to_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_points</span></code></a>(polygons)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Polygon.Polygon.to_points" title="Polygon.Polygon.to_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_points</span></code></a>(polygons)</p></td>
 <td><p>Takes a list of polygons and converts it to a list of points</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#Polygon.Polygon.to_polygon" title="Polygon.Polygon.to_polygon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polygon</span></code></a>(vertices)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#Polygon.Polygon.to_polygon" title="Polygon.Polygon.to_polygon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polygon</span></code></a>(vertices)</p></td>
 <td><p>Returns a polygon given a list of lists, i.e. [[1, 2], [3, 4], [5, 6]] =&gt; polygon with those vertices.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 74%" />
+<col style="width: 26%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>crazy_far_furthest_point</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>easy_cut</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>furthest_bounding_point</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>longest_side_and_length</strong></p></td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -115,6 +186,11 @@
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.crazy_far_furthest_point">
+<code class="sig-name descname">crazy_far_furthest_point</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.crazy_far_furthest_point" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="Polygon.Polygon.cut">
@@ -156,6 +232,183 @@
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>List of Polygons</dt><dd><p>Two new polygons formed by the cut</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.cut_out">
+<code class="sig-name descname">cut_out</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">interior_polygon</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.cut_out" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cuts a larger polygon into parts without an interior polygon part</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>interior_polygon</strong><span class="classifier">Polygon</span></dt><dd><p>The polygon to cut out</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>list of Polygons</dt><dd><p>the parts of the original polygon without the interior polygon</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.cut_out_2">
+<code class="sig-name descname">cut_out_2</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">interior_polygon</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.cut_out_2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cuts out a shape from a larger polygon if the interior polygon is a scaled down version of the larger polygon</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>interior_polygon</strong><span class="classifier">Polygon</span></dt><dd><p>the scaled down version of the larger polygon to cut out</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>list of Polygons</dt><dd><p>the cut out parts on the exterior of the larger polygon</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.cut_out_gap_2">
+<code class="sig-name descname">cut_out_gap_2</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">interior_polygon</span></em>, <em class="sig-param"><span class="n">scalar</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.cut_out_gap_2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cuts out a shape from a larger polygon if the interior polygon is a scaled down version of the larger polygon
+with a gap</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>interior_polygon</strong><span class="classifier">Polygon</span></dt><dd><p>the scaled down version of the larger polygon to cut out</p>
+</dd>
+<dt><strong>scalar</strong><span class="classifier">float</span></dt><dd><p>the scalar to put on the interior polygon to make the gap</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>list of Polygons</dt><dd><p>the cut out parts on the exterior of the larger polygon</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.easy_cut">
+<code class="sig-name descname">easy_cut</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span></em>, <em class="sig-param"><span class="n">ang</span></em>, <em class="sig-param"><span class="n">gap</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.easy_cut" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.find_ext_point">
+<em class="property">static </em><code class="sig-name descname">find_ext_point</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">furthest_point</span></em>, <em class="sig-param"><span class="n">ang</span></em>, <em class="sig-param"><span class="n">initial_p</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.find_ext_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find an extreme point given a furthest_point, an angle, and an initial point</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>furthest_point</strong><span class="classifier">Point</span></dt><dd><p>the furthest point for reference to find an extreme point</p>
+</dd>
+<dt><strong>ang</strong><span class="classifier">float</span></dt><dd><p>the angle towards the extreme point</p>
+</dd>
+<dt><strong>initial_p</strong><span class="classifier">Point</span></dt><dd><p>the initial point for the line towards the extreme point</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Point</dt><dd><p>the extreme point</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.find_intersecting_edge">
+<code class="sig-name descname">find_intersecting_edge</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span></em>, <em class="sig-param"><span class="n">ext_p</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.find_intersecting_edge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a line segment this method returns an edge that that line segment intersects</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>p</strong><span class="classifier">point</span></dt><dd><p>the first point of the line segment</p>
+</dd>
+<dt><strong>ext_p</strong><span class="classifier">Point</span></dt><dd><p>the second point of the line segment</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>list of Points</dt><dd><p>the edge on the polygon that the line segment crosses</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.find_intersecting_edges">
+<code class="sig-name descname">find_intersecting_edges</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span></em>, <em class="sig-param"><span class="n">ext_p</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.find_intersecting_edges" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a line segment this method returns edges that that line segment intersects, this is used because of an
+edge case in the find_intersecting_edges</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>p</strong><span class="classifier">point</span></dt><dd><p>the first point of the line segment</p>
+</dd>
+<dt><strong>ext_p</strong><span class="classifier">Point</span></dt><dd><p>the second point of the line segment</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>list of list of points</dt><dd><p>the edge on the polygon that the line segment crosses</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.furthest_bounding_point">
+<code class="sig-name descname">furthest_bounding_point</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.furthest_bounding_point" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.furthest_conglomerate_point">
+<code class="sig-name descname">furthest_conglomerate_point</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.furthest_conglomerate_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds a point that has the furthest x value among all points in the polygon and has the furthest y value among
+all points in the polygon</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>p</strong><span class="classifier">Point</span></dt><dd><p>the point to find the furthest point from</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.furthest_point">
+<code class="sig-name descname">furthest_point</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">point</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.furthest_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the furthest point in this polygon from a give point</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>point</strong><span class="classifier">Point</span></dt><dd><p>The point to compare for every polygon vertices</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Point</dt><dd><p>The furthest point from the given point in the polygon</p>
 </dd>
 </dl>
 </dd>
@@ -246,6 +499,78 @@ result.
 &gt;&gt;&gt; print(Polygon.in_segment(Point(0, 0), Point(5, 5), Point(1, 1.00000001)))
 True</p>
 <p>Example of an incorrect, but very close test.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.inside">
+<code class="sig-name descname">inside</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">larger_polygon</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.inside" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks a given polygon to see if it is in a larger polygon</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>larger_polygon</strong><span class="classifier">Polygon</span></dt><dd><p>The larger polygon that could contain the given polygon</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>bool</dt><dd><p>True if the given polygon is in larger_polygon</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.intersect_segment">
+<em class="property">static </em><code class="sig-name descname">intersect_segment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p1</span></em>, <em class="sig-param"><span class="n">p2</span></em>, <em class="sig-param"><span class="n">p3</span></em>, <em class="sig-param"><span class="n">p4</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.intersect_segment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if two line segments defined by 4 points intersect</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>p1</strong><span class="classifier">Point</span></dt><dd><p>First point in the first line segment</p>
+</dd>
+<dt><strong>p2</strong><span class="classifier">Point</span></dt><dd><p>Second point in the second line segment</p>
+</dd>
+<dt><strong>p3</strong><span class="classifier">Point</span></dt><dd><p>First point in the second line segment</p>
+</dd>
+<dt><strong>p4</strong><span class="classifier">Point</span></dt><dd><p>Second point in the second line segment</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>bool</dt><dd><p>True if the two line segments intersect</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.intersect_segment_alt">
+<em class="property">static </em><code class="sig-name descname">intersect_segment_alt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p1</span></em>, <em class="sig-param"><span class="n">p2</span></em>, <em class="sig-param"><span class="n">p3</span></em>, <em class="sig-param"><span class="n">p4</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.intersect_segment_alt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if two line segments defined by 4 points intersect</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>p1</strong><span class="classifier">Point</span></dt><dd><p>First point in the first line segment</p>
+</dd>
+<dt><strong>p2</strong><span class="classifier">Point</span></dt><dd><p>Second point in the second line segment</p>
+</dd>
+<dt><strong>p3</strong><span class="classifier">Point</span></dt><dd><p>First point in the second line segment</p>
+</dd>
+<dt><strong>p4</strong><span class="classifier">Point</span></dt><dd><p>Second point in the second line segment</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>bool</dt><dd><p>True if the two line segments intersect</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -343,13 +668,126 @@ repeat.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="Polygon.Polygon.is_rectangle">
+<code class="sig-name descname">is_rectangle</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.is_rectangle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check a given polygon to see if it is a rectangle</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>bool</dt><dd><p>True if the polygon is a rectangle</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.longest_side_and_length">
+<code class="sig-name descname">longest_side_and_length</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.longest_side_and_length" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.move_center_to">
+<code class="sig-name descname">move_center_to</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.move_center_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Moves a polygon’s center to a given point p</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>p</strong><span class="classifier">Point</span></dt><dd><p>The new center for the polygon</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.move_polygon_by_center">
+<code class="sig-name descname">move_polygon_by_center</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">left_right_distance</span></em>, <em class="sig-param"><span class="n">up_down_distance</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.move_polygon_by_center" title="Permalink to this definition">¶</a></dt>
+<dd><p>Moves a polygon’s center by left_right_distance left or right, and up_down_distance up or down.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>left_right_distance</strong><span class="classifier">float</span></dt><dd><p>the distance to move the center of the polygon by left or right</p>
+</dd>
+<dt><strong>up_down_distance</strong><span class="classifier">float</span></dt><dd><p>the distance to move the center of the polygon by up or down</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.on_edge">
+<code class="sig-name descname">on_edge</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.on_edge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks to see if a given point p is on any edge of the polygon</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>p</strong><span class="classifier">Point</span></dt><dd><p>The point to check to see if it is on any edge of the polygon</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>bool</dt><dd><p>True if p is on any edge of the polygon</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.rectangle_inside">
+<code class="sig-name descname">rectangle_inside</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p1</span></em>, <em class="sig-param"><span class="n">p2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.rectangle_inside" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds a rectangle given an edge of the polygon</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>p1</strong><span class="classifier">Point</span></dt><dd><p>one edge vertices</p>
+</dd>
+<dt><strong>p2</strong><span class="classifier">Point</span></dt><dd><p>second edge vertices</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Polygon</dt><dd><p>The rectangle inside the polygon</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Polygon.Polygon.scale_of_polygon">
+<code class="sig-name descname">scale_of_polygon</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scalar</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.scale_of_polygon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scales a polygon by a scalar and returns a new scaled polygon centered on the original polygon’s center</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>scalar</strong><span class="classifier">float</span></dt><dd><p>The scalar to scale the polygon by (could be positive or negative for shrink or grow)</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Polygon</dt><dd><p>The new scaled polygon centered on the original polygon’s center</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Polygon.Polygon.set_vertices">
-<code class="sig-name descname">set_vertices</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vertices</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.set_vertices" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_vertices</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vertices</span></em>, <em class="sig-param"><span class="n">reorder</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.Polygon.set_vertices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the vertices of the polygon</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>vertices</strong><span class="classifier">List of points</span></dt><dd><p>The new vertices</p>
+</dd>
+<dt><strong>reorder</strong><span class="classifier">bool</span></dt><dd><p>If ture, reorder the vertices into clockwise order</p>
 </dd>
 </dl>
 </dd>
@@ -436,6 +874,11 @@ repeat.</p>
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt id="Polygon.print_list">
+<code class="sig-prename descclassname">Polygon.</code><code class="sig-name descname">print_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">list_name</span></em>, <em class="sig-param"><span class="n">points</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Polygon.print_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 
 
@@ -457,15 +900,15 @@ repeat.</p>
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Constructor.html">Constructor module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="District.html">District module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Infrastructure.html">Infrastructure module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Menu.html">Menu module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Pathfinder.html">Pathfinder module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Point.html">Point module</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Polygon module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Region.html">Region module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Voronoi.html">Voronoi module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Wall.html">Wall module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Constructor.html">Constructor module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Menu.html">Menu module</a></li>
 </ul>
 
 <div class="relations">
