@@ -62,6 +62,8 @@ def _intersects(p1, p2, q1, q2):
     -------
     bool
         True if the line segment from p1 to q1 intersects line segment from p2 to q2
+    Point
+        The intersection of the segments if it exists, None if it does not or they are collinear
     """
     # Convert the points into ndarrays
     p_start = np.array([[p1.get_x()], [p1.get_y()]])
@@ -80,12 +82,14 @@ def _intersects(p1, p2, q1, q2):
         # by endpoints of the other. If they are collinear and not overlapping then they are not in the same
         # segment and we return false after the else.
         if Polygon.in_segment(p1, p2, q1) or Polygon.in_segment(p1, p2, q1):
-            return True
+            return True, None
     else:
-        if 0 <= intersection[0][0] <= 1 and 0 <= intersection[1][0] <= 1:
-            return True
+        if 0 <= round(intersection[0][0], 8) <= 1 and 0 <= round(intersection[1][0], 8) <= 1:
+            intersection_x = p1.get_x() + intersection[0][0] * (p2.get_x() - p1.get_x())
+            intersection_y = p1.get_y() + intersection[0][0] * (p2.get_y() - p1.get_y())
+            return True, Point(intersection_x, intersection_y)
 
-    return False
+    return False, None
 
 
 def clockwise_order(vertices):
@@ -407,9 +411,10 @@ class Polygon:
                 ext.set_y(ext.get_y() + 0.00000001)
 
             # If the ray intersects the current edge of the polygon we increase the intersect_count by one
-            if _intersects(cur_vertex, next_vertex, point, ext):
+            does_intersect, intersection = _intersects(cur_vertex, next_vertex, point, ext)
+            if does_intersect:
                 # If the point and the line segment are collinear we return if the point is in_segment with the edge
-                if _three_point_orientation(cur_vertex, next_vertex, point) == 0:
+                if intersection is None:
                     return Polygon.in_segment(cur_vertex, next_vertex, point)
                 intersect_count += 1
 
@@ -566,7 +571,7 @@ class Polygon:
 
         edge = self.find_intersecting_edge(p, ext_p)
 
-        inter_p = self.intersection(edge[0], edge[1], p, ext_p)
+        _, inter_p = _intersects(edge[0], edge[1], p, ext_p)
 
         return self.cut_gap(p, inter_p, gap)
 
@@ -774,57 +779,57 @@ class Polygon:
                 max_dist = new_dist
         return max_point
 
-    @staticmethod
-    def intersect_segment(p1, p2, p3, p4):
-        """
-        Returns True if two line segments defined by 4 points intersect
+    # @staticmethod
+    # def intersect_segment(p1, p2, p3, p4):
+    #     """
+    #     Returns True if two line segments defined by 4 points intersect
+    #
+    #     Parameters
+    #     ----------
+    #     p1 : Point
+    #         First point in the first line segment
+    #     p2 : Point
+    #         Second point in the second line segment
+    #     p3 : Point
+    #         First point in the second line segment
+    #     p4 : Point
+    #         Second point in the second line segment
+    #
+    #     Returns
+    #     -------
+    #     bool
+    #         True if the two line segments intersect
+    #     """
+    #     inter = Polygon.intersection(p1, p2, p3, p4)
+    #     if inter is not None and Polygon.in_segment(p1, p2, inter):
+    #         return True
+    #     return False
 
-        Parameters
-        ----------
-        p1 : Point
-            First point in the first line segment
-        p2 : Point
-            Second point in the second line segment
-        p3 : Point
-            First point in the second line segment
-        p4 : Point
-            Second point in the second line segment
-
-        Returns
-        -------
-        bool
-            True if the two line segments intersect
-        """
-        inter = Polygon.intersection(p1, p2, p3, p4)
-        if inter is not None and Polygon.in_segment(p1, p2, inter):
-            return True
-        return False
-
-    @staticmethod
-    def intersect_segment_alt(p1, p2, p3, p4):
-        """
-        Returns True if two line segments defined by 4 points intersect
-
-        Parameters
-        ----------
-        p1 : Point
-            First point in the first line segment
-        p2 : Point
-            Second point in the second line segment
-        p3 : Point
-            First point in the second line segment
-        p4 : Point
-            Second point in the second line segment
-
-        Returns
-        -------
-        bool
-            True if the two line segments intersect
-        """
-        inter = Polygon.intersection(p1, p2, p3, p4)
-        if inter is not None and (Polygon.in_segment(p1, p2, inter) and Polygon.in_segment(p3, p4, inter)):
-            return True
-        return False
+    # @staticmethod
+    # def intersect_segment_alt(p1, p2, p3, p4):
+    #     """
+    #     Returns True if two line segments defined by 4 points intersect
+    #
+    #     Parameters
+    #     ----------
+    #     p1 : Point
+    #         First point in the first line segment
+    #     p2 : Point
+    #         Second point in the second line segment
+    #     p3 : Point
+    #         First point in the second line segment
+    #     p4 : Point
+    #         Second point in the second line segment
+    #
+    #     Returns
+    #     -------
+    #     bool
+    #         True if the two line segments intersect
+    #     """
+    #     inter = Polygon.intersection(p1, p2, p3, p4)
+    #     if inter is not None and (Polygon.in_segment(p1, p2, inter) and Polygon.in_segment(p3, p4, inter)):
+    #         return True
+    #     return False
 
     @staticmethod
     def find_ext_point(furthest_point, ang, initial_p):
@@ -878,8 +883,8 @@ class Polygon:
         for i in range(0, len(self.vertices)):
             v1 = self.vertices[i]
             v2 = self.vertices[(i + 1) % len(self.vertices)]
-
-            if Polygon.intersect_segment(v1, v2, p, ext_p) and not self.in_segment(v1, v2, p):
+            does_intersect, intersection = _intersects(v1, v2, p, ext_p)
+            if does_intersect and not self.in_segment(v1, v2, p):
                 return v1, v2
         return None
 
@@ -904,7 +909,7 @@ class Polygon:
             v1 = self.vertices[i]
             v2 = self.vertices[(i + 1) % len(self.vertices)]
 
-            if Polygon.intersect_segment_alt(v1, v2, p, ext_p) and not self.in_segment(v1, v2, p):
+            if _intersects(v1, v2, p, ext_p)[1] and not self.in_segment(v1, v2, p):
                 return v1, v2
         return None
 
