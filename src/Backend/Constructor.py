@@ -18,6 +18,8 @@ class Constructor:
         Assigns the region a district
 
     """
+    def __init__(self, wall):
+        self.wall = wall
 
     def generate_map(self, options):
         """
@@ -31,28 +33,24 @@ class Constructor:
         -------
 
         """
-        """
         # creates a fixed bounding polygon size
-        bounding_polygon = Polygon([Point(100, 100), Point(100, -100), Point(-100, -100), Point(-100, 100)])
-
+        # bounding_polygon = Polygon([Point(100, 100), Point(100, -100), Point(-100, -100), Point(-100, 100)])
+        bounding_polygon = Polygon([Point(250, 250), Point(250, -250), Point(-250, -250), Point(-250, 250)])
         # decides how many districts are generated
         num_district = 10
         var1 = options[0]
         if var1 == 2:
             num_district = 25
-            bounding_polygon = Polygon([Point(250, 250), Point(250, -250), Point(-250, -250), Point(-250, 250)])
+            # bounding_polygon = Polygon([Point(250, 250), Point(250, -250), Point(-250, -250), Point(-250, 250)])
         elif var1 == 3:
             num_district = 50
-            bounding_polygon = Polygon([Point(500, 500), Point(500, -500), Point(-500, -500), Point(-500, 500)])
+            # bounding_polygon = Polygon([Point(500, 500), Point(500, -500), Point(-500, -500), Point(-500, 500)])
         elif var1 == 4:
             num_district = 75
-            bounding_polygon = Polygon([Point(750, 750), Point(750, -750), Point(-750, -750), Point(-750, 750)])
+            # bounding_polygon = Polygon([Point(750, 750), Point(750, -750), Point(-750, -750), Point(-750, 750)])
         elif var1 == 5:
             num_district = 100
-            bounding_polygon = Polygon([Point(1000, 1000), Point(1000, -250), Point(-1000, -1000), Point(-1000, 1000)])
-        """
-        num_district = 25
-        bounding_polygon = Polygon([Point(250, 250), Point(250, -250), Point(-250, -250), Point(-250, 250)])
+            # bounding_polygon = Polygon([Point(1000, 1000), Point(1000, -250), Point(-1000, -1000), Point(-1000, 1000)])
 
         # creates the Voronoi diagram with the required dimensions and then relaxes it twice
         vor = Voronoi(num_district, bounding_polygon)
@@ -72,7 +70,8 @@ class Constructor:
         # creates a wall and city, which modifies the graph to have the wall be a convex hull of points and shifts
         # the graph so the wall does not intersect any regions
         wall = Infrastructure(regions, vor.graph, bounding_polygon)
-
+        self.wall
+        
         self.assign_districts(regions, wall, options)
 
         # generates buildings if enabled
