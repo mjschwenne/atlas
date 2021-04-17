@@ -114,6 +114,16 @@ def main():
         }
         map_canvas.create_polygon(*points, fill=switcher.get(region_type, "#ebd5b3"), outline='black')
 
+    def draw_walls(map_canvas, verts):
+        length = len(verts)
+        for i in len(verts):
+            if i % 2 == 0:
+                map_canvas.create_line(verts[i], verts[(i + 1) % length], verts[(i + 2) % length], verts[(i + 3) % length], width=8, color="#7B7F85")
+
+        for i in len(verts):
+            if i % 2 == 0:
+                map_canvas.create_oval(verts[i] - 4, verts[i + 1] - 4, verts[i] + 4, verts[i + 1] + 4, color="#7B7F85")
+
     def find_map_bounds(verts):
         """
         This function is used by the draw_map function to locate the bounds of the map for use in scaling and sizing
@@ -186,7 +196,9 @@ def main():
         """
         map_regions.clear()
         map_canvas.delete("all")
-        reg_list = Constructor().generate_map(user_info)
+        construct = Constructor(None)
+        reg_list = construct.generate_map(user_info)
+        wall = construct.wall
 
         verts = []
         center_verts = []
@@ -280,6 +292,12 @@ def main():
                     verts.append(((v.get_x() + 250) / 2) - low_w)
                     verts.append(((v.get_y() + 250) / 2) - low_h)
                 draw_region(map_canvas, 12, verts)
+        wall_verts = []
+        for verts in wall:
+            wall_verts.append(((verts.get_x() + 250) / 2) - low_w)
+            wall_verts.append(((verts.get_y() + 250) / 2) - low_w)
+        draw_walls(map_canvas, wall_verts)
+
         center_verts = []
         for reg in reg_list:
             center_verts.append(((reg.get_center().get_x() + 250) / 2) - low_w)

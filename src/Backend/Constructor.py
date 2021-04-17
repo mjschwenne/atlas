@@ -70,7 +70,7 @@ class Constructor:
         # creates a wall and city, which modifies the graph to have the wall be a convex hull of points and shifts
         # the graph so the wall does not intersect any regions
         wall = Infrastructure(regions, vor.graph, bounding_polygon)
-        self.wall
+        self.wall = wall
 
         self.assign_districts(regions, wall, options)
 
