@@ -45,7 +45,7 @@ def _three_point_orientation(p1, p2, p3):
 
 def _intersects(p1, p2, q1, q2):
     """
-    Returns true if line segment from p1 to q1 intersects line segment from p2 to q2
+    Returns true if line segment from `p1` to `p2` intersects line segment from `q1` to `q2`
 
     Parameters
     ----------
@@ -87,6 +87,55 @@ def _intersects(p1, p2, q1, q2):
         if 0 <= round(intersection[0][0], 8) <= 1 and 0 <= round(intersection[1][0], 8) <= 1:
             intersection_x = p1.get_x() + intersection[0][0] * (p2.get_x() - p1.get_x())
             intersection_y = p1.get_y() + intersection[0][0] * (p2.get_y() - p1.get_y())
+            return True, Point(intersection_x, intersection_y)
+
+    return False, None
+
+
+def _ray_intersects(p, ang, q1, q2):
+    """
+    Returns true if a ray starting at `p` with direction `ang` intersects line segment from `q1` to `q2`
+
+    Parameters
+    ----------
+    p : Point
+        Fixed endpoint of the ray
+    ang : float
+        The angle that the ray starting at `p` extending, measured in radians
+    q1 : Point
+        The first point in the second line segment
+    q2 : Point
+        The second point in the second line segment
+
+    Returns
+    -------
+    bool
+        True if the line segment from p1 to q1 intersects line segment from p2 to q2
+    Point
+        The intersection of the segments if it exists, None if it does not or they are collinear
+    """
+    # Convert the points into ndarrays
+    p_start = np.array([[p.get_x()], [p.get_y()]])
+    p_dir = np.array([[math.cos(ang)], [math.sin(ang)]])
+    q_start = np.array([[q1.get_x()], [q1.get_y()]])
+    q_end = np.array([[q2.get_x()], [q2.get_y()]])
+    # Create the coefficient and constant matrices
+    a = np.concatenate((p_dir, np.array([[-1]]) * (q_end - q_start)), axis=1)
+    b = q_start - p_start
+    # Solve AX = b
+    try:
+        intersection = np.linalg.solve(a, b)
+    except np.linalg.LinAlgError:
+        # The two segments are parallel, but possibly collinear (parts of the same line)
+        # If the two segments are collinear and overlapping then one of the endpoints of one is 'wrapped'
+        # by endpoints of the other. If they are collinear and not overlapping then they are not in the same
+        # segment and we return false after the else.
+        if Polygon.in_segment(q1, q2, p):
+            return True, None
+    else:
+        if 0 <= round(intersection[0][0], 8) and 0 <= round(intersection[1][0], 8) <= 1:
+            intersection_x = p.get_x() + intersection[0][0] * (p_dir[0][0])
+            intersection_y = p.get_y() + intersection[0][0] * (p_dir[1][0])
             return True, Point(intersection_x, intersection_y)
 
     return False, None
@@ -569,9 +618,11 @@ class Polygon:
         x = self.furthest_point(p)
         ext_p = Polygon.find_ext_point(x, ang, p)
 
-        edge = self.find_intersecting_edge(p, ext_p)
-
-        _, inter_p = _intersects(edge[0], edge[1], p, ext_p)
+        edge = self.find_intersecting_edge(p, ang)
+        try:
+            _, inter_p = _ray_intersects(p, ang, edge[0], edge[1])
+        except TypeError:
+            pass
 
         return self.cut_gap(p, inter_p, gap)
 
@@ -864,7 +915,7 @@ class Polygon:
                 p = Point((furthest_point.get_y() - n) / m, furthest_point.get_y())
             return p
 
-    def find_intersecting_edge(self, p, ext_p):
+    def find_intersecting_edge(self, p, ang):
         """
         Given a line segment this method returns an edge that that line segment intersects
 
@@ -872,8 +923,8 @@ class Polygon:
         ----------
         p : point
             the first point of the line segment
-        ext_p : Point
-            the second point of the line segment
+        ang : float
+            the angle in radians that the ray from `p` extends from
 
         Returns
         -------
@@ -883,7 +934,7 @@ class Polygon:
         for i in range(0, len(self.vertices)):
             v1 = self.vertices[i]
             v2 = self.vertices[(i + 1) % len(self.vertices)]
-            does_intersect, intersection = _intersects(v1, v2, p, ext_p)
+            does_intersect, intersection = _ray_intersects(p, ang, v1, v2)
             if does_intersect and not self.in_segment(v1, v2, p):
                 return v1, v2
         return None
