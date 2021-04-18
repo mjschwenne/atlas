@@ -1168,7 +1168,7 @@ class Precinct(District):
 
     # Overrides District's determine Rating
     @staticmethod
-    def determine_rating(region, neighbor_regions, wall):
+    def determine_rating(region, neighbor_regions, other_regions, wall):
         """
         Determines the likely hood a given district will be in a region
 
@@ -1186,6 +1186,15 @@ class Precinct(District):
         integer
             The rating of the region for the district
         """
+        precincts = 0
+        for reg in other_regions:
+            if region != reg:
+                if isinstance(reg.get_district(), Precinct):
+                    precincts += 1
+
+        if precincts >= 2:
+            return -10
+
         rating = 0
         for reg in neighbor_regions:
             dis = reg.get_district()
@@ -1202,7 +1211,7 @@ class Precinct(District):
             elif isinstance(dis, Castle):
                 rating += 10
             elif isinstance(dis, Precinct):
-                rating += -10
+                rating += -50
         if not region.in_walls(wall):
             return -10
         return rating

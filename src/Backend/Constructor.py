@@ -122,6 +122,8 @@ class Constructor:
             neighbors = reg.get_neighbors()
             if isinstance(reg.get_district(), Castle):
                 rating = reg.get_district().determine_rating(reg, neighbors, regions, wall)
+            elif isinstance(reg.get_district(), Precinct):
+                rating = reg.get_district().determine_rating(reg, neighbors, regions, wall)
             else:
                 rating = reg.get_district().determine_rating(reg, neighbors, wall)
             if rating < 0:
@@ -137,6 +139,8 @@ class Constructor:
             for reg in regions:
                 neighbors = reg.get_neighbors()
                 if isinstance(reg.get_district(), Castle):
+                    rating = reg.get_district().determine_rating(reg, neighbors, regions, wall)
+                elif isinstance(reg.get_district, Precinct):
                     rating = reg.get_district().determine_rating(reg, neighbors, regions, wall)
                 else:
                     rating = reg.get_district().determine_rating(reg, neighbors, wall)
@@ -216,7 +220,7 @@ class Constructor:
                 values.append(market_val + 10)
                 districts.append(Market())
         if options[15] == 1:
-            precinct_val = Precinct.determine_rating(reg, neighbors, wall)
+            precinct_val = Precinct.determine_rating(reg, neighbors, regions, wall)
             if precinct_val >= 0:
                 values.append(precinct_val + 10)
                 districts.append(Precinct())
