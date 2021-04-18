@@ -263,12 +263,7 @@ class District:
         # point on a known side of the line to see if they match
         center = section.get_center()
         d_c = d(center, max_p1, max_p2)
-        # if edge_angle != 0 and round(edge_angle, 8) != round(_PI, 8):
-        #     # If the line is not horizontal than (ran_p.get_x() - 1, ran_p.get_y()) is to the left of the line
-        #     d_p = d(Point(ran_p.get_x() - 1, ran_p.get_y()), max_p1, max_p2)
-        # else:
-        #     # If the line is horizontal than (ran_p.get_x(), ran_p.get_y() + 1) is to the left of the line
-        #     d_p = d(Point(ran_p.get_x(), ran_p.get_y() + 1), max_p1, max_p2)
+
         cut_ang = edge_angle - (np.sign(d_c) * math.pi / 2)
         ran_ang = (random.uniform(-self.chaos_level, self.chaos_level) * (math.pi / 12)) + cut_ang
 
@@ -388,12 +383,7 @@ class BasicDistrict(District):
         # point on a known side of the line to see if they match
         center = section.get_center()
         d_c = d(center, max_p1, max_p2)
-        # if edge_angle != 0 and round(edge_angle, 8) != round(_PI, 8):
-        #     # If the line is not horizontal than (ran_p.get_x() - 1, ran_p.get_y()) is to the left of the line
-        #     d_p = d(Point(ran_p.get_x() - 1, ran_p.get_y()), max_p1, max_p2)
-        # else:
-        #     # If the line is horizontal than (ran_p.get_x(), ran_p.get_y() + 1) is to the left of the line
-        #     d_p = d(Point(ran_p.get_x(), ran_p.get_y() + 1), max_p1, max_p2)
+
         cut_ang = edge_angle - (np.sign(d_c) * math.pi / 2)
         ran_ang = (random.uniform(-self.chaos_level, self.chaos_level) * (math.pi / 12)) + cut_ang
 
