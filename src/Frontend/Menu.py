@@ -358,9 +358,12 @@ def main():
         info.title('Help Window')
         info.iconbitmap('../../images/Atlas.ico')
         Label(info, text="ATLAS Help Window", font="Helvetica 16 bold", bg="#a3a3a3", width=32).grid(row=0)
-        Label(info, text="If you want a Randomly generated map hit the GENERATE button.\n "
-                         "If you want to personalize what happens in the map hit the EDIT button.\n "
-                         "If you want to save hit the SAVE button.").grid(row=1, sticky=W)
+        Label(info, text="If you want a randomly generated map hit the GENERATE button.",
+              font="Helvetica 10").grid(row=1, sticky=W)
+        Label(info, text="If you want to personalize what happens in the map hit the EDIT button.",
+              font="Helvetica 10").grid(row=2, sticky=W)
+        Label(info, text="If you want to save hit the SAVE button.",
+              font="Helvetica 10").grid(row=3, sticky=W)
         Button(info, text="Close", command=info.destroy).grid(row=10)
 
     def key_msg():
@@ -563,11 +566,11 @@ def main():
     Label(welcome, text="Welcome to ATLAS", font="Helvetica 16 bold", bg="#a3a3a3", width=24).grid(row=0, sticky=W)
     Label(welcome, text="Hello user, thank you for downloading our map generator.\n "
                         "We hope that you enjoy our map generation and find the \n"
-                        "edit, key and save functions useful.").grid(row=1, sticky=W)
+                        "edit, key, and save functions useful.").grid(row=1, sticky=W)
     Label(welcome, text=" Directions:", font="Helvetica 16 bold", bg="#a3a3a3", width=24).grid(row=3, sticky=W)
-    Label(welcome, text="To create a random map click generate.").grid(row=4, sticky=W)
-    Label(welcome, text="To create your own map click edit.").grid(row=5, sticky=W)
-    Label(welcome, text="If you need help click the help button.").grid(row=6, sticky=W)
+    Label(welcome, text="To create a random map click GENERATE.").grid(row=4, sticky=W)
+    Label(welcome, text="To create your own map click EDIT.").grid(row=5, sticky=W)
+    Label(welcome, text="If you need help click the HELP button.").grid(row=6, sticky=W)
     Button(welcome, text="Close", command=welcome.destroy).grid(row=7)
 
     # sets the icons in the corner to our logo
@@ -590,20 +593,20 @@ def main():
 
     # Each of These are for the buttons that are created
     action_btn = tk.Button(button_frame, text="Generate", background="#4aa75d", foreground="black",
-                           command=lambda: draw_map(canvas))  # Replace this with draw_map when I have it made
+                           command=lambda: draw_map(canvas), width=8)
     action_btn.grid(column=0, row=0, sticky='w', padx=5, pady=5)
 
     save_btn = tk.Button(button_frame, text="Save", background="#a3a3a3", foreground="black",
-                         command=lambda: save_file())
+                         command=lambda: save_file(), width=8)
     save_btn.grid(column=0, row=1, sticky='w', padx=5, pady=5)
 
-    edit_btn = tk.Button(button_frame, text="Edit", background="#a3a3a3", foreground="black", command=edit_msg)
+    edit_btn = tk.Button(button_frame, text="Edit", background="#a3a3a3", foreground="black", command=edit_msg, width=8)
     edit_btn.grid(column=0, row=2, sticky='w', padx=5, pady=5)
 
-    key_btn = tk.Button(button_frame, text="Key", background="#a3a3a3", foreground="black", command=key_msg)
+    key_btn = tk.Button(button_frame, text="Key", background="#a3a3a3", foreground="black", command=key_msg, width=8)
     key_btn.grid(column=0, row=3, sticky='w', padx=5, pady=5)
 
-    help_btn = tk.Button(button_frame, text="Help", background="#a93939", foreground="black", command=help_msg)
+    help_btn = tk.Button(button_frame, text="Help", background="#a93939", foreground="black", command=help_msg, width=8)
     help_btn.grid(column=0, row=4, sticky='w', padx=5, pady=5)
 
     # Sets up and puts the image of the cardinal directions on the screen 
