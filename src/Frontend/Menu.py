@@ -13,7 +13,6 @@ customize_info = [0, 1]
 map_regions = []
 
 
-
 class ResizingCanvas(tk.Canvas):
     """
     This altered Canvas stores the current size and acts like a normal canvas.
@@ -53,7 +52,7 @@ class ResizingCanvas(tk.Canvas):
         self.height = event.height
         # rescale all the objects
         self.scale("all", 0, 0, wscale, hscale)
-        #font = self.itemcget("text", "font").split()
+        # font = self.itemcget("text", "font").split()
         self.text_height = self.text_height * wscale
         self.itemconfigure("text", font=("TkTextFont", round(self.text_height)))
         return
@@ -120,7 +119,8 @@ def main():
         length = len(verts)
         for i in len(verts):
             if i % 2 == 0:
-                map_canvas.create_line(verts[i], verts[(i + 1) % length], verts[(i + 2) % length], verts[(i + 3) % length], width=8, color="#7B7F85")
+                map_canvas.create_line(verts[i], verts[(i + 1) % length], verts[(i + 2) % length],
+                                       verts[(i + 3) % length], width=8, color="#7B7F85")
 
         for i in len(verts):
             if i % 2 == 0:
@@ -343,7 +343,6 @@ def main():
                 i += 1
                 region_list.insert(END, str(i) + ". " + name)
 
-
     def edit_msg():
         """
         command for the edit window
@@ -384,6 +383,7 @@ def main():
             """
 
             global user_info
+            # Makes the array for the use of deciding what districts the user wants in the map
             user_info = (var1.get(), var6.get(), var3.get(), var8.get(),
                          var9.get(), var10.get(), var11.get(), var12.get(),
                          var13.get(), var14.get(), var15.get(), var16.get(),
@@ -391,8 +391,10 @@ def main():
                          var21.get(), var22.get())
 
             global customize_info
+            # Makes the array for the use of deciding what custom information the user wants in the map
             customize_info = (var4, var5)
 
+        # Handles the directions and seperateing the words between the 2 columns
         Label(edit, text="Directions", font="Helvetica 16 bold", bg="#a3a3a3").grid(column=0, row=0, sticky=E)
         Label(edit, text=":", font="Helvetica 16 bold", bg="#a3a3a3").grid(column=1, row=0, sticky=W)
 
@@ -420,6 +422,7 @@ def main():
         Checkbutton(edit, text="75  ", font="Helvetica 10", variable=var1, onvalue=4).grid(row=12, sticky=E)
         Checkbutton(edit, text="100", font="Helvetica 10", variable=var1, onvalue=5).grid(row=13, sticky=E)
 
+        # Handles second question and variables for each of the options
         Label(edit, text="Buildings", font="Helvetica 16 bold", bg="#a3a3a3").grid(column=0, row=14, sticky=E)
         Label(edit, text="and Visuals", font="Helvetica 16 bold", bg="#a3a3a3").grid(column=1, row=14, sticky=W)
         var3 = IntVar()
@@ -429,27 +432,27 @@ def main():
         var5 = IntVar()
         Checkbutton(edit, text="Labels       ", font="Helvetica 10", variable=var5).grid(row=17, sticky=W)
 
-        # Handles second question and variables for each of the options
+        # Handles third question and variables for each of the options
         Label(edit, text="What Type", font="Helvetica 16 bold", bg="#a3a3a3").grid(column=0, row=18, sticky=E)
         Label(edit, text="of Districts?", font="Helvetica 16 bold", bg="#a3a3a3").grid(column=1, row=18, sticky=W)
         var6 = IntVar()
-        Checkbutton(edit, text="Armory      ", font="Helvetica 10", variable=var6).grid(row=19, sticky=W)
+        Checkbutton(edit, text="Armory", font="Helvetica 10", variable=var6).grid(row=19, sticky=W)
         var8 = IntVar()
-        Checkbutton(edit, text="Castle        ", font="Helvetica 10", variable=var8).grid(row=20, sticky=W)
+        Checkbutton(edit, text="Castle", font="Helvetica 10", variable=var8).grid(row=20, sticky=W)
         var9 = IntVar()
-        Checkbutton(edit, text="Cathedral    ", font="Helvetica 10", variable=var9).grid(row=21, sticky=W)
+        Checkbutton(edit, text="Cathedral", font="Helvetica 10", variable=var9).grid(row=21, sticky=W)
         var10 = IntVar()
-        Checkbutton(edit, text="Courtyard    ", font="Helvetica 10", variable=var10).grid(row=22, sticky=W)
+        Checkbutton(edit, text="Courtyard", font="Helvetica 10", variable=var10).grid(row=22, sticky=W)
         var11 = IntVar()
-        Checkbutton(edit, text="Farmland     ", font="Helvetica 10", variable=var11).grid(row=23, sticky=W)
+        Checkbutton(edit, text="Farmland", font="Helvetica 10", variable=var11).grid(row=23, sticky=W)
         var12 = IntVar()
-        Checkbutton(edit, text="Gate            ", font="Helvetica 10", variable=var12).grid(row=24, sticky=W)
+        Checkbutton(edit, text="Gate", font="Helvetica 10", variable=var12).grid(row=24, sticky=W)
         var13 = IntVar()
         Checkbutton(edit, text="Housing High", font="Helvetica 10", variable=var13).grid(row=25, sticky=W)
         var14 = IntVar()
-        Checkbutton(edit, text="Housing Low ", font="Helvetica 10", variable=var14).grid(row=26, sticky=W)
+        Checkbutton(edit, text="Housing Low", font="Helvetica 10", variable=var14).grid(row=26, sticky=W)
         var15 = IntVar()
-        Checkbutton(edit, text="Housing Mid ", font="Helvetica 10", variable=var15).grid(column=1, row=19, sticky=W)
+        Checkbutton(edit, text="Housing Mid", font="Helvetica 10", variable=var15).grid(column=1, row=19, sticky=W)
         var16 = IntVar()
         Checkbutton(edit, text="Industrial", font="Helvetica 10", variable=var16).grid(column=1, row=20, sticky=W)
         var17 = IntVar()
@@ -466,13 +469,18 @@ def main():
         Checkbutton(edit, text="Slums", font="Helvetica 10", variable=var22).grid(column=1, row=26, sticky=W)
 
         def reset_info():
+            """
+            Resets the two global variables to allow basic map generation
+            """
             global user_info
             user_info = [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-            print(user_info)
+            global customize_info
+            customize_info = [0, 1]
 
         # Creates the Go and Quit button
         Button(edit, text='Go', command=lambda: [var_states(), draw_map(canvas)]).grid(row=34, sticky=W, pady=4, padx=4)
-        Button(edit, text='Reset', command=lambda: [reset_info(), draw_map(canvas)]).grid(row=34, sticky=E, pady=4, padx=4)
+        Button(edit, text='Reset', command=lambda: [reset_info(), draw_map(canvas)]).grid(row=34, sticky=E, pady=4,
+                                                                                          padx=4)
         Button(edit, text='Quit', command=edit.destroy).grid(column=1, row=34, pady=4, padx=4)
 
     def save_file():
@@ -505,7 +513,9 @@ def main():
     welcome = tk.Toplevel(window)
     welcome.title('Welcome Window')
     Label(welcome, text="Welcome to ATLAS", font="Helvetica 16 bold", bg="#a3a3a3", width=24).grid(row=0, sticky=W)
-    Label(welcome, text="Hello user, thank you for downloading our map generator.\n").grid(row=1, sticky=W)
+    Label(welcome, text="Hello user, thank you for downloading our map generator.\n "
+                        "We hope that you enjoy our map generation and find the \n"
+                        "edit, key and save functions useful.").grid(row=1, sticky=W)
     Label(welcome, text=" Directions:", font="Helvetica 16 bold", bg="#a3a3a3", width=24).grid(row=3, sticky=W)
     Label(welcome, text="To create a random map click generate.").grid(row=4, sticky=W)
     Label(welcome, text="To create your own map click edit.").grid(row=5, sticky=W)
