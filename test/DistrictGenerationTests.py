@@ -226,6 +226,36 @@ class DistrictGenerationTests(unittest.TestCase):
         plt.show()
         self.assertEqual(True, True)
 
+    def test_castle_district_generation_4(self):
+        region = Region(Castle(), [Point(-8.556, 40.444), Point(9.181, 122.39), Point(-7.463, 122.48),
+                                   Point(-102.379, 101.723), Point(-33.902, 29.79)])
+
+        region.get_district().generate_district(region)
+
+        buildings = region.buildings
+
+        vx_list = []
+        vy_list = []
+        for v in region.vertices:
+            vx_list.append(v.get_x())
+            vy_list.append(v.get_y())
+        vx_list.append(region.vertices[0].get_x())
+        vy_list.append(region.vertices[0].get_y())
+        plt.plot(vx_list, vy_list, 'b-')
+
+        for b in buildings:
+            x_list = []
+            y_list = []
+            for p in b.vertices:
+                x_list.append(p.get_x())
+                y_list.append(p.get_y())
+            x_list.append(b.vertices[0].get_x())
+            y_list.append(b.vertices[0].get_y())
+            plt.plot(x_list, y_list, 'k-')
+
+        plt.show()
+        self.assertEqual(True, True)
+
     def test_market_district_generation_1(self):
         region = Region(Market(), [Point(200, 800), Point(800, 500), Point(800, 100), Point(700, -200),
                                    Point(400, -500), Point(-300, -300), Point(-300, 400)])

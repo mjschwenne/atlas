@@ -950,7 +950,12 @@ class Polygon:
         if self.is_rectangle():
             return self
 
-        ang = math.atan2((p1.get_y() - p2.get_y()), (p1.get_x() - p2.get_x())) + (math.pi / 2)
+        ang = math.atan2((p1.get_y() - p2.get_y()), (p1.get_x() - p2.get_x()))
+        center = self.get_center()
+        d_c = (center.get_x() - p1.get_x()) * (p2.get_y() - p1.get_y()) - \
+            (center.get_y() - p1.get_y()) * (p2.get_x() - p1.get_x())
+        sign_d_c = np.sign(d_c)
+        ang = ang + sign_d_c*(math.pi/2)
 
         edge_p1 = self.find_intersecting_edge(p1, ang)
         edge_p2 = self.find_intersecting_edge(p2, ang)
