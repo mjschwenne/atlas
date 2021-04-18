@@ -140,7 +140,7 @@ class Constructor:
                 neighbors = reg.get_neighbors()
                 if isinstance(reg.get_district(), Castle):
                     rating = reg.get_district().determine_rating(reg, neighbors, regions, wall)
-                elif isinstance(reg.get_district, Precinct):
+                elif isinstance(reg.get_district(), Precinct):
                     rating = reg.get_district().determine_rating(reg, neighbors, regions, wall)
                 else:
                     rating = reg.get_district().determine_rating(reg, neighbors, wall)
