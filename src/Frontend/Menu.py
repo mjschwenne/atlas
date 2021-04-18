@@ -9,7 +9,7 @@ from src.Backend.Constructor import Constructor
 from src.Backend.District import *
 
 user_info = [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-customize_info = [0, 1]
+customize_info = [1]
 map_regions = []
 
 
@@ -437,7 +437,7 @@ def main():
 
             global customize_info
             # Makes the array for the use of deciding what custom information the user wants in the map
-            customize_info = (var4, var5)
+            customize_info = var5
 
         # Handles the directions and seperateing the words between the 2 columns
         Label(edit, text="Directions:", font="Helvetica 16 bold", bg="#a3a3a3", width=29).grid(column=0, row=0,
@@ -454,7 +454,7 @@ def main():
         Label(edit, text="      ").grid(column=1, row=4, sticky=W)
 
         Label(edit, text="After you have made your selections hit the GO button.", font="Helvetica 10").grid(
-            column=0,row=5, sticky=W, columnspan=2)
+            column=0, row=5, sticky=W, columnspan=2)
         Label(edit, text="If you want to reset to original settings hit the RESET button.", font="Helvetica 10").grid(
             column=0, row=6, sticky=W, columnspan=2)
         Label(edit, text="If you want to exit hit the QUIT button.", font="Helvetica 10").grid(column=0, row=7,
@@ -463,7 +463,7 @@ def main():
 
         # Handles the first question in edit window and sets a variable to it
         Label(edit, text="How Many Districts?", font="Helvetica 16 bold", bg="#a3a3a3", width=29).grid(column=0, row=9,
-                                                                                             columnspan=2)
+                                                                                                       columnspan=2)
         var1 = IntVar()
         Checkbutton(edit, text="10  ", font="Helvetica 10", variable=var1, onvalue=1).grid(column=0, row=10, sticky=W)
         Checkbutton(edit, text="25  ", font="Helvetica 10", variable=var1, onvalue=2).grid(column=0, row=11, sticky=W)
@@ -476,11 +476,9 @@ def main():
                                                                                                          row=15,
                                                                                                          columnspan=2)
         var3 = IntVar()
-        Checkbutton(edit, text="Buildings   ", font="Helvetica 10", variable=var3).grid(row=16, sticky=W)
-        var4 = IntVar()
-        Checkbutton(edit, text="Grey Scale", font="Helvetica 10", variable=var4).grid(row=17, sticky=W)
+        Checkbutton(edit, text="Buildings", font="Helvetica 10", variable=var3).grid(row=16, sticky=W)
         var5 = IntVar()
-        Checkbutton(edit, text="Labels       ", font="Helvetica 10", variable=var5).grid(row=18, sticky=W)
+        Checkbutton(edit, text="Labels", font="Helvetica 10", variable=var5).grid(row=18, sticky=W)
 
         # Handles third question and variables for each of the options
         Label(edit, text="What Type of Districts?", font="Helvetica 16 bold", bg="#a3a3a3", width=29).grid(column=0,
@@ -526,11 +524,11 @@ def main():
             global user_info
             user_info = [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
             global customize_info
-            customize_info = [0, 1]
+            customize_info = [1]
 
         # Creates the Go and Quit button
         Button(edit, text='Go', command=lambda: [var_states(), draw_map(canvas)]).grid(row=34, sticky=W, pady=4, padx=4)
-        Button(edit, text='Reset', command=lambda: [reset_info(), draw_map(canvas)]).grid(row=34, sticky=E, pady=4,
+        Button(edit, text='Reset', command=lambda: [reset_info(), edit.destroy()]).grid(row=34, sticky=E, pady=4,
                                                                                           padx=4)
         Button(edit, text='Quit', command=edit.destroy).grid(column=1, sticky=E, row=34, pady=4, padx=4)
 
