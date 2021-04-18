@@ -9,7 +9,7 @@ from src.Backend.Constructor import Constructor
 from src.Backend.District import *
 
 user_info = [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-customize_info = [1]
+customize_info = 1
 map_regions = []
 
 
@@ -52,7 +52,6 @@ class ResizingCanvas(tk.Canvas):
         self.height = event.height
         # rescale all the objects
         self.scale("all", 0, 0, wscale, hscale)
-        # font = self.itemcget("text", "font").split()
         self.text_height = self.text_height * wscale
         self.itemconfigure("text", font=("TkTextFont", round(self.text_height)))
         return
@@ -342,11 +341,13 @@ def main():
         wall_verts.append(((wall.vertices[0].get_y() + 250) / 2) - low_h)
         draw_walls(map_canvas, wall_verts)
 
-        center_verts = []
-        for reg in reg_list:
-            center_verts.append(((reg.get_center().get_x() + 250) / 2) - low_w)
-            center_verts.append(((reg.get_center().get_y() + 250) / 2) - low_h)
-        label_regions(map_canvas, center_verts, string, color)
+        if customize_info == 1:
+            center_verts = []
+            for reg in reg_list:
+                center_verts.append(((reg.get_center().get_x() + 250) / 2) - low_w)
+                center_verts.append(((reg.get_center().get_y() + 250) / 2) - low_h)
+            label_regions(map_canvas, center_verts, string, color)
+            
         map_canvas.scale("all", 0, 0, map_canvas.width / w, map_canvas.height / h)
         return
 
@@ -437,9 +438,9 @@ def main():
 
             global customize_info
             # Makes the array for the use of deciding what custom information the user wants in the map
-            customize_info = var5
+            customize_info = var5.get()
 
-        # Handles the directions and seperateing the words between the 2 columns
+        # Handles the directions and seperating the words between the 2 columns
         Label(edit, text="Directions:", font="Helvetica 16 bold", bg="#a3a3a3", width=29).grid(column=0, row=0,
                                                                                                columnspan=2)
 
