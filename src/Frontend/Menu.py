@@ -541,15 +541,13 @@ def main():
         Support for .txt, which would allow the map to be reloaded and possibly edited is planned so long as we have
         edit options.
         """
-        files = [('PNG', '*.png'),
-                 ('All Files', '*.*'),
-                 ('Text Document', '*.txt')]
+        files = [('PNG', '*.png')]
         file = asksaveasfilename(filetypes=files, defaultextension=files)
         x = canvas.winfo_rootx()
         y = canvas.winfo_rooty()
         w = x + canvas.width
         h = y + canvas.height
-        print(f"Grabbing screen from ({x}, {y}) to ({w}, {h})")
+
         ImageGrab.grab(bbox=(x, y, w, h)).save(file)
         # canvas.postscript(file="./postscript.ps")
         # Image.open("./postscript.ps").save(file)
