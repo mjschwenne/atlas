@@ -116,21 +116,42 @@ def main():
         map_canvas.create_polygon(*points, fill=switcher.get(region_type, "#ebd5b3"), outline='black')
 
     def draw_walls(map_canvas, verts):
-        length = len(verts)
-        for i in len(verts):
-            if i % 2 == 0:
-                map_canvas.create_line(verts[i], verts[(i + 1) % length], verts[(i + 2) % length],
-                                       verts[(i + 3) % length], width=8, color="#7B7F85")
+        """
+        Takes the vertices of the wall and overlays it on the map.
 
-        for i in len(verts):
+        Parameters
+        ----------
+        map_canvas: The Canvas to draw on
+
+        verts: the flattened array of vertices
+        """
+        map_canvas.create_line(verts, width=8, fill="#7B7F85")
+        lastx = 0
+        lasty = 0
+        distance = 0
+        for i in range(len(verts)):
             if i % 2 == 0:
-                map_canvas.create_oval(verts[i] - 4, verts[i + 1] - 4, verts[i] + 4, verts[i + 1] + 4, color="#7B7F85")
+                distance = math.sqrt(((verts[i] - lastx) ** 2) + ((verts[i + 1] - lasty) ** 2))
+                if distance > 15:
+                    map_canvas.create_oval(verts[i] - 2, verts[i + 1] - 2, verts[i] + 2, verts[i + 1] + 2
+                                           , fill="#7B7F85")
+                    lastx = verts[i]
+                    lasty = verts[i + 1]
 
     def find_map_bounds(verts):
         """
-        This function is used by the draw_map function to locate the bounds of the map for use in scaling and sizing
-        :param verts: An array of vertices for all polygons to be drawn
-        :return: The highest and lowest values of each axis
+        Finds the furthest out points of the map.
+
+        Parameters
+        ----------
+        verts : flattened list of vertices, verts[0] = x1, verts[1] = y1
+            The vertices of the map that are checked for highest and lowest.
+        Returns
+        -------
+        lowest_width : The lowest x position of the map
+        lowest_height : the lowest y position of the map
+        highest_width : the highest x position of the map
+        highest_height : the highest y position of the map
         """
         i = 0
         lowest_width = float('inf')
@@ -153,6 +174,17 @@ def main():
         return lowest_width, highest_width, lowest_height, highest_height
 
     def select_random_name(string):
+        """
+        Selects a random name from a pool for each region type
+
+        Parameters
+        ----------
+        string : The type of region to be selected.
+
+        Returns
+        -------
+        final_string : Returns either a random string from the pool or the original region type if e
+        """
         final_string = string
         try:
             file = open("names/" + string + ".txt", "r")
@@ -172,12 +204,17 @@ def main():
 
     def label_regions(map_canvas, center_verts, string, color):
         """
+        Takes in the center vertices for each generated region and puts the label on it
 
-        :param map_canvas:
-        :param verts:
-        :param string:
-        :param color:
-        :return:
+        Parameters
+        ----------
+        map_canvas : The Canvas to draw things on
+
+        center_verts : The flattened array of center points
+
+        string : The original region type
+
+        color : The array of colors to label text, if they needed to be different
         """
         i = 0
         for i in range(len(center_verts)):
@@ -192,9 +229,11 @@ def main():
 
     def draw_map(map_canvas):
         """
-        This function takes the generated points and sorts them into each group and draws them on the canvas
-        :param map_canvas: The canvas to be drawn on
-        :return: null
+        Takes in the Canvas and facilitates the drawing of everything as well as flattening of vertex arrays
+
+        Parameters
+        ----------
+        map_canvas: The canvas the draw things on
         """
         map_regions.clear()
         map_canvas.delete("all")
@@ -294,10 +333,13 @@ def main():
                     verts.append(((v.get_x() + 250) / 2) - low_w)
                     verts.append(((v.get_y() + 250) / 2) - low_h)
                 draw_region(map_canvas, 12, verts)
+
         wall_verts = []
-        for verts in wall:
+        for verts in wall.vertices:
             wall_verts.append(((verts.get_x() + 250) / 2) - low_w)
-            wall_verts.append(((verts.get_y() + 250) / 2) - low_w)
+            wall_verts.append(((verts.get_y() + 250) / 2) - low_h)
+        wall_verts.append(((wall.vertices[0].get_x() + 250) / 2) - low_w)
+        wall_verts.append(((wall.vertices[0].get_y() + 250) / 2) - low_h)
         draw_walls(map_canvas, wall_verts)
 
         center_verts = []
