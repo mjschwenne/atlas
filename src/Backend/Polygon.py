@@ -318,6 +318,7 @@ class Polygon:
         signed_area *= 3  # This is 0.5 * 6, see formula for more details
         if signed_area == 0:
             print("THIS IS GOING TO CRASH SOMETHING")
+            print_list("vertices", self.vertices)
         centroid.set_x(centroid.get_x() / signed_area)
         centroid.set_y(centroid.get_y() / signed_area)
         return centroid
@@ -615,9 +616,6 @@ class Polygon:
         List of Polygons
             A list of polygons from the resulting split
         """
-        x = self.furthest_point(p)
-        ext_p = Polygon.find_ext_point(x, ang, p)
-
         edge = self.find_intersecting_edge(p, ang)
         try:
             _, inter_p = _ray_intersects(p, ang, edge[0], edge[1])
@@ -830,58 +828,6 @@ class Polygon:
                 max_dist = new_dist
         return max_point
 
-    # @staticmethod
-    # def intersect_segment(p1, p2, p3, p4):
-    #     """
-    #     Returns True if two line segments defined by 4 points intersect
-    #
-    #     Parameters
-    #     ----------
-    #     p1 : Point
-    #         First point in the first line segment
-    #     p2 : Point
-    #         Second point in the second line segment
-    #     p3 : Point
-    #         First point in the second line segment
-    #     p4 : Point
-    #         Second point in the second line segment
-    #
-    #     Returns
-    #     -------
-    #     bool
-    #         True if the two line segments intersect
-    #     """
-    #     inter = Polygon.intersection(p1, p2, p3, p4)
-    #     if inter is not None and Polygon.in_segment(p1, p2, inter):
-    #         return True
-    #     return False
-
-    # @staticmethod
-    # def intersect_segment_alt(p1, p2, p3, p4):
-    #     """
-    #     Returns True if two line segments defined by 4 points intersect
-    #
-    #     Parameters
-    #     ----------
-    #     p1 : Point
-    #         First point in the first line segment
-    #     p2 : Point
-    #         Second point in the second line segment
-    #     p3 : Point
-    #         First point in the second line segment
-    #     p4 : Point
-    #         Second point in the second line segment
-    #
-    #     Returns
-    #     -------
-    #     bool
-    #         True if the two line segments intersect
-    #     """
-    #     inter = Polygon.intersection(p1, p2, p3, p4)
-    #     if inter is not None and (Polygon.in_segment(p1, p2, inter) and Polygon.in_segment(p3, p4, inter)):
-    #         return True
-    #     return False
-
     @staticmethod
     def find_ext_point(furthest_point, ang, initial_p):
         """
@@ -1006,17 +952,14 @@ class Polygon:
 
         ang = math.atan2((p1.get_y() - p2.get_y()), (p1.get_x() - p2.get_x())) + (math.pi / 2)
 
-        ext_p1 = Polygon.find_ext_point(self.furthest_point(p1), ang, p1)
-        ext_p2 = Polygon.find_ext_point(self.furthest_point(p2), ang, p2)
-
-        edge_p1 = self.find_intersecting_edge(p1, ext_p1)
-        edge_p2 = self.find_intersecting_edge(p2, ext_p2)
+        edge_p1 = self.find_intersecting_edge(p1, ang)
+        edge_p2 = self.find_intersecting_edge(p2, ang)
 
         if edge_p1 is None or edge_p2 is None:
             return Polygon([])
 
-        i_p1 = Polygon.intersection(p1, ext_p1, edge_p1[0], edge_p1[1])
-        i_p2 = Polygon.intersection(p2, ext_p2, edge_p2[0], edge_p2[1])
+        _, i_p1 = _ray_intersects(p1, ang, edge_p1[0], edge_p1[1])
+        _, i_p2 = _ray_intersects(p2, ang, edge_p2[0], edge_p2[1])
 
         dist_p1_i = p1.simple_distance(i_p1)
         dist_p2_i = p2.simple_distance(i_p2)

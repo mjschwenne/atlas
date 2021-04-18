@@ -1,3 +1,5 @@
+import numpy as np
+
 from src.Backend.Region import Region
 from src.Backend.Polygon import Polygon
 import random
@@ -5,6 +7,52 @@ import math
 from src.Backend.Point import Point
 
 _PI = math.pi
+
+
+def d(p, v_start, v_end):
+    """
+    Takes in a vector defined by two points and a point and computes a version of the dot product whose sign can
+    be used to determine which side of the vector it is on.
+
+    Parameters
+    ----------
+    p : Point
+        A point which we wish to determine which side of the line it is on
+    v_start : Point
+        Origin of the vector
+    v_end : Point
+        Destination of the vector
+
+    Returns
+    -------
+    float
+        The result of the formula
+    """
+    return (p.get_x() - v_start.get_x()) * (v_end.get_y() - v_start.get_y()) - \
+           (p.get_y() - v_start.get_y()) * (v_end.get_x() - v_start.get_x())
+
+
+def normalize_angle(angle):
+    """
+    Normalizes an angle in radians to be in the -pi to +pi range
+
+    Parameters
+    ----------
+    angle : float
+        The angle to normalize
+
+    Returns
+    -------
+    float
+        The normalized angle
+    """
+    angle = round(angle, 8)
+    while round(angle, 8) > round(math.pi, 8):
+        angle -= round(2 * math.pi, 8)
+    angle = round(angle, 8)
+    while round(angle, 8) < round(-math.pi, 8):
+        angle += round(2 * math.pi, 8)
+    return round(angle, 8)
 
 
 class District:
@@ -209,15 +257,26 @@ class District:
             ran_p.set_x(max_p1.get_x())
             ran_p.set_y((max_p2.get_y() - max_p1.get_y()) * cut_rand + max_p1.get_y())
 
-        # Find the random angle of the division from the angle of the edge
-        cut_ang = edge_angle + math.pi / 2
-        ran_ang = (random.uniform(-chaos_level, chaos_level) * (math.pi / 12)) + cut_ang
+        # Find the random angle of the division from the angle of the edge Ensure the we choose an angle which points
+        # into the region and NOT away from it. We will use a formula which is essentially the dot product of the
+        # edge vector with a vector from the edge start to the center of the polygon. We then test this value with a
+        # point on a known side of the line to see if they match
+        center = section.get_center()
+        d_c = d(center, max_p1, max_p2)
+        # if edge_angle != 0 and round(edge_angle, 8) != round(_PI, 8):
+        #     # If the line is not horizontal than (ran_p.get_x() - 1, ran_p.get_y()) is to the left of the line
+        #     d_p = d(Point(ran_p.get_x() - 1, ran_p.get_y()), max_p1, max_p2)
+        # else:
+        #     # If the line is horizontal than (ran_p.get_x(), ran_p.get_y() + 1) is to the left of the line
+        #     d_p = d(Point(ran_p.get_x(), ran_p.get_y() + 1), max_p1, max_p2)
+        cut_ang = edge_angle - (np.sign(d_c) * math.pi / 2)
+        ran_ang = (random.uniform(-self.chaos_level, self.chaos_level) * (math.pi / 12)) + cut_ang
 
         # Find the random gap width
         gap = max_distance * 0.01 + random.uniform(0, chaos_level) * (max_distance * 0.01)
 
         # Slit the region into two parts
-        parts = section.split(ran_p, ran_ang, gap)
+        parts = section.split(ran_p, normalize_angle(ran_ang), gap)
 
         for part in parts:
             if round(part.area(), 8) <= max_building_size + \
@@ -323,15 +382,26 @@ class BasicDistrict(District):
             ran_p.set_x(max_p1.get_x())
             ran_p.set_y((max_p2.get_y() - max_p1.get_y()) * cut_rand + max_p1.get_y())
 
-        # Find the random angle of the division from the angle of the edge
-        cut_ang = edge_angle + math.pi / 2
+        # Find the random angle of the division from the angle of the edge Ensure the we choose an angle which points
+        # into the region and NOT away from it. We will use a formula which is essentially the dot product of the
+        # edge vector with a vector from the edge start to the center of the polygon. We then test this value with a
+        # point on a known side of the line to see if they match
+        center = section.get_center()
+        d_c = d(center, max_p1, max_p2)
+        # if edge_angle != 0 and round(edge_angle, 8) != round(_PI, 8):
+        #     # If the line is not horizontal than (ran_p.get_x() - 1, ran_p.get_y()) is to the left of the line
+        #     d_p = d(Point(ran_p.get_x() - 1, ran_p.get_y()), max_p1, max_p2)
+        # else:
+        #     # If the line is horizontal than (ran_p.get_x(), ran_p.get_y() + 1) is to the left of the line
+        #     d_p = d(Point(ran_p.get_x(), ran_p.get_y() + 1), max_p1, max_p2)
+        cut_ang = edge_angle - (np.sign(d_c) * math.pi / 2)
         ran_ang = (random.uniform(-self.chaos_level, self.chaos_level) * (math.pi / 12)) + cut_ang
 
         # Find the random gap width
         gap = max_distance * 0.01 + random.uniform(0, self.chaos_level) * (max_distance * 0.01)
 
         # Slit the region into two parts
-        parts = section.split(ran_p, ran_ang, gap)
+        parts = section.split(ran_p, normalize_angle(ran_ang), gap)
 
         for part in parts:
             if round(part.area(), 8) <= self.max_building_size + \
