@@ -1256,7 +1256,7 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#District.Precinct.determine_rating" title="District.Precinct.determine_rating"><code class="xref py py-obj docutils literal notranslate"><span class="pre">determine_rating</span></code></a>(region, neighbor_regions, wall)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#District.Precinct.determine_rating" title="District.Precinct.determine_rating"><code class="xref py py-obj docutils literal notranslate"><span class="pre">determine_rating</span></code></a>(region, neighbor_regions, …)</p></td>
 <td><p>Determines the likely hood a given district will be in a region</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate</span></code>(region, chaos_level, …)</p></td>
@@ -1290,7 +1290,7 @@
 </table>
 <dl class="py method">
 <dt id="District.Precinct.determine_rating">
-<em class="property">static </em><code class="sig-name descname">determine_rating</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">region</span></em>, <em class="sig-param"><span class="n">neighbor_regions</span></em>, <em class="sig-param"><span class="n">wall</span></em><span class="sig-paren">)</span><a class="headerlink" href="#District.Precinct.determine_rating" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="sig-name descname">determine_rating</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">region</span></em>, <em class="sig-param"><span class="n">neighbor_regions</span></em>, <em class="sig-param"><span class="n">other_regions</span></em>, <em class="sig-param"><span class="n">wall</span></em><span class="sig-paren">)</span><a class="headerlink" href="#District.Precinct.determine_rating" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines the likely hood a given district will be in a region</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1464,6 +1464,51 @@
 </dl>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py function">
+<dt id="District.d">
+<code class="sig-prename descclassname">District.</code><code class="sig-name descname">d</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span></em>, <em class="sig-param"><span class="n">v_start</span></em>, <em class="sig-param"><span class="n">v_end</span></em><span class="sig-paren">)</span><a class="headerlink" href="#District.d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes in a vector defined by two points and a point and computes a version of the dot product whose sign can
+be used to determine which side of the vector it is on.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>p</strong><span class="classifier">Point</span></dt><dd><p>A point which we wish to determine which side of the line it is on</p>
+</dd>
+<dt><strong>v_start</strong><span class="classifier">Point</span></dt><dd><p>Origin of the vector</p>
+</dd>
+<dt><strong>v_end</strong><span class="classifier">Point</span></dt><dd><p>Destination of the vector</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>The result of the formula</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="District.normalize_angle">
+<code class="sig-prename descclassname">District.</code><code class="sig-name descname">normalize_angle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">angle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#District.normalize_angle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalizes an angle in radians to be in the -pi to +pi range</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>angle</strong><span class="classifier">float</span></dt><dd><p>The angle to normalize</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>The normalized angle</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
