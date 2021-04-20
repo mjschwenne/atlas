@@ -1008,30 +1008,6 @@ class Polygon:
                 max_y_dist = x - v.get_y()
         return max_point
 
-    def furthest_bounding_point(self, p):
-        # make bounding polygon
-        g_x = self.vertices[0].get_x()
-        g_y = self.vertices[0].get_y()
-        l_x = self.vertices[0].get_x()
-        l_y = self.vertices[0].get_y()
-        for v in self.vertices:
-            x = v.get_x()
-            y = v.get_y()
-            if x > g_x:
-                g_x = x
-            if x < l_x:
-                l_x = x
-            if y > g_y:
-                g_y = y
-            if y < l_y:
-                l_y = y
-        bound = Polygon([Point(l_x, l_y), Point(g_x, l_y), Point(g_x, g_y), Point(l_x, g_y)])
-        return bound.furthest_point(p)
-
-    def crazy_far_furthest_point(self, p):
-        larger = self.scale_of_polygon(10)
-        return larger.furthest_conglomerate_point(p)
-
     def cut_out(self, interior_polygon):
         """
         Cuts a larger polygon into parts without an interior polygon part
@@ -1119,6 +1095,23 @@ class Polygon:
         return self.cut_out_2(new_interior_polygon)
 
     def easy_cut(self, p, ang, gap):
+        """
+        Cuts a polygon into two parts based on a point and an angle, with a gap for the width of the cut
+
+        Parameters
+        ----------
+        p : Point
+            The point to cut from
+        ang : float
+            The angle to cut on (in radians)
+        gap : float
+            The cut width
+
+        Returns
+        -------
+        list of Polygons
+            The two cut parts of the polygon
+        """
         if self.on_edge(p):
             return self.split(p, ang, gap)
         furthest_point = self.furthest_point(p)
@@ -1234,6 +1227,14 @@ class Polygon:
         self.move_polygon_by_center(left_right_distance, up_down_distance)
 
     def longest_side_and_length(self):
+        """
+        Finds the longest side and length
+
+        Returns
+        -------
+        list
+            A list where the first element is the longest distance, the the next two elements are the points on the edge
+        """
         longest = [0, 0, 0]
 
         vertices = self.vertices
