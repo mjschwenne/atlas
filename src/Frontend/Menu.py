@@ -1,9 +1,9 @@
 import tkinter as tk
-import tkinter as ttk
 from tkinter.filedialog import asksaveasfilename
 from tkinter import *
 from PIL import ImageGrab, Image
 import os
+import sys
 
 from src.Backend.Constructor import Constructor
 from src.Backend.District import *
@@ -11,6 +11,12 @@ from src.Backend.District import *
 user_info = [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 customize_info = 1
 map_regions = []
+
+
+def resource_path(relative_path):
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath(".images\\"), relative_path)
 
 
 class ResizingCanvas(tk.Canvas):
@@ -347,7 +353,7 @@ def main():
                 center_verts.append(((reg.get_center().get_x() + 250) / 2) - low_w)
                 center_verts.append(((reg.get_center().get_y() + 250) / 2) - low_h)
             label_regions(map_canvas, center_verts, string, color)
-            
+
         map_canvas.scale("all", 0, 0, map_canvas.width / w, map_canvas.height / h)
         return
 
@@ -357,7 +363,7 @@ def main():
         """
         info = Toplevel()
         info.title('Help Window')
-        info.iconbitmap('../../images/Atlas.ico')
+        info.iconbitmap(resource_path('Atlas.ico'))
         Label(info, text="ATLAS Help Window", font="Helvetica 16 bold", bg="#a3a3a3", width=32).grid(row=0)
         Label(info, text="If you want a randomly generated map hit the GENERATE button.",
               font="Helvetica 10").grid(row=1, sticky=W)
@@ -374,7 +380,7 @@ def main():
         key = Toplevel()
         key.title('KEY')
         key.geometry('400x400')
-        key.iconbitmap('../../images/Atlas.ico')
+        key.iconbitmap(resource_path('Atlas.ico'))
         Label(key, text="ATLAS District Key", font="Helvetica 16 bold", bg="#a3a3a3").pack(side=TOP)
         scrollbar = Scrollbar(key)
         scrollbar.pack(side=RIGHT, fill='y')
@@ -395,7 +401,7 @@ def main():
         """
         edit = Toplevel()
         edit.title('Edit Window')
-        edit.iconbitmap('../../images/Atlas.ico')
+        edit.iconbitmap(resource_path('Atlas.ico'))
         edit.rowconfigure(25, weight=2)
 
         def var_states():
@@ -530,7 +536,7 @@ def main():
         # Creates the Go and Quit button
         Button(edit, text='Go', command=lambda: [var_states(), draw_map(canvas)]).grid(row=34, sticky=W, pady=4, padx=4)
         Button(edit, text='Reset', command=lambda: [reset_info(), edit.destroy()]).grid(row=34, sticky=E, pady=4,
-                                                                                          padx=4)
+                                                                                        padx=4)
         Button(edit, text='Quit', command=edit.destroy).grid(column=1, sticky=E, row=34, pady=4, padx=4)
 
     def save_file():
@@ -571,8 +577,8 @@ def main():
     Button(welcome, text="Close", command=welcome.destroy).grid(row=7)
 
     # sets the icons in the corner to our logo
-    window.iconbitmap('../../images/Atlas.ico')
-    welcome.iconbitmap('../../images/Atlas.ico')
+    window.iconbitmap(resource_path('Atlas.ico'))
+    welcome.iconbitmap(resource_path('Atlas.ico'))
 
     # configure the two columns to expand properly
     window.columnconfigure(0, weight=0)
@@ -607,7 +613,7 @@ def main():
     help_btn.grid(column=0, row=4, sticky='w', padx=5, pady=5)
 
     # Sets up and puts the image of the cardinal directions on the screen 
-    img = tk.PhotoImage(file='../../images/compass.png')
+    img = tk.PhotoImage(file=resource_path('compass.png'))
     my_label = tk.Label(button_frame, image=img, background="#CCCCCC")
     my_label.grid(column=0, row=12, sticky='s', padx=10, pady=10)
 
